@@ -16,25 +16,27 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xlibwindowmanageradapter.h"
-#include "config.h"
-#include <QtCore/QCoreApplication>
-#include <QtCore/QCommandLineParser>
+#ifndef XLIBWINDOWMANAGERADAPTER_H
+#define XLIBWINDOWMANAGERADAPTER_H
 
-int main(int argc, char *argv[])
+#include "windowmanageradapter.h"
+
+
+class XLibWindowManagerAdapterPrivate;
+
+class XLibWindowManagerAdapter : public WindowManagerAdapter
 {
-    QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName(GESTEMAS_APPLICATION_NAME);
-    QCoreApplication::setApplicationVersion(GESTEMAS_VERSION);
+    Q_OBJECT
+    friend class XLibWindowManagerAdapterPrivate;
+public:
+    explicit XLibWindowManagerAdapter(QObject *parent = nullptr);
+    virtual ~XLibWindowManagerAdapter();
+    virtual void dispatchEvents();
+protected slots:
+    virtual void onNewEvent();
 
-    QCommandLineParser parser;
-    parser.setApplicationDescription(GESTEMAS_APPLICATION_DESCRIPTION);
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.process(app);
+private:
+    XLibWindowManagerAdapterPrivate *d_ptr;
+};
 
-    XLibWindowManagerAdapter windowManagerAdapter(&app);
-    windowManagerAdapter.dispatchEvents();
-
-    return app.exec();
-}
+#endif

@@ -7,21 +7,25 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Foobar is distributed in the hope that it will be useful,
+ * eta-gestemas is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QtDebug>
+#ifndef WINDOWMANAGERADAPTER_TST_H
+#define WINDOWMANAGERADAPTER_TST_H
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication app(argc, argv);
-    qDebug() << "A test tool";
-    return app.exec();
-}
+class QString;
+
+class WindowManagerAdapterTestBase {
+public:
+    virtual void onWindowCreated(unsigned long targetId,
+                                 const QString & targetName) = 0;
+    virtual void onWindowDestroyed(unsigned long targetId) = 0;
+    virtual void onTouchEvent(void *data) = 0;
+};
+#endif

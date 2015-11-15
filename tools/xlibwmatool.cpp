@@ -17,24 +17,36 @@
  */
 
 #include "xlibwindowmanageradapter.h"
-#include "config.h"
 #include <QtCore/QCoreApplication>
-#include <QtCore/QCommandLineParser>
+#include <QtCore/QtDebug>
+
+class XLibWindowManagerAdapterTester : public WindowManagerAdapterTestBase
+{
+public:
+    virtual void onWindowCreated(unsigned long targetId,
+                                 const QString & targetName)
+    {
+        qDebug() << "Target Created" << "0x" + QString::number(targetId, 16)
+                 << " " << targetName;
+    }
+    virtual void onWindowDestroyed(unsigned long targetId)
+    {
+        qDebug() << "Target Destroyed" << "0x" + QString::number(targetId, 16);
+    }
+
+    virtual void onTouchEvent(void *data)
+    {
+        qDebug() << "Touch Event";
+    }
+};
 
 int main(int argc, char *argv[])
 {
+    qDebug() << "XLibWindowManagerAdapter Test";
     QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName(GESTEMAS_APPLICATION_NAME);
-    QCoreApplication::setApplicationVersion(GESTEMAS_VERSION);
-
-    QCommandLineParser parser;
-    parser.setApplicationDescription(GESTEMAS_APPLICATION_DESCRIPTION);
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.process(app);
-
+    XLibWindowManagerAdapterTester tester;
     XLibWindowManagerAdapter windowManagerAdapter(&app);
+    windowManagerAdapter.setTester(&tester);
     windowManagerAdapter.dispatchEvents();
-
     return app.exec();
 }

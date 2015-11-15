@@ -13,9 +13,32 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ete-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define GESTEMAS_APPLICATION_NAME "@GESTEMAS_APPLICATION_NAME@"
-#define GESTEMAS_APPLICATION_DESCRIPTION "@GESTEMAS_APPLICATION_DESCRIPTION@"
-#define GESTEMAS_VERSION "@GESTEMAS_VERSION@"
+#ifndef WINDOWMANAGERADAPTER_H
+#define WINDOWMANAGERADAPTER_H
+
+#include <QtCore/QObject>
+#include "windowmanageradapter_tst.h"
+
+class WindowManagerAdapter : public QObject
+{
+    Q_OBJECT
+public:
+    explicit WindowManagerAdapter(QObject *parent = nullptr);
+    WindowManagerAdapter(const WindowManagerAdapter &) = delete;
+    WindowManagerAdapter &operator=(const WindowManagerAdapter &) = delete;
+
+    void setTester(WindowManagerAdapterTestBase * tester);
+
+    virtual void dispatchEvents() = 0;
+
+protected slots:
+    virtual void onNewEvent() = 0;
+
+protected:
+    WindowManagerAdapterTestBase *m_tester;
+};
+
+#endif

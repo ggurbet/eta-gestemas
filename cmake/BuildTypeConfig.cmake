@@ -14,5 +14,5 @@ if(    NOT cmake_build_type_tolower STREQUAL "debug"
     "Allowed values are Debug, Release, Profile, RelWithDebInfo "
     "(case-insensitive).")
 else ()
-  message("Build type is ${CMAKE_BUILD_TYPE}")
+  message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 endif ()
