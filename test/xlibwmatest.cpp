@@ -8,7 +8,7 @@ class XLibWindowManagerAdapterTester :public QObject,
     Q_OBJECT
 public:
     virtual void onWindowCreated(unsigned long targetId,
-                                 const QString& targetName);
+                                 const QString& targetName, bool *grabTouches);
     virtual void onWindowDestroyed(unsigned long targetId);
     virtual void onTouchEvent(void *data);
 
@@ -109,10 +109,13 @@ void XLibWindowManagerAdapterTester::cleanupTestCase()
 
 
 void XLibWindowManagerAdapterTester::onWindowCreated(unsigned long targetId,
-                             const QString& targetName)
+                                                     const QString& targetName, bool *grabTouches)
 {
     capturedCreatedWindowIds.append(targetId);
     capturedCreatedWindowNames.append(targetName);
+    if (grabTouches) {
+        *grabTouches = true;
+    }
 }
 
 void XLibWindowManagerAdapterTester::onWindowDestroyed(unsigned long targetId)

@@ -154,7 +154,6 @@ bool XLibWindowManagerAdapterPrivate::getClients(Window **clients,
 void XLibWindowManagerAdapterPrivate::handleCreatedWindow(Window window)
 {
     QString targetName = "root";
-
     if (window != XDefaultRootWindow(m_display)) {
         XClassHint *classHint = XAllocClassHint();
         XGetClassHint(m_display, window, classHint);
@@ -163,14 +162,13 @@ void XLibWindowManagerAdapterPrivate::handleCreatedWindow(Window window)
         XFree(classHint->res_class);
         XFree(classHint);
     }
-
-    XIGrabTouchBegin(m_display, XIAllMasterDevices, window, 0, &m_mask, 1, &m_mods);
-
-    //TODO: Fordward window and targetName to TargetFactory here.
-    // Add created target object to GestureRecognizerManager
-
     if (q_ptr->m_listener) {
-        q_ptr->m_listener->onWindowCreated(window, targetName);
+        bool grabTouches = true;
+        q_ptr->m_listener->onWindowCreated(window, targetName, &grabTouches);
+        if (grabTouches) {
+            XIGrabTouchBegin(m_display, XIAllMasterDevices, window, 0,
+                             &m_mask, 1, &m_mods);
+        }
     }
 }
 
@@ -188,7 +186,7 @@ void XLibWindowManagerAdapterPrivate::handleDestroyedWindow(Window window)
 
 
     // Reproduced on krunner system activity close
-    /* Possible solutions are 
+    /* Possible solutions are
       1-)Search destroyed window id in GestureRecognizerManager
       if not found, do not ungrab.
       2-) Consider implementing following and setting and defaulting error handler

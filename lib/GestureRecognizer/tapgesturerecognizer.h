@@ -16,16 +16,28 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOWMANAGERADAPTER_TST_H
-#define WINDOWMANAGERADAPTER_TST_H
+#ifndef TAPGESTURERECOGNIZER_H
+#define TAPGESTURERECOGNIZER_H
 
-class QString;
+#include "gesturerecognizer.h"
 
-class WindowManagerAdapterListenerInterface {
+class TapGestureRecognizer : public GestureRecognizer
+{
 public:
-    virtual void onWindowCreated(unsigned long targetId,
-                                 const QString & targetName, bool *grabTouches) = 0;
-    virtual void onWindowDestroyed(unsigned long targetId) = 0;
-    virtual void onTouchEvent(void *data) = 0;
+    TapGestureRecognizer();
+    virtual bool isEqual(const GestureRecognizer& other) const;
+
+    void setNumTouchesRequired(int numTouchesRequired)
+    {m_numTouchesRequired = numTouchesRequired;}
+    int numTouchesRequired() const
+    {return m_numTouchesRequired;}
+protected:
+    virtual void onTouchBegan(const Touch *touch);
+    virtual void onTouchMoved(const Touch *touch);
+    virtual void onTouchEnded(const Touch *touch);
+    virtual void reset();
+private:
+    int m_numTouchesRequired;
 };
-#endif
+
+#endif /* TAPGESTURERECOGNIZER_H */

@@ -43,7 +43,7 @@
  * @brief Starts event dispatching.
  *
  * First dispatches window created events for already open windows, then
- * listen for window creation, window destruction and touch events
+ * listens for window creation, window destruction and touch events
  * by the help of onNewEvent(). Events are directed to corresponding
  * class instances in onNewEvent() method.
  */
@@ -52,12 +52,12 @@ WindowManagerAdapter::WindowManagerAdapter(QObject *parent)
     :QObject(parent), m_listener(nullptr) {}
 
 /**
- * @brief   Set @p tester member.
+ * @brief   Set @p listener member.
  *
- * Tester's virtual methods get called on every event that a window manager
+ * Listener's virtual methods are got called on every event that a window manager
  * adapter should be interested in. These events are namely window creation,
  * window destruction and touch events on a specific window.
- * @param[in] tester        used for testing the class. If not set, it is null
+ * @param[in] listener        used for listening to the class events. If not set, it is null
  */
 void WindowManagerAdapter::setListener(WindowManagerAdapterListenerInterface * listener)
 {

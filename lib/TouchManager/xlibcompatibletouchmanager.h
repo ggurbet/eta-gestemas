@@ -16,16 +16,16 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOWMANAGERADAPTER_TST_H
-#define WINDOWMANAGERADAPTER_TST_H
+#ifndef XLIBCOMPATIBLETOUCHMANAGER_H
+#define XLIBCOMPATIBLETOUCHMANAGER_H
 
-class QString;
+#include "touchmanager.h"
 
-class WindowManagerAdapterListenerInterface {
+class XLibCompatibleTouchManager : public TouchManager
+{
 public:
-    virtual void onWindowCreated(unsigned long targetId,
-                                 const QString & targetName, bool *grabTouches) = 0;
-    virtual void onWindowDestroyed(unsigned long targetId) = 0;
-    virtual void onTouchEvent(void *data) = 0;
+    XLibCompatibleTouchManager();
+    virtual ~XLibCompatibleTouchManager();
 };
-#endif
+
+#endif /* XLIBCOMPATIBLETOUCHMANAGER_H */

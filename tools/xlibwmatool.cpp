@@ -24,10 +24,13 @@ class XLibWindowManagerAdapterTester : public WindowManagerAdapterListenerInterf
 {
 public:
     virtual void onWindowCreated(unsigned long targetId,
-                                 const QString & targetName)
+                                 const QString & targetName, bool *grabTouches)
     {
         qDebug() << "Target Created" << "0x" + QString::number(targetId, 16)
                  << " " << targetName;
+        if (grabTouches) {
+            *grabTouches = true;
+        }
     }
     virtual void onWindowDestroyed(unsigned long targetId)
     {

@@ -6,11 +6,8 @@ enable_testing()
 find_package(Qt5 COMPONENTS Core Widgets Test)
 find_package(X11)
 
-set(xlibwmatest_SOURCES
-  xlibwmatest.cpp
-)
-
-add_executable(xlibwmatest ${xlibwmatest_SOURCES})
+# xlibwmatest
+add_executable(xlibwmatest xlibwmatest.cpp)
 add_test(xlibwmatest xlibwmatest)
 
 target_link_libraries(xlibwmatest
@@ -20,3 +17,31 @@ target_link_libraries(xlibwmatest
 
 target_include_directories(xlibwmatest PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter)
+
+# targetfactorytest
+add_executable(targetfactorytest targetfactorytest.cpp)
+add_test(targetfactorytest targetfactorytest)
+
+target_link_libraries(targetfactorytest
+    Qt5::Core Qt5::Test
+    ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
+
+target_include_directories(targetfactorytest PRIVATE
+  ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter
+  ${CMAKE_SOURCE_DIR}/lib/TouchManager
+  ${CMAKE_SOURCE_DIR}/lib/GestureRecognizer
+  ${CMAKE_SOURCE_DIR}/lib/TargetFactory)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.xml
+    ${CMAKE_CURRENT_BINARY_DIR}/config.xml COPYONLY)
+
+# statetest
+add_executable(statetest statetest.cpp)
+add_test(statetest statetest)
+
+target_link_libraries(statetest
+    Qt5::Core Qt5::Test
+    ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
+
+target_include_directories(statetest PRIVATE
+  ${CMAKE_SOURCE_DIR}/lib/GestureRecognizer)

@@ -15,17 +15,3 @@
  * You should have received a copy of the GNU General Public License
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef WINDOWMANAGERADAPTER_TST_H
-#define WINDOWMANAGERADAPTER_TST_H
-
-class QString;
-
-class WindowManagerAdapterListenerInterface {
-public:
-    virtual void onWindowCreated(unsigned long targetId,
-                                 const QString & targetName, bool *grabTouches) = 0;
-    virtual void onWindowDestroyed(unsigned long targetId) = 0;
-    virtual void onTouchEvent(void *data) = 0;
-};
-#endif
