@@ -3,7 +3,7 @@
 #include <QtWidgets/QWidget>
 
 class XLibWindowManagerAdapterTester :public QObject,
-                                      public WindowManagerAdapterTestBase
+                                      public WindowManagerAdapterListenerInterface
 {
     Q_OBJECT
 public:
@@ -36,7 +36,7 @@ private:
 void XLibWindowManagerAdapterTester::initTestCase()
 {
     xlibwma = new XLibWindowManagerAdapter(this);
-    xlibwma->setTester(this);
+    xlibwma->setListener(this);
     xlibwma->dispatchEvents();
     QWidget *w;
     capturedCreatedWindowIds.clear();

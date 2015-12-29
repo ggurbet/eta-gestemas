@@ -21,7 +21,7 @@
 
 class QString;
 
-class WindowManagerAdapterTestBase {
+class WindowManagerAdapterListenerInterface {
 public:
     virtual void onWindowCreated(unsigned long targetId,
                                  const QString & targetName) = 0;

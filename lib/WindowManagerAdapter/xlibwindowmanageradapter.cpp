@@ -122,8 +122,8 @@ void XLibWindowManagerAdapterPrivate::onNewEvent()
                 continue;
             }
             //TODO: Fordward xcookie data to TouchManager here.
-            if (q_ptr->m_tester) {
-                q_ptr->m_tester->onTouchEvent(xcookie);
+            if (q_ptr->m_listener) {
+                q_ptr->m_listener->onTouchEvent(xcookie);
             }
             XFreeEventData(m_display, xcookie);
         }
@@ -169,8 +169,8 @@ void XLibWindowManagerAdapterPrivate::handleCreatedWindow(Window window)
     //TODO: Fordward window and targetName to TargetFactory here.
     // Add created target object to GestureRecognizerManager
 
-    if (q_ptr->m_tester) {
-        q_ptr->m_tester->onWindowCreated(window, targetName);
+    if (q_ptr->m_listener) {
+        q_ptr->m_listener->onWindowCreated(window, targetName);
     }
 }
 
@@ -199,8 +199,8 @@ void XLibWindowManagerAdapterPrivate::handleDestroyedWindow(Window window)
       4-) Do not ungrab at all.
      */
 
-    if(q_ptr->m_tester) {
-        q_ptr->m_tester->onWindowDestroyed(window);
+    if(q_ptr->m_listener) {
+        q_ptr->m_listener->onWindowDestroyed(window);
     }
     // XIUngrabTouchBegin(m_display, XIAllMasterDevices, window, 1, &m_mods);
 

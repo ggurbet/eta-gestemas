@@ -49,7 +49,7 @@
  */
 
 WindowManagerAdapter::WindowManagerAdapter(QObject *parent)
-    :QObject(parent), m_tester(nullptr) {}
+    :QObject(parent), m_listener(nullptr) {}
 
 /**
  * @brief   Set @p tester member.
@@ -59,7 +59,7 @@ WindowManagerAdapter::WindowManagerAdapter(QObject *parent)
  * window destruction and touch events on a specific window.
  * @param[in] tester        used for testing the class. If not set, it is null
  */
-void WindowManagerAdapter::setTester(WindowManagerAdapterTestBase * tester)
+void WindowManagerAdapter::setListener(WindowManagerAdapterListenerInterface * listener)
 {
-    m_tester = tester;
+    m_listener = listener;
 }

@@ -20,7 +20,7 @@
 #define WINDOWMANAGERADAPTER_H
 
 #include <QtCore/QObject>
-#include "windowmanageradapter_tst.h"
+#include "windowmanageradapterlistenerinterface.h"
 
 class WindowManagerAdapter : public QObject
 {
@@ -30,7 +30,7 @@ public:
     WindowManagerAdapter(const WindowManagerAdapter &) = delete;
     WindowManagerAdapter &operator=(const WindowManagerAdapter &) = delete;
 
-    void setTester(WindowManagerAdapterTestBase * tester);
+    void setListener(WindowManagerAdapterListenerInterface * listener);
 
     virtual void dispatchEvents() = 0;
 
@@ -38,7 +38,7 @@ protected slots:
     virtual void onNewEvent() = 0;
 
 protected:
-    WindowManagerAdapterTestBase *m_tester;
+    WindowManagerAdapterListenerInterface *m_listener;
 };
 
 #endif

@@ -20,7 +20,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QtDebug>
 
-class XLibWindowManagerAdapterTester : public WindowManagerAdapterTestBase
+class XLibWindowManagerAdapterTester : public WindowManagerAdapterListenerInterface
 {
 public:
     virtual void onWindowCreated(unsigned long targetId,
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
     XLibWindowManagerAdapterTester tester;
     XLibWindowManagerAdapter windowManagerAdapter(&app);
-    windowManagerAdapter.setTester(&tester);
+    windowManagerAdapter.setListener(&tester);
     windowManagerAdapter.dispatchEvents();
     return app.exec();
 }
