@@ -34,9 +34,8 @@ TargetFactory::~TargetFactory()
         m_configFile->close();
     }
     delete m_configReader;
-    delete m_configFile;
+    m_configFile->deleteLater();
     m_configReader = nullptr;
-    m_configFile = nullptr;
 }
 
 void TargetFactory::setConfigurationFileName(const QString& configFileName)
