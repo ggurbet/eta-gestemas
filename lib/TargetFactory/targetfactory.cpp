@@ -92,8 +92,10 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
             }
         }
     m_configFile->close();
-    m_currentTarget->setTargetId(targetId);
-    m_currentTarget->setTargetName(targetName);
+    if (m_currentTarget) {
+        m_currentTarget->setTargetId(targetId);
+        m_currentTarget->setTargetName(targetName);
+    }
     return m_currentTarget;
 }
 
