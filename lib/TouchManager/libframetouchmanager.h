@@ -19,13 +19,42 @@
 #ifndef LIBFRAMETOUCHMANAGER_H
 #define LIBFRAMETOUCHMANAGER_H
 
-#include "xlibcompatibletouchmanager.h"
+#include "touchmanager.h"
+#include <QtCore/QObject>
+#include <X11/extensions/XInput2.h>
+#include <oif/frame.h>
 
-class LibFrameTouchManager : public XLibCompatibleTouchManager
+class QSocketNotifier;
+
+class LibFrameTouchManager : public QObject,
+                             public TouchManager
 {
+    Q_OBJECT
 public:
-    LibFrameTouchManager();
+    LibFrameTouchManager(Display* display = nullptr);
     virtual ~LibFrameTouchManager();
+    virtual void processTouchEvent(void *data);
+    virtual void acceptTouch(unsigned long touchId, unsigned long targetId,
+                             void* device);
+    virtual void rejectTouch(unsigned long touchId, unsigned long targetId,
+                             void* device);
+
+    void setDisplay(Display* display)
+    {m_display = display;}
+    Display* display()
+    {return m_display;}
+private slots:
+    void onFrameEvent();
+private:
+    void onDeviceAdded(UFEvent event);
+    void onDeviceRemoved(UFEvent event);
+    void onNewFrame(UFEvent event);
+    void dispatchTouches(UFTouch touch, UFFrame frame,
+                         UFDevice device, Window window);
+
+    UFHandle m_frameHandle;
+    Display* m_display;
+    QSocketNotifier* m_socketNotifier;
 };
 
 #endif /* LIBFRAMETOUCHMANAGER_H */

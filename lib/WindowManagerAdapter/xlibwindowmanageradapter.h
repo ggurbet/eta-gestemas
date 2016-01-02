@@ -32,6 +32,9 @@ public:
     explicit XLibWindowManagerAdapter(QObject *parent = nullptr);
     virtual ~XLibWindowManagerAdapter();
     virtual void dispatchEvents();
+
+    void* display();
+
 protected slots:
     virtual void onNewEvent();
 

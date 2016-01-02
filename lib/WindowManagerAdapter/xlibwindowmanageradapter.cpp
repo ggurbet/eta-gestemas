@@ -262,3 +262,8 @@ void XLibWindowManagerAdapter::dispatchEvents()
     connect(d_ptr->m_socketNotifier, SIGNAL(activated(int)),
             this, SLOT(onNewEvent()));
 }
+
+void* XLibWindowManagerAdapter::display()
+{
+    return d_ptr->m_display;
+}

@@ -11,7 +11,7 @@ set(gestemas_SOURCES
 add_executable(${GESTEMAS_APPLICATION_NAME} ${gestemas_SOURCES})
 
 target_link_libraries(${GESTEMAS_APPLICATION_NAME}
-    Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+    Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
 target_include_directories(${GESTEMAS_APPLICATION_NAME} PRIVATE

@@ -3,10 +3,12 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5 COMPONENTS Core)
 find_package(X11)
+find_package(Frame)
 
 set(libgestemas_SOURCES
   WindowManagerAdapter/windowmanageradapter.cpp
   WindowManagerAdapter/xlibwindowmanageradapter.cpp
+  WindowManagerAdapter/windowmanageradapterlistener.cpp
   TargetFactory/target.cpp
   TargetFactory/targetfactory.cpp
   GestureRecognizer/state.cpp
@@ -16,11 +18,14 @@ set(libgestemas_SOURCES
   GestureRecognizer/pangesturerecognizer.cpp
   GestureRecognizer/twotouchpinchgesturerecognizer.cpp
   GestureRecognizer/tapgesturerecognizer.cpp
+  TouchManager/touchmanager.cpp
+  TouchManager/libframetouchmanager.cpp
 )
 
 set(libgestemas_HEADERS
   WindowManagerAdapter/windowmanageradapter.h
   WindowManagerAdapter/windowmanageradapterlistenerinterface.h
+  WindowManagerAdapter/windowmanageradapterlistener.h
   WindowManagerAdapter/xlibwindowmanageradapter_p.h
   WindowManagerAdapter/xlibwindowmanageradapter.h
   TargetFactory/target.h
@@ -32,11 +37,14 @@ set(libgestemas_HEADERS
   GestureRecognizer/pangesturerecognizer.h
   GestureRecognizer/twotouchpinchgesturerecognizer.h
   GestureRecognizer/tapgesturerecognizer.h
+  TouchManager/touchmanager.h
+  TouchManager/libframetouchmanager.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})
 
-target_link_libraries(gestemas Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB})
+target_link_libraries(gestemas Qt5::Core
+  ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB})
 
 target_include_directories(gestemas PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter

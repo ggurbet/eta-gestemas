@@ -16,14 +16,22 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOUCH_H
-#define TOUCH_H
+#include "xlibwindowmanageradapter.h"
+#include "windowmanageradapterlistener.h"
+#include "targetfactory.h"
+#include <QtCore/QCoreApplication>
+#include <QtCore/QtDebug>
+#include "libframetouchmanager.h"
 
-class Touch
+int main(int argc, char *argv[])
 {
-public:
-    Touch();
-    ~Touch();
-};
-
-#endif /* TOUCH_H */
+    qDebug() << "XLibWindowManagerAdapter Test";
+    QCoreApplication app(argc, argv);
+    XLibWindowManagerAdapter windowManagerAdapter(&app);
+    LibFrameTouchManager touchManager((Display*)windowManagerAdapter.display());
+    TargetFactory targetFactory("config.xml");
+    WindowManagerAdapterListener windowManagerAdapterListener(&touchManager, &targetFactory);
+    windowManagerAdapter.setListener(&windowManagerAdapterListener);
+    windowManagerAdapter.dispatchEvents();
+    return app.exec();
+}

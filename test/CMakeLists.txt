@@ -12,7 +12,7 @@ add_test(xlibwmatest xlibwmatest)
 
 target_link_libraries(xlibwmatest
     Qt5::Core Qt5::Widgets Qt5::Test
-    ${X11_X11_LIB} ${X11_Xi_LIB}
+    ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
 target_include_directories(xlibwmatest PRIVATE

@@ -22,8 +22,8 @@
 class GestureRecognizerManager
 {
 public:
-    GestureRecognizerManager();
-    ~GestureRecognizerManager();
+    GestureRecognizerManager() {}
+    ~GestureRecognizerManager(){}
 };
 
 #endif /* GESTURERECOGNIZERMANAGER_H */

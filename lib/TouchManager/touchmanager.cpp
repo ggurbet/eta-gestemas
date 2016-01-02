@@ -15,3 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "touchmanager.h"
+#include "gesturerecognizermanager.h"
+
+void TouchManager::setGestureRecognizerManager(GestureRecognizerManager* grm)
+{
+    m_grm = grm;
+}
+GestureRecognizerManager* TouchManager::gestureRecognizerManager()
+{
+    return m_grm;
+}

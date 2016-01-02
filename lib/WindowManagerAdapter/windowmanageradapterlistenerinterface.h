@@ -16,16 +16,19 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOWMANAGERADAPTER_TST_H
-#define WINDOWMANAGERADAPTER_TST_H
+#ifndef WINDOWMANAGERADAPTERLISTENERINTERFACE_H
+#define WINDOWMANAGERADAPTERLISTENERINTERFACE_H
 
 class QString;
 
-class WindowManagerAdapterListenerInterface {
+class WindowManagerAdapterListenerInterface
+{
 public:
     virtual void onWindowCreated(unsigned long targetId,
-                                 const QString & targetName, bool *grabTouches) = 0;
+                                 const QString& targetName,
+                                 bool *grabTouches) = 0;
     virtual void onWindowDestroyed(unsigned long targetId) = 0;
     virtual void onTouchEvent(void *data) = 0;
 };
-#endif
+
+#endif /* WINDOWMANAGERADAPTERLISTENERINTERFACE_H */

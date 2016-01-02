@@ -19,11 +19,26 @@
 #ifndef TOUCHMANAGER_H
 #define TOUCHMANAGER_H
 
+class GestureRecognizerManager;
+
 class TouchManager
 {
 public:
-    TouchManager();
-    virtual ~TouchManager();
+    TouchManager() = default;
+    virtual ~TouchManager() = default;
+    virtual void processTouchEvent(void *data) = 0;
+    virtual void acceptTouch(unsigned long touchId, unsigned long targetId,
+                             void* device) = 0;
+    virtual void rejectTouch(unsigned long touchId, unsigned long targetId,
+                             void* device) = 0;
+
+    void setGestureRecognizerManager(GestureRecognizerManager* grm);
+    GestureRecognizerManager* gestureRecognizerManager();
+
+    TouchManager(const TouchManager&) = delete;
+    TouchManager& operator=(const TouchManager&) = delete;
+private:
+    GestureRecognizerManager* m_grm;
 };
 
 #endif /* TOUCHMANAGER_H */
