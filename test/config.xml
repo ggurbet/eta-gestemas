@@ -9,6 +9,7 @@
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
         <maxAllowableDrift>0.001</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </LongPress>
     </GestureRecognizers>
   </Target>
@@ -20,13 +21,19 @@
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <maxVelocity>20.0</maxVelocity>
         <minVelocity>0.1</minVelocity>
+        <maxAllowableDrift>0.001</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </Pan>
       <TwoTouchPinch>
         <maxScale>3.0</maxScale>
         <minScale>1.2</minScale>
+        <maxAllowableDrift>0.001</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </TwoTouchPinch>
       <Tap>
         <numTouchesRequired>2</numTouchesRequired>
+        <maxAllowableDrift>0.001</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </Tap>
     </GestureRecognizers>
   </Target>
@@ -38,13 +45,19 @@
         <minNumTouchesRequired>3</minNumTouchesRequired>
         <maxVelocity>20.2</maxVelocity>
         <minVelocity>0.2</minVelocity>
+        <maxAllowableDrift>0.001</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </Pan>
       <TwoTouchPinch>
         <maxScale>4.0</maxScale>
         <minScale>1.4</minScale>
+        <maxAllowableDrift>0.001</maxAllowableDrift>
+        <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
       </TwoTouchPinch>
       <Tap>
         <numTouchesRequired>3</numTouchesRequired>
+        <maxAllowableDrift>0.0001</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </Tap>
     </GestureRecognizers>
   </Target>

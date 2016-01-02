@@ -21,11 +21,14 @@
 
 #include "gesturerecognizer.h"
 
+class QTimer;
+
 class LongPressGestureRecognizer : public GestureRecognizer
 {
 public:
     LongPressGestureRecognizer();
     virtual bool isEqual(const GestureRecognizer& other) const;
+    virtual void reset();
 
     void setNumTouchesRequired(int numTouchesRequired)
     {m_numTouchesRequired = numTouchesRequired;}
@@ -36,20 +39,19 @@ public:
     {m_minPressDuration = msec;}
     int minPressDuration() const
     {return m_minPressDuration;}
-
-    void setMaxAllowableDrift(float maxAllowableDrift)
-    {m_maxAllowableDrift = maxAllowableDrift;}
-    float maxAllowableDrift() const
-    {return m_maxAllowableDrift;}
 protected:
     virtual void onTouchBegan(const Touch *touch);
-    virtual void onTouchMoved(const Touch *touch);
-    virtual void onTouchEnded(const Touch *touch);
-    virtual void reset();
+    virtual void onTouchMoved(const Touch *prev, const Touch *current);
+    virtual void onTouchEnded(const Touch *prev, const Touch *current);
+private slots:
+    void onTimeout();
+
 private:
     int m_numTouchesRequired;
     int m_minPressDuration; //ms
-    float m_maxAllowableDrift;
+
+    bool m_numTouchesRequiredReached;
+    QTimer *m_timer;
 };
 
 #endif /* LONGPRESSGESTURERECOGNIZER_H */

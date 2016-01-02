@@ -26,6 +26,7 @@ class TwoTouchPinchGestureRecognizer : public GestureRecognizer
 public:
     TwoTouchPinchGestureRecognizer();
     virtual bool isEqual(const GestureRecognizer& other) const;
+    virtual void reset();
 
     void setScale(float scale)
     {m_scale = scale;}
@@ -43,9 +44,8 @@ public:
     {return m_minScale;}
 protected:
     virtual void onTouchBegan(const Touch *touch);
-    virtual void onTouchMoved(const Touch *touch);
-    virtual void onTouchEnded(const Touch *touch);
-    virtual void reset();
+    virtual void onTouchMoved(const Touch *prev, const Touch *current);
+    virtual void onTouchEnded(const Touch *prev, const Touch *current);
 private:
     float m_scale;
     float m_maxScale;

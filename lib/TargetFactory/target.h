@@ -43,6 +43,8 @@ public:
 
     bool isEqual(const Target& other) const;
 
+    const QList<GestureRecognizer*>& gestureRecognizers() const;
+
     Target(const Target&) = delete;
     Target& operator=(const Target&) = delete;
 private:

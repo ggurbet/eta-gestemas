@@ -17,9 +17,12 @@
  */
 
 #include "twotouchpinchgesturerecognizer.h"
+#include "touch.h"
+#include <QtCore/QtDebug>
 
 TwoTouchPinchGestureRecognizer::TwoTouchPinchGestureRecognizer()
-    :m_scale(0.0f),
+     :GestureRecognizer(),
+     m_scale(0.0f),
      m_maxScale(3.0f),
      m_minScale(1.2f)
 {
@@ -33,23 +36,49 @@ bool TwoTouchPinchGestureRecognizer::isEqual(const GestureRecognizer& other) con
     if (m_scale != p->m_scale) return false;
     if (m_maxScale != p->m_maxScale) return false;
     if (m_minScale != p->m_minScale) return false;
+    if (m_maxAllowableDrift != p->m_maxAllowableDrift) return false;
+    if (m_allowSimultaneousRecognition !=
+        p->m_allowSimultaneousRecognition) return false;
 
     return true;
 }
 
 void TwoTouchPinchGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    
+    qDebug() << "TwoTouchPinch onTouchBegan";
+    qDebug() << "touchId:" << touch->touchId()
+             << "x:" << touch->x()
+             << "y:" << touch->y()
+             << "resolutionX:" << touch->resolutionX()
+             << "resolutionY:" << touch->resolutionY()
+             << "timeStamp:" <<  touch->timeStamp();
+
 }
 
-void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *touch)
+void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *prev,
+                                              const Touch *current)
 {
-    
+    const Touch *touch = current;
+    qDebug() << "TwoTouchPinch onTouchMoved";
+    qDebug() << "touchId:" << touch->touchId()
+             << "x:" << touch->x()
+             << "y:" << touch->y()
+             << "resolutionX:" << touch->resolutionX()
+             << "resolutionY:" << touch->resolutionY()
+             << "timeStamp:" <<  touch->timeStamp();
 }
 
-void TwoTouchPinchGestureRecognizer::onTouchEnded(const Touch *touch)
+void TwoTouchPinchGestureRecognizer::onTouchEnded(const Touch *prev,
+                                              const Touch *current)
 {
-    
+    const Touch *touch = current;
+    qDebug() << "TwoTouchPinch onTouchEnded";
+    qDebug() << "touchId:" << touch->touchId()
+             << "x:" << touch->x()
+             << "y:" << touch->y()
+             << "resolutionX:" << touch->resolutionX()
+             << "resolutionY:" << touch->resolutionY()
+             << "timeStamp:" <<  touch->timeStamp();
 }
 
 void TwoTouchPinchGestureRecognizer::reset()

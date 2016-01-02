@@ -95,6 +95,20 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
     if (m_currentTarget) {
         m_currentTarget->setTargetId(targetId);
         m_currentTarget->setTargetName(targetName);
+        QList<GestureRecognizer*> gestureRecognizers =
+            m_currentTarget->gestureRecognizers();
+        if (gestureRecognizers.size() > 1) {
+            QList<GestureRecognizer*> abortList;
+            GestureRecognizer *gestureRecognizer = nullptr;
+            foreach(gestureRecognizer, gestureRecognizers) {
+                if (gestureRecognizer->allowsSimultaneousRecognition()) {
+                    abortList = m_currentTarget->gestureRecognizers();
+                    // Abort gestures except for itself
+                    abortList.removeAll(gestureRecognizer);
+                    gestureRecognizer->setGestureRecognizersToAbort(abortList);
+                }
+            }
+        }
     }
     return m_currentTarget;
 }
@@ -174,6 +188,7 @@ void TargetFactory::processLongPress()
     int numTouchesRequired = 0;
     int minPressDuration = 0;
     float maxAllowableDrift = 0.0f;
+    bool allowSimultaneousRecognition = false;
     LongPressGestureRecognizer *gr = new LongPressGestureRecognizer;
     Q_CHECK_PTR(gr);
     while (m_configReader->readNextStartElement()) {
@@ -195,6 +210,10 @@ void TargetFactory::processLongPress()
             if (ok) {
                 gr->setMaxAllowableDrift(maxAllowableDrift);
             }
+        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
+            allowSimultaneousRecognition =
+                m_configReader->readElementText() == "true" ? true : false;
+            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -212,6 +231,8 @@ void TargetFactory::processPan()
     int minNumTouchesRequired = 0;
     float maxVelocity = 0.0f;
     float minVelocity = 0.0f;
+    float maxAllowableDrift = 0.0f;
+    bool allowSimultaneousRecognition = false;
     PanGestureRecognizer *gr = new PanGestureRecognizer;
     Q_CHECK_PTR(gr);
     while (m_configReader->readNextStartElement()) {
@@ -237,6 +258,16 @@ void TargetFactory::processPan()
             if (ok) {
                 gr->setMinVelocity(minVelocity);
             }
+        } else if (m_configReader->name() == "maxAllowableDrift") {
+            maxAllowableDrift =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                gr->setMaxAllowableDrift(maxAllowableDrift);
+            }
+        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
+            allowSimultaneousRecognition =
+                m_configReader->readElementText() == "true" ? true : false;
+            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -252,6 +283,8 @@ void TargetFactory::processTwoTouchPinch()
     bool ok = false;
     float maxScale = 0.0f;
     float minScale = 0.0f;
+    float maxAllowableDrift = 0.0f;
+    bool allowSimultaneousRecognition = false;
     TwoTouchPinchGestureRecognizer * gr =
         new TwoTouchPinchGestureRecognizer;
     Q_CHECK_PTR(gr);
@@ -266,6 +299,16 @@ void TargetFactory::processTwoTouchPinch()
             if (ok) {
                 gr->setMinScale(minScale);
             }
+        } else if (m_configReader->name() == "maxAllowableDrift") {
+            maxAllowableDrift =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                gr->setMaxAllowableDrift(maxAllowableDrift);
+            }
+        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
+            allowSimultaneousRecognition =
+                m_configReader->readElementText() == "true" ? true : false;
+            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -280,6 +323,8 @@ void TargetFactory::processTap()
 
     bool ok = false;
     int numTouchesRequired = 0;
+    float maxAllowableDrift = 0.0f;
+    bool allowSimultaneousRecognition = false;
     TapGestureRecognizer *gr = new TapGestureRecognizer;
     Q_CHECK_PTR(gr);
     while (m_configReader->readNextStartElement()) {
@@ -289,6 +334,16 @@ void TargetFactory::processTap()
             if (ok) {
                 gr->setNumTouchesRequired(numTouchesRequired);
             }
+        } else if (m_configReader->name() == "maxAllowableDrift") {
+            maxAllowableDrift =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                gr->setMaxAllowableDrift(maxAllowableDrift);
+            }
+        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
+            allowSimultaneousRecognition =
+                m_configReader->readElementText() == "true" ? true : false;
+            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);

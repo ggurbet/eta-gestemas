@@ -31,7 +31,8 @@ class LibFrameTouchManager : public QObject,
 {
     Q_OBJECT
 public:
-    LibFrameTouchManager(Display* display = nullptr);
+    explicit LibFrameTouchManager(Display *display = nullptr,
+                                  QObject *parent = nullptr);
     virtual ~LibFrameTouchManager();
     virtual void processTouchEvent(void *data);
     virtual void acceptTouch(unsigned long touchId, unsigned long targetId,
@@ -46,10 +47,14 @@ public:
 private slots:
     void onFrameEvent();
 private:
+    void getAxisInfo(UFAxis axis, UFAxisType *type,
+                    const char **name, float *min,
+                       float *max, float *res);
+    void getDeviceResolution(UFDevice device, float *resx, float *resy);
     void onDeviceAdded(UFEvent event);
     void onDeviceRemoved(UFEvent event);
     void onNewFrame(UFEvent event);
-    void dispatchTouches(UFTouch touch, UFFrame frame,
+    void dispatchTouches(UFTouch touch,
                          UFDevice device, Window window);
 
     UFHandle m_frameHandle;

@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
     XLibWindowManagerAdapter windowManagerAdapter(&app);
     LibFrameTouchManager touchManager((Display*)windowManagerAdapter.display());
-    TargetFactory targetFactory("config.xml");
+    TargetFactory targetFactory("longpress.xml");
     WindowManagerAdapterListener windowManagerAdapterListener(&touchManager, &targetFactory);
     windowManagerAdapter.setListener(&windowManagerAdapterListener);
     windowManagerAdapter.dispatchEvents();

@@ -30,8 +30,10 @@ Target::Target(unsigned long targetId, const QString& targetName)
 Target::~Target()
 {
     // When a target distroyed, its gestures also get destroyed.
+    GestureRecognizer *p = nullptr;
     while (!m_gestureRecognizers.isEmpty()) {
-        delete m_gestureRecognizers.takeFirst();
+        p = m_gestureRecognizers.takeFirst();
+        p->deleteLater();
     }
 }
 
@@ -61,4 +63,9 @@ bool Target::isEqual(const Target& other) const
         }
     }
     return true;
+}
+
+const QList<GestureRecognizer*>& Target::gestureRecognizers() const
+{
+    return m_gestureRecognizers;
 }

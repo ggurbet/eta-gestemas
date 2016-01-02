@@ -19,6 +19,8 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <QtCore/QString>
+
 class State
 {
 public:
@@ -52,8 +54,13 @@ public:
 
     bool canTransitionTo(const State& newState) const;
 
+    QString toString() const;
+
+    bool isLeaf() const;
+    bool isUnsuccessful() const;
+    bool isSuccessful() const;
+
 private:
     Value m_value;
 };
-
 #endif /* STATE_H */

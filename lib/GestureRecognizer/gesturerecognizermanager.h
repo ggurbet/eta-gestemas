@@ -19,11 +19,58 @@
 #ifndef GESTURERECOGNIZERMANAGER_H
 #define GESTURERECOGNIZERMANAGER_H
 
+#include <QtCore/QList>
+#include <QtCore/QMultiHash>
+#include <cstdint>
+
+class TouchManager;
+class Target;
+class Touch;
+class GestureRecognizer;
+
 class GestureRecognizerManager
 {
 public:
-    GestureRecognizerManager() {}
-    ~GestureRecognizerManager(){}
+    GestureRecognizerManager();
+    ~GestureRecognizerManager();
+
+    void onTouchBegan(uint32_t touchId, float x, float y,
+                      float resolutionX, float resolutionY,
+                    uint32_t targetId, void* device, uint64_t timeStamp);
+    void onTouchUpdated(uint32_t touchId, float x, float y, uint64_t timeStamp);
+    void onTouchEnded(uint32_t touchId, float x, float y, uint64_t timeStamp);
+
+    void attachGestureRecognizer(const Touch *touch, GestureRecognizer* gr);
+    void detachGestureRecognizer(const Touch *touch, GestureRecognizer* gr);
+    void detachGestureRecognizer(GestureRecognizer* gr);
+
+    void addTarget(Target* target);
+    void removeTarget(uint32_t targetId);
+
+    void setTouchManager(TouchManager *touchManager);
+    TouchManager* touchManager();
+
+
+    int numTouches() const
+    {return m_touches.size();}
+
+    int numTargets() const
+    {return m_targets.size();}
+
+    GestureRecognizerManager(const GestureRecognizerManager&) = delete;
+    GestureRecognizerManager& operator=(const GestureRecognizerManager&) = delete;
+
+private:
+    void handleTouchOwnership(Touch* touch);
+    void acceptTouch(Touch *t);
+    void rejectTouch(Touch *t);
+    Touch* findTouch(uint32_t touchId);
+    Target* findTarget(uint32_t targetId);
+
+    TouchManager *m_touchManager;
+    QList<Target*> m_targets;
+    QList<Touch*> m_touches;
+    QMultiHash<uint32_t, GestureRecognizer*> m_gestureRecognizersForTouches;
 };
 
 #endif /* GESTURERECOGNIZERMANAGER_H */

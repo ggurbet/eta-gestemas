@@ -35,19 +35,26 @@ void TargetFactoryTester::initTestCase()
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
     gr1->setMaxAllowableDrift(0.001f);
+    gr1->setAllowSimultaneousRecognition(false);
     expectedTargetChromium.addGestureRecognizer(gr1);
     PanGestureRecognizer *gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(2);
     gr2->setMinNumTouchesRequired(2);
     gr2->setMaxVelocity(20.0f);
     gr2->setMinVelocity(0.1f);
+    gr2->setMaxAllowableDrift(0.001f);
+    gr2->setAllowSimultaneousRecognition(false);
     expectedTargetChromium.addGestureRecognizer(gr2);
     TwoTouchPinchGestureRecognizer *gr3 = new TwoTouchPinchGestureRecognizer;
     gr3->setMaxScale(3.0f);
     gr3->setMinScale(1.2);
+    gr3->setMaxAllowableDrift(0.001f);
+    gr3->setAllowSimultaneousRecognition(false);
     expectedTargetChromium.addGestureRecognizer(gr3);
     TapGestureRecognizer *gr4 = new TapGestureRecognizer;
     gr4->setNumTouchesRequired(2);
+    gr4->setMaxAllowableDrift(0.001f);
+    gr4->setAllowSimultaneousRecognition(false);
     expectedTargetChromium.addGestureRecognizer(gr4);
 
     expectedTargetFirefox.setTargetId(201);
@@ -56,19 +63,25 @@ void TargetFactoryTester::initTestCase()
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
     gr1->setMaxAllowableDrift(0.001f);
+    gr1->setAllowSimultaneousRecognition(false);
     expectedTargetFirefox.addGestureRecognizer(gr1);
     gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(3);
     gr2->setMinNumTouchesRequired(3);
     gr2->setMaxVelocity(20.2f);
     gr2->setMinVelocity(0.2f);
+    gr2->setMaxAllowableDrift(0.001f);
     expectedTargetFirefox.addGestureRecognizer(gr2);
     gr3 = new TwoTouchPinchGestureRecognizer;
     gr3->setMaxScale(4.0f);
     gr3->setMinScale(1.4);
+    gr3->setMaxAllowableDrift(0.001f);
+    gr3->setAllowSimultaneousRecognition(true);
     expectedTargetFirefox.addGestureRecognizer(gr3);
     gr4 = new TapGestureRecognizer;
     gr4->setNumTouchesRequired(3);
+    gr4->setMaxAllowableDrift(0.0001f);
+    gr4->setAllowSimultaneousRecognition(false);
     expectedTargetFirefox.addGestureRecognizer(gr4);
 
     expectedTargetOther.setTargetId(202);
@@ -77,6 +90,7 @@ void TargetFactoryTester::initTestCase()
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
     gr1->setMaxAllowableDrift(0.001f);
+    gr1->setAllowSimultaneousRecognition(false);
     expectedTargetOther.addGestureRecognizer(gr1);
 
     // Parsed targets

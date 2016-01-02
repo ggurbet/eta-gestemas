@@ -63,3 +63,54 @@ bool State::canTransitionTo(const State& newState) const
         return false;
     }
 }
+
+QString State::toString() const
+{
+    QString string;
+    switch (m_value) {
+    case Possible_:
+        string = "Possible";
+        break;
+    case Began_:
+        string = "Began";
+        break;
+    case Changed_:
+        string = "Changed";
+        break;
+    case Recognized_:
+        string = "Recognized";
+        break;
+    case Ended_:
+        string = "Ended";
+        break;
+    case Failed_:
+        string = "Failed";
+        break;
+    case Canceled_:
+        string = "Canceled";
+        break;
+    }
+    return string;
+}
+
+bool State::isLeaf() const
+{
+    return (m_value == Failed_
+            || m_value == Recognized_
+            || m_value == Canceled_
+            || m_value == Ended_);
+}
+
+bool State::isUnsuccessful() const
+{
+    return (m_value == Failed_
+            || m_value == Canceled_);
+}
+
+bool State::isSuccessful() const
+{
+    return (m_value == Recognized_
+            || m_value == Began_
+            || m_value == Changed_
+            || m_value == Ended_);
+}

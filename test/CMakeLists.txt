@@ -24,13 +24,15 @@ add_test(targetfactorytest targetfactorytest)
 
 target_link_libraries(targetfactorytest
     Qt5::Core Qt5::Test
+    ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
 target_include_directories(targetfactorytest PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter
   ${CMAKE_SOURCE_DIR}/lib/TouchManager
   ${CMAKE_SOURCE_DIR}/lib/GestureRecognizer
-  ${CMAKE_SOURCE_DIR}/lib/TargetFactory)
+  ${CMAKE_SOURCE_DIR}/lib/TargetFactory
+  ${CMAKE_SOURCE_DIR}/lib/GestureListener)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.xml
     ${CMAKE_CURRENT_BINARY_DIR}/config.xml COPYONLY)

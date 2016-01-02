@@ -19,48 +19,98 @@
 #ifndef TOUCH_H
 #define TOUCH_H
 
+#include <cstdint>
+
 class Touch
 {
 public:
-    Touch()
-        :_touchId(0UL),_targetId(0UL),_x(0.0f),_y(0.0f),_device(nullptr)
-    {}
+    enum OwnershipState {
+        Deferred,
+        Accepted,
+        Rejected
+    };
 
-    Touch(unsigned long touchId, unsigned long targetId,
-          float x, float y, void* device)
-        :_touchId(touchId),_targetId(targetId),_x(x),_y(y),_device(device)
-    {}
+    Touch();
+    Touch(uint32_t touchId, uint32_t targetId,
+          float startX, float startY, float x, float y,
+          float resolutionX, float resolutionY,
+          void* device, uint64_t startTime, uint64_t timeStamp);
 
-    void setTouchId(unsigned long touchId)
-    {_touchId = touchId;}
-    unsigned long touchId() const
-    {return _touchId;}
+    ~Touch() = default;
+    Touch(const Touch&) = default;
+    Touch& operator=(const Touch&) = default;
 
-    void setTargetId(unsigned long targetId)
-    {_targetId = targetId;}
-    unsigned long targetId() const
-    {return _targetId;}
+    void setTouchId(uint32_t touchId)
+    {m_touchId = touchId;}
+    uint32_t touchId() const
+    {return m_touchId;}
+
+    void setTargetId(uint32_t targetId)
+    {m_targetId = targetId;}
+    uint32_t targetId() const
+    {return m_targetId;}
+
+    void setStartX(float x)
+    {m_startX = x;}
+    float startX() const
+    {return m_startX;}
+
+    void setStartY(float y)
+    {m_startY = y;}
+    float startY() const
+    {return m_startY;}
 
     void setX(float x)
-    {_x = x;}
+    {m_x = x;}
     float x() const
-    {return _x;};
+    {return m_x;}
 
     void setY(float y)
-    {_y = y;}
+    {m_y = y;}
     float y() const
-    {return _y;};
+    {return m_y;}
+
+    void setResolutionX(float x)
+    {m_resolutionX = x;}
+    float resolutionX() const
+    {return m_resolutionX;}
+
+    void setResolutionY(float y)
+    {m_resolutionY = y;}
+    float resolutionY() const
+    {return m_resolutionY;}
 
     void setDevice(void* device)
-    {_device = device;}
+    {m_device = device;}
     void* device() const
-    {return _device;}
+    {return m_device;}
+
+    void setStartTime(uint64_t startTime)
+    {m_startTime = startTime;}
+    uint64_t startTime() const
+    {return m_startTime;}
+
+    void setTimeStamp(uint64_t timeStamp)
+    {m_timeStamp = timeStamp;}
+    uint64_t timeStamp() const
+    {return m_timeStamp;}
+
+    void setOwnershipState(OwnershipState ownershipState);
+    OwnershipState ownershipState() const
+    {return m_ownershipState;}
 private:
-    unsigned long _touchId;
-    unsigned long _targetId;
-    float _x;
-    float _y;
-    void *_device;
+    uint32_t m_touchId;
+    uint32_t m_targetId;
+    float m_startX;
+    float m_startY;
+    float m_x;
+    float m_y;
+    float m_resolutionX;
+    float m_resolutionY;
+    void *m_device;
+    uint64_t m_startTime;
+    uint64_t m_timeStamp;
+    OwnershipState m_ownershipState;
 };
 
 #endif /* TOUCH_H */

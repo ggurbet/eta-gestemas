@@ -17,12 +17,25 @@
  */
 
 #include "longpressgesturerecognizer.h"
+#include "touch.h"
+#include "utilities.h"
+#include <QtCore/QtGlobal>
+#include <QtCore/QtDebug>
+#include <QtCore/QTimer>
 
 LongPressGestureRecognizer::LongPressGestureRecognizer()
-    :m_numTouchesRequired(1),
+     :GestureRecognizer(),
+     m_numTouchesRequired(1),
      m_minPressDuration(900),
-     m_maxAllowableDrift(0.0001f)
+     m_numTouchesRequiredReached(false),
+     m_timer(nullptr)
 {
+    m_timer = new QTimer(this);
+    Q_CHECK_PTR(m_timer);
+    m_timer->setSingleShot(true);
+    connect(m_timer, &QTimer::timeout, this,
+            &LongPressGestureRecognizer::onTimeout);
+
 }
 
 bool LongPressGestureRecognizer::isEqual(const GestureRecognizer& other) const
@@ -33,26 +46,96 @@ bool LongPressGestureRecognizer::isEqual(const GestureRecognizer& other) const
     if (m_numTouchesRequired != p->m_numTouchesRequired) return false;
     if (m_minPressDuration != p->m_minPressDuration) return false;
     if (m_maxAllowableDrift != p->m_maxAllowableDrift) return false;
+    if (m_allowSimultaneousRecognition !=
+        p->m_allowSimultaneousRecognition) return false;
 
     return true;
 }
 
 void LongPressGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    
+    // qDebug() << "LongPress onTouchBegan";
+    // qDebug() << "touchId:" << touch->touchId()
+    //          << "x:" << touch->x()
+    //          << "y:" << touch->y()
+    //          << "resolutionX:" << touch->resolutionX()
+    //          << "resolutionY:" << touch->resolutionY()
+    //          << "timeStamp:" <<  touch->timeStamp();
+
+    if (numTouches() > numTouchesRequired()) {
+        if (state() == State::Possible) {
+            setState(State::Failed);
+        } else {
+            ignoreTouch(touch);
+        }
+    }
+    if (numTouches() == numTouchesRequired()) {
+        m_numTouchesRequiredReached = true;
+        m_timer->start(minPressDuration());
+    }
+
 }
 
-void LongPressGestureRecognizer::onTouchMoved(const Touch *touch)
+void LongPressGestureRecognizer::onTouchMoved(const Touch *prev,
+                                              const Touch *current)
 {
-    
+    // const Touch *touch = current;
+    // qDebug() << "LongPress onTouchMoved";
+    // qDebug() << "touchId:" << touch->touchId()
+    //          << "x:" << touch->x()
+    //          << "y:" << touch->y()
+    //          << "resolutionX:" << touch->resolutionX()
+    //          << "resolutionY:" << touch->resolutionY()
+    //          << "timeStamp:" <<  touch->timeStamp();
+
+    const Touch *t = current;
+    float driftSquared = SQUARED_PYTHAGOREAN(t->y(), t->startY(),
+                                            t->x(), t->startX());
+    if (state() == State::Possible
+        && maxAllowableDrift() > 0
+        && driftSquared > SQUARED(maxAllowableDrift())) {
+        setState(State::Failed);
+    } else if (state() == State::Began || state() == State::Changed) {
+        updateCentralPoint();
+        setState(State::Changed);
+    }
 }
 
-void LongPressGestureRecognizer::onTouchEnded(const Touch *touch)
+void LongPressGestureRecognizer::onTouchEnded(const Touch *prev,
+                                              const Touch *current)
 {
-    
+    // const Touch *touch = current;
+    // qDebug() << "LongPress onTouchEnded";
+    // qDebug() << "touchId:" << touch->touchId()
+    //          << "x:" << touch->x()
+    //          << "y:" << touch->y()
+    //          << "resolutionX:" << touch->resolutionX()
+    //          << "resolutionY:" << touch->resolutionY()
+    //          << "timeStamp:" <<  touch->timeStamp();
+
+    if (m_numTouchesRequiredReached) {
+        if (state() == State::Began || state() == State::Changed) {
+            updateCentralPoint();
+            setState(State::Ended);
+            return;
+        }
+    }
+    setState(State::Failed);
 }
 
 void LongPressGestureRecognizer::reset()
 {
-    
+    GestureRecognizer::reset();
+    m_numTouchesRequiredReached = false;
+    if (m_timer->isActive()) {
+        m_timer->stop();
+    }
+}
+
+void LongPressGestureRecognizer::onTimeout()
+{
+    if (state() == State::Possible) {
+        updateCentralPoint();
+        setState(State::Began);
+    }
 }

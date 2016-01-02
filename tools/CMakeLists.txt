@@ -18,19 +18,19 @@ target_link_libraries(xlibwmatool
 target_include_directories(xlibwmatool PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter)
 
-# touchmanagertool
-add_executable(touchmanagertool touchmanagertool.cpp)
-add_test(touchmanagertool touchmanagertool)
+# longpresstool
+add_executable(longpresstool longpresstool.cpp)
 
-target_link_libraries(touchmanagertool
+target_link_libraries(longpresstool
     Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
-target_include_directories(touchmanagertool PRIVATE
+target_include_directories(longpresstool PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter
   ${CMAKE_SOURCE_DIR}/lib/TouchManager
   ${CMAKE_SOURCE_DIR}/lib/GestureRecognizer
-  ${CMAKE_SOURCE_DIR}/lib/TargetFactory)
+  ${CMAKE_SOURCE_DIR}/lib/TargetFactory
+  ${CMAKE_SOURCE_DIR}/lib/GestureListener)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.xml
-    ${CMAKE_CURRENT_BINARY_DIR}/config.xml COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/longpress.xml
+    ${CMAKE_CURRENT_BINARY_DIR}/longpress.xml COPYONLY)

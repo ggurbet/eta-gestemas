@@ -26,6 +26,7 @@ class PanGestureRecognizer : public GestureRecognizer
 public:
     PanGestureRecognizer();
     virtual bool isEqual(const GestureRecognizer& other) const;
+    virtual void reset();
 
     void setMaxNumTouchesRequired(int maxNumTouchesRequired)
     {m_maxNumTouchesRequired = maxNumTouchesRequired;}
@@ -53,9 +54,8 @@ public:
     {return m_minVelocity;}
 protected:
     virtual void onTouchBegan(const Touch *touch);
-    virtual void onTouchMoved(const Touch *touch);
-    virtual void onTouchEnded(const Touch *touch);
-    virtual void reset();
+    virtual void onTouchMoved(const Touch *prev, const Touch *current);
+    virtual void onTouchEnded(const Touch *prev, const Touch *current);
 private:
     int m_maxNumTouchesRequired;
     int m_minNumTouchesRequired;

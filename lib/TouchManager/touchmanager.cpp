@@ -19,10 +19,16 @@
 #include "touchmanager.h"
 #include "gesturerecognizermanager.h"
 
+TouchManager::TouchManager()
+    :m_grm(nullptr)
+{
+}
+
 void TouchManager::setGestureRecognizerManager(GestureRecognizerManager* grm)
 {
     m_grm = grm;
 }
+
 GestureRecognizerManager* TouchManager::gestureRecognizerManager()
 {
     return m_grm;

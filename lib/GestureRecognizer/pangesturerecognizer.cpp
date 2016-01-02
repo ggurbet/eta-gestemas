@@ -17,9 +17,12 @@
  */
 
 #include "pangesturerecognizer.h"
+#include "touch.h"
+#include <QtCore/QtDebug>
 
 PanGestureRecognizer::PanGestureRecognizer()
-    :m_maxNumTouchesRequired(2),
+     :GestureRecognizer(),
+     m_maxNumTouchesRequired(2),
      m_minNumTouchesRequired(2),
      m_velocity(0.0f),
      m_maxVelocity(20.0f),
@@ -32,28 +35,53 @@ bool PanGestureRecognizer::isEqual(const GestureRecognizer& other) const
     const PanGestureRecognizer *p =
         static_cast<const PanGestureRecognizer*>(&other);
 
-    if (m_velocity != p->m_velocity) return false;
     if (m_maxVelocity != p->m_maxVelocity) return false;
     if (m_minVelocity != p->m_minVelocity) return false;
-    if (m_maxNumTouchesRequired!= p->m_maxNumTouchesRequired) return false;
-    if (m_minNumTouchesRequired!= p->m_minNumTouchesRequired) return false;
+    if (m_maxNumTouchesRequired != p->m_maxNumTouchesRequired) return false;
+    if (m_minNumTouchesRequired != p->m_minNumTouchesRequired) return false;
+    if (m_maxAllowableDrift != p->m_maxAllowableDrift) return false;
+    if (m_allowSimultaneousRecognition !=
+        p->m_allowSimultaneousRecognition) return false;
 
     return true;
 }
 
 void PanGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    
+    qDebug() << "Pan onTouchBegan";
+    qDebug() << "touchId:" << touch->touchId()
+             << "x:" << touch->x()
+             << "y:" << touch->y()
+             << "resolutionX:" << touch->resolutionX()
+             << "resolutionY:" << touch->resolutionY()
+             << "timeStamp:" <<  touch->timeStamp();
+
 }
 
-void PanGestureRecognizer::onTouchMoved(const Touch *touch)
+void PanGestureRecognizer::onTouchMoved(const Touch *prev,
+                                              const Touch *current)
 {
-    
+    const Touch *touch = current;
+    qDebug() << "Pan onTouchMoved";
+    qDebug() << "touchId:" << touch->touchId()
+             << "x:" << touch->x()
+             << "y:" << touch->y()
+             << "resolutionX:" << touch->resolutionX()
+             << "resolutionY:" << touch->resolutionY()
+             << "timeStamp:" <<  touch->timeStamp();
 }
 
-void PanGestureRecognizer::onTouchEnded(const Touch *touch)
+void PanGestureRecognizer::onTouchEnded(const Touch *prev,
+                                              const Touch *current)
 {
-    
+    const Touch *touch = current;
+    qDebug() << "Pan onTouchEnded";
+    qDebug() << "touchId:" << touch->touchId()
+             << "x:" << touch->x()
+             << "y:" << touch->y()
+             << "resolutionX:" << touch->resolutionX()
+             << "resolutionY:" << touch->resolutionY()
+             << "timeStamp:" <<  touch->timeStamp();
 }
 
 void PanGestureRecognizer::reset()

@@ -24,7 +24,7 @@ class GestureRecognizerManager;
 class TouchManager
 {
 public:
-    TouchManager() = default;
+    TouchManager();
     virtual ~TouchManager() = default;
     virtual void processTouchEvent(void *data) = 0;
     virtual void acceptTouch(unsigned long touchId, unsigned long targetId,
@@ -37,7 +37,7 @@ public:
 
     TouchManager(const TouchManager&) = delete;
     TouchManager& operator=(const TouchManager&) = delete;
-private:
+protected:
     GestureRecognizerManager* m_grm;
 };
 

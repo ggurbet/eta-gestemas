@@ -13,6 +13,7 @@ set(libgestemas_SOURCES
   TargetFactory/targetfactory.cpp
   GestureRecognizer/state.cpp
   GestureRecognizer/gesturerecognizermanager.cpp
+  GestureRecognizer/touch.cpp
   GestureRecognizer/gesturerecognizer.cpp
   GestureRecognizer/longpressgesturerecognizer.cpp
   GestureRecognizer/pangesturerecognizer.cpp
@@ -20,6 +21,7 @@ set(libgestemas_SOURCES
   GestureRecognizer/tapgesturerecognizer.cpp
   TouchManager/touchmanager.cpp
   TouchManager/libframetouchmanager.cpp
+  GestureListener/gesturelistener.cpp
 )
 
 set(libgestemas_HEADERS
@@ -32,13 +34,16 @@ set(libgestemas_HEADERS
   TargetFactory/targetfactory.h
   GestureRecognizer/state.h
   GestureRecognizer/gesturerecognizermanager.h
+  GestureRecognizer/touch.h
   GestureRecognizer/gesturerecognizer.h
   GestureRecognizer/longpressgesturerecognizer.h
   GestureRecognizer/pangesturerecognizer.h
   GestureRecognizer/twotouchpinchgesturerecognizer.h
   GestureRecognizer/tapgesturerecognizer.h
+  GestureRecognizer/utilities.h
   TouchManager/touchmanager.h
   TouchManager/libframetouchmanager.h
+  GestureListener/gesturelistener.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})
@@ -50,4 +55,5 @@ target_include_directories(gestemas PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter
   ${CMAKE_SOURCE_DIR}/lib/TargetFactory
   ${CMAKE_SOURCE_DIR}/lib/TouchManager
-  ${CMAKE_SOURCE_DIR}/lib/GestureRecognizer)
+  ${CMAKE_SOURCE_DIR}/lib/GestureRecognizer
+  ${CMAKE_SOURCE_DIR}/lib/GestureListener)

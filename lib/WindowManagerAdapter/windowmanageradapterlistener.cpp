@@ -22,7 +22,6 @@
 #include "target.h"
 #include "gesturerecognizermanager.h"
 #include <QtCore/QtGlobal>
-#include <QtCore/QtDebug>
 
 WindowManagerAdapterListener::WindowManagerAdapterListener(TouchManager *tm,
                                 TargetFactory *tf)
@@ -47,18 +46,15 @@ void WindowManagerAdapterListener::onWindowCreated(unsigned long targetId,
     target = m_tf->create(targetId, targetName);
     if (!target) {
         *grabTouches = false;
-        qDebug() << "Don't grab " << targetName;
         return;
     }
     *grabTouches = true;
-    qDebug() << "Grab " << targetName;
-    // TODO: add this target to GestureRecognizerManager
-    delete target;
+    m_grm->addTarget(target);
 }
 
 void WindowManagerAdapterListener::onWindowDestroyed(unsigned long targetId)
 {
-    
+    m_grm->removeTarget(targetId);
 }
 
 void WindowManagerAdapterListener::onTouchEvent(void *data)
@@ -69,10 +65,9 @@ void WindowManagerAdapterListener::onTouchEvent(void *data)
 void WindowManagerAdapterListener::setTouchManager(TouchManager *touchManager)
 {
     m_tm = touchManager;
-    if (!m_tm) {
+    if (m_tm) {
         m_tm->setGestureRecognizerManager(m_grm);
-        // TODO:
-        // m_grm->setTouchManager(m_tm);
+        m_grm->setTouchManager(m_tm);
     }
 }
 

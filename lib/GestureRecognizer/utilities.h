@@ -16,28 +16,11 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TAPGESTURERECOGNIZER_H
-#define TAPGESTURERECOGNIZER_H
+#ifndef UTILITIES_H
+#define UTILITIES_H
 
-#include "gesturerecognizer.h"
+#define SQUARED(x) ((x) *(x))
+#define SQUARED_PYTHAGOREAN(y1, y2, x1, x2) \
+    (SQUARED((x2) - (x1)) + SQUARED((y2) - (y1)))
 
-class TapGestureRecognizer : public GestureRecognizer
-{
-public:
-    TapGestureRecognizer();
-    virtual bool isEqual(const GestureRecognizer& other) const;
-    virtual void reset();
-
-    void setNumTouchesRequired(int numTouchesRequired)
-    {m_numTouchesRequired = numTouchesRequired;}
-    int numTouchesRequired() const
-    {return m_numTouchesRequired;}
-protected:
-    virtual void onTouchBegan(const Touch *touch);
-    virtual void onTouchMoved(const Touch *prev, const Touch *current);
-    virtual void onTouchEnded(const Touch *prev, const Touch *current);
-private:
-    int m_numTouchesRequired;
-};
-
-#endif /* TAPGESTURERECOGNIZER_H */
+#endif /* UTILITIES_H */

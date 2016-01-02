@@ -20,10 +20,13 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QtDebug>
 #include "libframetouchmanager.h"
+#include "gesturerecognizermanager.h"
 #include <oif/frame_x11.h>
+#include <cstdint>
 
-LibFrameTouchManager::LibFrameTouchManager(Display* display)
-    :m_display(nullptr)
+LibFrameTouchManager::LibFrameTouchManager(Display* display,
+                                           QObject *parent)
+    :QObject(parent), m_display(nullptr)
 {
     UFStatus status;
     Display* disp = nullptr;
@@ -101,70 +104,6 @@ void LibFrameTouchManager::onFrameEvent()
     }
 }
 
-static void get_axis_info(UFAxis axis, UFAxisType *type,
-                          const char **name, float *min,
-                          float *max, float *res) {
-  *type = frame_axis_get_type(axis);
-
-  switch (*type) {
-    case UFAxisTypeX:
-      *name = "X";
-      break;
-
-    case UFAxisTypeY:
-      *name = "Y";
-      break;
-
-    case UFAxisTypeTouchMajor:
-      *name = "Touch major";
-      break;
-
-    case UFAxisTypeTouchMinor:
-      *name = "Touch minor";
-      break;
-
-    case UFAxisTypeWidthMajor:
-      *name = "Width major";
-      break;
-
-    case UFAxisTypeWidthMinor:
-      *name = "Width minor";
-      break;
-
-    case UFAxisTypeOrientation:
-      *name = "Orientation";
-      break;
-
-    case UFAxisTypeTool:
-      *name = "Tool";
-      break;
-
-    case UFAxisTypeBlobId:
-      *name = "Blob ID";
-      break;
-
-    case UFAxisTypeTrackingId:
-      *name = "Tracking ID";
-      break;
-
-    case UFAxisTypePressure:
-      *name = "Pressure";
-      break;
-
-    case UFAxisTypeDistance:
-      *name = "Distance";
-      break;
-
-    default:
-      *name = "Unknown";
-      break;
-  }
-
-  *min = frame_axis_get_minimum(axis);
-  *max = frame_axis_get_maximum(axis);
-  *res = frame_axis_get_resolution(axis);
-}
-
 void LibFrameTouchManager::onDeviceAdded(UFEvent event)
 {
     UFDevice device;
@@ -235,7 +174,7 @@ void LibFrameTouchManager::onDeviceAdded(UFEvent event)
             continue;
         }
 
-        get_axis_info(axis, &type, &name, &min, &max, &res);
+        getAxisInfo(axis, &type, &name, &min, &max, &res);
         qDebug() << "    Type: " << name;
         qDebug() << "    Minimum: " << min;
         qDebug() << "    Maximum: " << max;
@@ -270,12 +209,8 @@ void LibFrameTouchManager::onNewFrame(UFEvent event)
     UFDevice device;
     UFStatus status;
     Window window;
-    char *string = NULL;
     int num_touches = 0;
     int i;
-
-    qDebug() << "Frame received:";
-    qDebug() << "Time: " << frame_event_get_time(event) << " ms";
 
     status = frame_event_get_property(event, UFEventPropertyFrame, &frame);
     if (status != UFStatusSuccess) {
@@ -284,104 +219,152 @@ void LibFrameTouchManager::onNewFrame(UFEvent event)
     }
 
     window = frame_x11_get_window_id(frame_frame_get_window_id(frame));
-    qDebug("Window: 0x%lx", window);
-
     device = frame_frame_get_device(frame);
-
-    status = frame_device_get_property(device, UFDevicePropertyName, &string);
-    if (status != UFStatusSuccess)
-        qWarning() << "Failed to get device name from device";
-    else
-        qDebug() << "  Device: " << string;
-
     num_touches = frame_frame_get_num_touches(frame);
-    qDebug() << "  Number of touches: " << num_touches;
 
     UFTouch touch;
     for (i = 0; i < num_touches; ++i) {
-        qDebug("  Touch %d:", i);
-
         status = frame_frame_get_touch_by_index(frame, i, &touch);
         if (status != UFStatusSuccess) {
             qWarning("Failed to get touch %d from frame", i);
             continue;
         }
-
-        dispatchTouches(touch, frame, device, window);
+        dispatchTouches(touch, device, window);
     }
-    qDebug();
 }
 
-void LibFrameTouchManager::dispatchTouches(UFTouch touch, UFFrame frame,
+void LibFrameTouchManager::dispatchTouches(UFTouch touch,
                                            UFDevice device, Window window)
 {
-  UFStatus status;
-  UFTouchState prev_state;
-  int num_axes = 0;
-  int prev_valid = 0;
-  unsigned long long time;
-  float floating;
-  int owned;
-  int pending_end;
-  int j;
+  uint32_t touchId = 0UL;
+  float x = 0.0f;
+  float y = 0.0f;
+  float resolutionX = 0.0f;
+  float resolutionY = 0.0f;
+  uint64_t timeStamp = 0ULL;
 
-  qDebug("    ID: %u", frame_x11_get_touch_id(frame_touch_get_id(touch)));
+  touchId = frame_x11_get_touch_id(frame_touch_get_id(touch));
+  x = frame_touch_get_window_x(touch);
+  y = frame_touch_get_window_y(touch);
+  timeStamp = frame_touch_get_time(touch);
+  getDeviceResolution(device, &resolutionX, &resolutionY);
+
+  Q_CHECK_PTR(m_grm);
 
   switch (frame_touch_get_state(touch)) {
     case UFTouchStateBegin:
-        qDebug("    State: Begin");
+        m_grm->onTouchBegan(touchId, x, y, resolutionX, resolutionY,
+                            window, device, timeStamp);
       break;
-
     case UFTouchStateUpdate:
-      qDebug("    State: Update");
+        m_grm->onTouchUpdated(touchId, x, y, timeStamp);
       break;
-
     case UFTouchStateEnd:
-      qDebug("    State: End");
+        m_grm->onTouchEnded(touchId, x, y, timeStamp);
       break;
   }
-  qDebug("    Time: %ju", frame_touch_get_time(touch));
-  qDebug("    Start Time: %ju", frame_touch_get_start_time(touch));
-  qDebug("    Window X: %f", frame_touch_get_window_x(touch));
-  qDebug("    Window Y: %f", frame_touch_get_window_y(touch));
+}
 
-  status = frame_touch_get_property(touch, UFTouchPropertyOwned, &owned);
-  if (status != UFStatusSuccess)
-    qWarning("Failed to get touch ownership property");
-  else
-    qDebug("    Owned: %s", owned ? "Yes" : "No");
+void LibFrameTouchManager::getAxisInfo(UFAxis axis, UFAxisType *type,
+                          const char **name, float *min,
+                          float *max, float *res) {
+  *type = frame_axis_get_type(axis);
 
-  status = frame_touch_get_property(touch, UFTouchPropertyPendingEnd,
-                                    &pending_end);
-  if (status != UFStatusSuccess)
-    qWarning("Failed to get touch pending end property");
-  else
-    qDebug("    Pending End: %s", pending_end ? "Yes" : "No");
+  switch (*type) {
+    case UFAxisTypeX:
+      *name = "X";
+      break;
 
-  num_axes = frame_device_get_num_axes(device);
+    case UFAxisTypeY:
+      *name = "Y";
+      break;
 
-  UFAxis axis;
-  UFAxisType type;
-  const char *name;
-  float min;
-  float max;
-  float res;
-  float value;
-  for (j = 0; j < num_axes; ++j) {
-    status = frame_device_get_axis_by_index(device, j, &axis);
-    if (status != UFStatusSuccess) {
-      qWarning("Failed to get axis %d", j);
-      continue;
-    }
+    case UFAxisTypeTouchMajor:
+      *name = "Touch major";
+      break;
 
-    get_axis_info(axis, &type, &name, &min, &max, &res);
+    case UFAxisTypeTouchMinor:
+      *name = "Touch minor";
+      break;
 
-    status = frame_touch_get_value(touch, type, &value);
-    if (status != UFStatusSuccess) {
-      qWarning("Failed to get value for axis %d", j);
-      continue;
-    }
-    qDebug("Axis Value: %f (Axis: %s, Min: %f, Max: %f, Res: %f)", value, name,
-           min, max, res);
+    case UFAxisTypeWidthMajor:
+      *name = "Width major";
+      break;
+
+    case UFAxisTypeWidthMinor:
+      *name = "Width minor";
+      break;
+
+    case UFAxisTypeOrientation:
+      *name = "Orientation";
+      break;
+
+    case UFAxisTypeTool:
+      *name = "Tool";
+      break;
+
+    case UFAxisTypeBlobId:
+      *name = "Blob ID";
+      break;
+
+    case UFAxisTypeTrackingId:
+      *name = "Tracking ID";
+      break;
+
+    case UFAxisTypePressure:
+      *name = "Pressure";
+      break;
+
+    case UFAxisTypeDistance:
+      *name = "Distance";
+      break;
+
+    default:
+      *name = "Unknown";
+      break;
   }
+
+  *min = frame_axis_get_minimum(axis);
+  *max = frame_axis_get_maximum(axis);
+  *res = frame_axis_get_resolution(axis);
+}
+
+void LibFrameTouchManager::getDeviceResolution(UFDevice device,
+                                               float *resx, float *resy)
+{
+      int device_direct_;
+    /* Save direct property for gesture processing */
+    UFStatus status = frame_device_get_property(device, UFDevicePropertyDirect,
+            &device_direct_);
+    if (status != UFStatusSuccess) {
+        qFatal("Failed to get property direct");
+        return;
+    }
+
+    if (device_direct_) {
+        *resx = frame_device_get_window_resolution_x(device);
+        *resy = frame_device_get_window_resolution_y(device);
+
+        /* If resolution is not available, assume 96 dpi and convert to meters */
+        if (*resx <= 0)
+            *resx = 3780;
+        if (*resy <= 0)
+            *resy = 3780;
+    } else {
+        *resx = 46000; /* Default to resolution of Apple Magic Trackpad */
+        *resy = 45000;
+
+        UFAxis axis;
+        status = frame_device_get_axis_by_type(device, UFAxisTypeX, &axis);
+        if (status != UFStatusSuccess)
+            qFatal("Failed to get X axis from device");
+        else if (frame_axis_get_resolution(axis) > 0)
+            *resx = frame_axis_get_resolution(axis);
+
+        status = frame_device_get_axis_by_type(device, UFAxisTypeY, &axis);
+        if (status != UFStatusSuccess)
+            qFatal("Failed to get Y axis from device");
+        else if (frame_axis_get_resolution(axis) > 0)
+            *resy = frame_axis_get_resolution(axis);
+    }
 }
