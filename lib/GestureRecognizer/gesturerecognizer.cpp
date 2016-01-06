@@ -17,15 +17,24 @@
  */
 
 #include "gesturerecognizer.h"
+#include "gesturelistener.h"
 #include "gesturerecognizermanager.h"
 #include "touch.h"
+
 #include <QtCore/QtGlobal>
 #include <QtCore/QtDebug>
 
 GestureRecognizer::GestureRecognizer(QObject *parent)
     :QObject(parent), m_manager(nullptr), m_centralX(0.0f), m_centralY(0.0f),
-     m_maxAllowableDrift(0.0001f), m_allowSimultaneousRecognition(false)
+     m_maxAllowableDrift(0.0001f), m_allowSimultaneousRecognition(false),
+     m_listener(nullptr)
 {
+}
+
+GestureRecognizer::~GestureRecognizer()
+{
+    delete m_listener;
+    m_listener = nullptr;
 }
 
 void GestureRecognizer::reset()
@@ -36,7 +45,9 @@ void GestureRecognizer::reset()
     m_touches.clear();
 
     Q_ASSERT(m_state.isLeaf());
+
     setState(State::Possible);
+    m_states.clear();
 }
 
 void GestureRecognizer::touchBeganHandler(const Touch *touch)
@@ -66,6 +77,37 @@ void GestureRecognizer::touchEndedHandler(const Touch *touch)
     onTouchEnded(prev, touch);
 }
 
+void GestureRecognizer::callListener()
+{
+    if (!m_listener) {
+        return;
+    }
+
+    State state;
+    while (!m_states.isEmpty()) {
+        state = m_states.takeFirst();
+        if (state == State::Began) {
+            m_listener->onBegan();
+        } else if (state == State::Changed) {
+            m_listener->onChanged();
+        } else if (state == State::Ended) {
+            m_listener->onEnded();
+        } else if (state == State::Recognized) {
+            m_listener->onRecognized();
+        } else if (state == State::Canceled) {
+            m_listener->onCanceled();
+        } else if (state == State::Failed) {
+            m_listener->onFailed();
+        }
+    }
+}
+
+
+void GestureRecognizer::handleTouchOwnership() const
+{
+    m_manager->handleTouchOwnership();
+}
+
 void GestureRecognizer::setManager(GestureRecognizerManager* manager)
 {
     m_manager = manager;
@@ -76,28 +118,13 @@ void GestureRecognizer::setState(const State& newState)
     qDebug() << m_state.toString() << "->" << newState.toString();
     Q_ASSERT(m_state.canTransitionTo(newState));
     m_state = newState;
-
-    // TODO: Call GestureListener callbacks here.
-
-    // if (m_state == State::Began) {
-    //     qDebug() << "Began";
-    // } else if (m_state == State::Changed) {
-    //     qDebug() << "Changed";
-    // } else if (m_state == State::Ended) {
-    //     qDebug() << "Ended";
-    // } else if (m_state == State::Recognized) {
-    //     qDebug() << "Recognized";
-    // } else if (m_state == State::Canceled) {
-    //     qDebug() << "Canceled";
-    // } else if (m_state == State::Failed) {
-    //     qDebug() << "Failed";
-    // }
+    m_states.append(m_state);
 
     if (m_state.isLeaf()) {
         m_manager->detachGestureRecognizer(this);
     }
 
-    if (m_allowSimultaneousRecognition
+    if (!m_allowSimultaneousRecognition
         && (m_state == State::Began || m_state == State::Recognized)) {
         GestureRecognizer *gestureRecognizer = nullptr;
         State state;
@@ -138,6 +165,7 @@ void GestureRecognizer::updateCentralPoint()
 void GestureRecognizer::ignoreTouch(const Touch* touch)
 {
     m_manager->detachGestureRecognizer(touch, this);
+    m_touches.removeAll(touch);
 }
 
 const Touch* GestureRecognizer::findTouch(uint32_t touchId)
@@ -149,4 +177,15 @@ const Touch* GestureRecognizer::findTouch(uint32_t touchId)
         }
     }
     return nullptr;;
+}
+
+void GestureRecognizer::setGestureListener(GestureListener *listener)
+{
+    m_listener = listener;
+    m_listener->setGestureRecognizer(this);
+}
+
+const GestureListener* GestureRecognizer::listener() const
+{
+    return m_listener;
 }

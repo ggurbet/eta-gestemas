@@ -16,19 +16,33 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gesturelistener.h"
+#include <QtCore/QtDebug>
+#include "rightclick.h"
+#include "longpressgesturerecognizer.h"
 
-GestureListener::GestureListener(const GestureRecognizer *recognizer)
-    :m_recognizer(recognizer)
+void RightClick::onBegan()
 {
+    qDebug() << "RighClick onBegan";
+    const char *modifiers[] = {""};
+    injectButton(3, modifiers);
 }
-
-void GestureListener::setGestureRecognizer( const GestureRecognizer *recognizer)
+void RightClick::onRecognized()
 {
-    m_recognizer = recognizer;
+    qDebug() << "RighClick onRecognized";
 }
-
-const GestureRecognizer* GestureListener::gestureRecognizer() const
+void RightClick::onChanged()
 {
-    return m_recognizer;
+    qDebug() << "RighClick onChanged";
+}
+void RightClick::onCanceled()
+{
+    qDebug() << "RighClick onCanceled";
+}
+void RightClick::onEnded()
+{
+    qDebug() << "RighClick onEnded";
+}
+void RightClick::onFailed()
+{
+    qDebug() << "RighClick onFailed";
 }

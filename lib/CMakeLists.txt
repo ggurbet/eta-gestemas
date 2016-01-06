@@ -22,6 +22,8 @@ set(libgestemas_SOURCES
   TouchManager/touchmanager.cpp
   TouchManager/libframetouchmanager.cpp
   GestureListener/gesturelistener.cpp
+  GestureListener/xtestgesturelistener.cpp
+  GestureListener/rightclick.cpp
 )
 
 set(libgestemas_HEADERS
@@ -44,12 +46,14 @@ set(libgestemas_HEADERS
   TouchManager/touchmanager.h
   TouchManager/libframetouchmanager.h
   GestureListener/gesturelistener.h
+  GestureListener/xtestgesturelistener.h
+  GestureListener/rightclick.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})
 
 target_link_libraries(gestemas Qt5::Core
-  ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB})
+  ${X11_X11_LIB} ${X11_Xi_LIB} ${X11_XTest_LIB} ${FRAME_LIB})
 
 target_include_directories(gestemas PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter

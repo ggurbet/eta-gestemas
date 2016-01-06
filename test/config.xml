@@ -10,6 +10,7 @@
         <minPressDuration>950</minPressDuration>
         <maxAllowableDrift>0.001</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>RightClick</gestureListener>
       </LongPress>
     </GestureRecognizers>
   </Target>

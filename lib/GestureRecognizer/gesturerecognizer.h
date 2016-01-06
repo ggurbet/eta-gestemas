@@ -25,18 +25,22 @@
 
 class GestureRecognizerManager;
 class Touch;
+class GestureListener;
 
 class GestureRecognizer : public QObject
 {
     Q_OBJECT
 public:
     explicit GestureRecognizer(QObject *parent = nullptr);
-    virtual ~GestureRecognizer() = default;
+    virtual ~GestureRecognizer();
     virtual void reset();
     virtual bool isEqual(const GestureRecognizer& other) const = 0;
     void touchBeganHandler(const Touch *touch);
     void touchMovedHandler(const Touch *touch);
     void touchEndedHandler(const Touch *touch);
+
+    void callListener();
+
     void setManager(GestureRecognizerManager* manager);
 
     const State& state() const
@@ -57,15 +61,6 @@ public:
     const QList<GestureRecognizer*>& gestureRecognizersToAbort() const
     {return m_gestureRecognizersToAbort;}
 
-    GestureRecognizer(const GestureRecognizer&) = delete;
-    GestureRecognizer& operator=(const GestureRecognizer&) = delete;
-protected:
-    virtual void onTouchBegan(const Touch *touch) = 0;
-    virtual void onTouchMoved(const Touch *prev, const Touch *current) = 0;
-    virtual void onTouchEnded(const Touch *prev, const Touch *current) = 0;
-
-    void setState(const State& newState);
-
     int numTouches() const
     {return m_touches.size();}
 
@@ -79,6 +74,20 @@ protected:
     float centralY() const
     {return m_centralY;}
 
+    void setGestureListener(GestureListener *listener);
+    const GestureListener* listener() const;
+
+    GestureRecognizer(const GestureRecognizer&) = delete;
+    GestureRecognizer& operator=(const GestureRecognizer&) = delete;
+protected:
+    virtual void onTouchBegan(const Touch *touch) = 0;
+    virtual void onTouchMoved(const Touch *prev, const Touch *current) = 0;
+    virtual void onTouchEnded(const Touch *prev, const Touch *current) = 0;
+
+    void handleTouchOwnership() const;
+
+    void setState(const State& newState);
+
     void updateCentralPoint();
 
     void ignoreTouch(const Touch* touch);
@@ -91,8 +100,11 @@ protected:
     QList<const Touch*> m_touches;
     QList<GestureRecognizer*> m_gestureRecognizersToAbort;
 private:
-    State m_state;
     const Touch* findTouch(uint32_t touchId);
+
+    GestureListener *m_listener;
+    State m_state;
+    QList<State> m_states;
 };
 
 #endif /* GESTURERECOGNIZER_H */

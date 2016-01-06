@@ -24,6 +24,7 @@ class QString;
 class WindowManagerAdapterListenerInterface
 {
 public:
+    virtual ~WindowManagerAdapterListenerInterface() = default;
     virtual void onWindowCreated(unsigned long targetId,
                                  const QString& targetName,
                                  bool *grabTouches) = 0;

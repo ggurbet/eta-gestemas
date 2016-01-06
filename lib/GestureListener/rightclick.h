@@ -16,19 +16,26 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gesturelistener.h"
+#ifndef RIGHTCLICK_H
+#define RIGHTCLICK_H
 
-GestureListener::GestureListener(const GestureRecognizer *recognizer)
-    :m_recognizer(recognizer)
-{
-}
+#include "xtestgesturelistener.h"
 
-void GestureListener::setGestureRecognizer( const GestureRecognizer *recognizer)
+class RightClick : public XTestGestureListener
 {
-    m_recognizer = recognizer;
-}
+public:
+    RightClick(Display* display = nullptr,
+                const GestureRecognizer *recognizer = nullptr)
+        :XTestGestureListener(display, recognizer){}
 
-const GestureRecognizer* GestureListener::gestureRecognizer() const
-{
-    return m_recognizer;
-}
+    virtual ~RightClick() = default;
+
+    virtual void onBegan();
+    virtual void onRecognized();
+    virtual void onChanged();
+    virtual void onCanceled();
+    virtual void onEnded();
+    virtual void onFailed();
+};
+
+#endif /* RIGHTCLICK_H */

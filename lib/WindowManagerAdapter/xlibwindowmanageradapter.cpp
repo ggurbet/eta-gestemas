@@ -27,6 +27,22 @@
 // or gives strange Status definition errors.
 #include "xlibwindowmanageradapter_p.h"
 
+static int x_error_handler(Display* display, XErrorEvent* error)
+{
+    (void)display;
+    (void)error;
+    Q_ASSERT_X(false, "x_error_handler", "Xlib generated an error");
+    return 1;
+}
+
+
+static int x_io_error_handler(Display* display)
+{
+    (void)display;
+    Q_ASSERT_X(false, "x_io_error_handler", "Xlib generated an io error");
+    return 1;
+}
+
 XLibWindowManagerAdapterPrivate::XLibWindowManagerAdapterPrivate(
                                    XLibWindowManagerAdapter *q)
     :q_ptr(q)
@@ -66,6 +82,9 @@ XLibWindowManagerAdapterPrivate::XLibWindowManagerAdapterPrivate(
     XISetMask(m_mask.mask, XI_TouchEnd);
     XISetMask(m_mask.mask, XI_TouchOwnership);
     XISetMask(m_mask.mask, XI_HierarchyChanged);
+
+    XSetErrorHandler(x_error_handler);
+    XSetIOErrorHandler(x_io_error_handler);
 }
 
 XLibWindowManagerAdapterPrivate::~XLibWindowManagerAdapterPrivate()

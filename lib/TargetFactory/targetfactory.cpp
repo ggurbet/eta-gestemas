@@ -1,6 +1,5 @@
 #include "targetfactory.h"
 #include "target.h"
-#include "gesturelistener.h"
 #include "longpressgesturerecognizer.h"
 #include "pangesturerecognizer.h"
 #include "twotouchpinchgesturerecognizer.h"
@@ -11,6 +10,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
+
+#include "rightclick.h"
 
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
@@ -101,7 +102,7 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
             QList<GestureRecognizer*> abortList;
             GestureRecognizer *gestureRecognizer = nullptr;
             foreach(gestureRecognizer, gestureRecognizers) {
-                if (gestureRecognizer->allowsSimultaneousRecognition()) {
+                if (!gestureRecognizer->allowsSimultaneousRecognition()) {
                     abortList = m_currentTarget->gestureRecognizers();
                     // Abort gestures except for itself
                     abortList.removeAll(gestureRecognizer);
@@ -214,6 +215,12 @@ void TargetFactory::processLongPress()
             allowSimultaneousRecognition =
                 m_configReader->readElementText() == "true" ? true : false;
             gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
+        } else if (m_configReader->name() == "gestureListener") {
+            QString listenerName = m_configReader->readElementText();
+            if (listenerName == "RightClick") {
+                RightClick *listener = new RightClick;
+                gr->setGestureListener(listener);
+            }
         }
     }
     m_currentTarget->addGestureRecognizer(gr);

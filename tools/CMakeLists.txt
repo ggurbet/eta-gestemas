@@ -22,8 +22,9 @@ target_include_directories(xlibwmatool PRIVATE
 add_executable(longpresstool longpresstool.cpp)
 
 target_link_libraries(longpresstool
-    Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
-    ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
+  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  ${X11_XTest_LIB} ${FRAME_LIB}
+  ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
 target_include_directories(longpresstool PRIVATE
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter

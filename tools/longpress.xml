@@ -8,19 +8,21 @@
       <LongPress>
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <maxAllowableDrift>0.001</maxAllowableDrift>
+        <maxAllowableDrift>10.0</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>RightClick</gestureListener>
       </LongPress>
     </GestureRecognizers>
   </Target>
   <Target>
-    <name>Chromium</name>
+    <name>Dolphin</name>
     <GestureRecognizers>
       <LongPress>
         <numTouchesRequired>2</numTouchesRequired>
         <minPressDuration>500</minPressDuration>
-        <maxAllowableDrift>0.01</maxAllowableDrift>
+        <maxAllowableDrift>10.0</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>RightClick</gestureListener>
       </LongPress>
     </GestureRecognizers>
   </Target>

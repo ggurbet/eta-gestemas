@@ -19,11 +19,24 @@
 #ifndef GESTURELISTENER_H
 #define GESTURELISTENER_H
 
+class GestureRecognizer;
+
 class GestureListener
 {
 public:
-    GestureListener();
-    virtual ~GestureListener();
+    GestureListener(const GestureRecognizer *recognizer = nullptr);
+    virtual ~GestureListener() = default;
+    virtual void onBegan() {}
+    virtual void onRecognized() {}
+    virtual void onChanged() {}
+    virtual void onCanceled() {}
+    virtual void onEnded() {}
+    virtual void onFailed() {}
+
+    void setGestureRecognizer(const GestureRecognizer *recognizer);
+    const GestureRecognizer* gestureRecognizer() const;
+protected:
+    const GestureRecognizer *m_recognizer;
 };
 
 

@@ -72,7 +72,9 @@ void LibFrameTouchManager::acceptTouch(unsigned long touchId,
     UFTouchId ufTouchId = frame_x11_create_touch_id(touchId);
     UFWindowId ufWindowId = frame_x11_create_window_id(targetId);
     UFDevice ufDevice = static_cast<UFDevice>(device);
-    frame_accept_touch(ufDevice, ufWindowId, ufTouchId);
+    if (frame_accept_touch(ufDevice, ufWindowId, ufTouchId) != UFStatusSuccess) {
+        qWarning() << "Failed to accept touch";
+    }
 }
 void LibFrameTouchManager::rejectTouch(unsigned long touchId,
                                        unsigned long targetId,
@@ -81,7 +83,9 @@ void LibFrameTouchManager::rejectTouch(unsigned long touchId,
     UFTouchId ufTouchId = frame_x11_create_touch_id(touchId);
     UFWindowId ufWindowId = frame_x11_create_window_id(targetId);
     UFDevice ufDevice = static_cast<UFDevice>(device);
-    frame_reject_touch(ufDevice, ufWindowId, ufTouchId);
+    if (frame_reject_touch(ufDevice, ufWindowId, ufTouchId) != UFStatusSuccess) {
+        qWarning() << "Failed to reject touch";
+    }
 }
 
 void LibFrameTouchManager::onFrameEvent()
@@ -249,8 +253,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
   timeStamp = frame_touch_get_time(touch);
   getDeviceResolution(device, &resolutionX, &resolutionY);
 
-  Q_CHECK_PTR(m_grm);
-
+  Q_ASSERT(m_grm != nullptr);
   switch (frame_touch_get_state(touch)) {
     case UFTouchStateBegin:
         m_grm->onTouchBegan(touchId, x, y, resolutionX, resolutionY,

@@ -16,19 +16,31 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef XTESTGESTURELISTENER_H
+#define XTESTGESTURELISTENER_H
+
 #include "gesturelistener.h"
+#include <X11/X.h>
+#include <X11/extensions/XTest.h>
+#include <X11/keysym.h>
 
-GestureListener::GestureListener(const GestureRecognizer *recognizer)
-    :m_recognizer(recognizer)
+class XTestGestureListener : public GestureListener
 {
-}
+public:
+    XTestGestureListener(Display* display = nullptr,
+                         const GestureRecognizer *recognizer = nullptr);
+    virtual ~XTestGestureListener();
 
-void GestureListener::setGestureRecognizer( const GestureRecognizer *recognizer)
-{
-    m_recognizer = recognizer;
-}
+    void setDisplay(Display* display = nullptr);
+    Display* display() const;
+protected:
+    void movePointer(int x, int y);
+    void injectKey(KeySym ks, const char *modifiers[]);
+    void injectButton(int btn, const char *modifiers[]);
+    void injectMixed(KeySym ks, int btn, const char *modifiers[]);
 
-const GestureRecognizer* GestureListener::gestureRecognizer() const
-{
-    return m_recognizer;
-}
+    Display* m_display;
+    bool m_shouldCloseDisplay;
+};
+
+#endif /* XTESTGESTURELISTENER_H */

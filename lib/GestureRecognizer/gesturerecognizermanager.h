@@ -40,9 +40,9 @@ public:
     void onTouchUpdated(uint32_t touchId, float x, float y, uint64_t timeStamp);
     void onTouchEnded(uint32_t touchId, float x, float y, uint64_t timeStamp);
 
-    void attachGestureRecognizer(const Touch *touch, GestureRecognizer* gr);
     void detachGestureRecognizer(const Touch *touch, GestureRecognizer* gr);
     void detachGestureRecognizer(GestureRecognizer* gr);
+    void handleTouchOwnership();
 
     void addTarget(Target* target);
     void removeTarget(uint32_t targetId);
@@ -61,11 +61,12 @@ public:
     GestureRecognizerManager& operator=(const GestureRecognizerManager&) = delete;
 
 private:
-    void handleTouchOwnership(Touch* touch);
     void acceptTouch(Touch *t);
     void rejectTouch(Touch *t);
     Touch* findTouch(uint32_t touchId);
     Target* findTarget(uint32_t targetId);
+    void handleTouchOwnership(Touch* touch);
+    void attachGestureRecognizer(const Touch *touch, GestureRecognizer* gr);
 
     TouchManager *m_touchManager;
     QList<Target*> m_targets;

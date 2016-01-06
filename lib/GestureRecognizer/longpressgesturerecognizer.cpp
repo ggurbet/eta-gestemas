@@ -17,6 +17,7 @@
  */
 
 #include "longpressgesturerecognizer.h"
+#include "gesturerecognizermanager.h"
 #include "touch.h"
 #include "utilities.h"
 #include <QtCore/QtGlobal>
@@ -73,7 +74,6 @@ void LongPressGestureRecognizer::onTouchBegan(const Touch *touch)
         m_numTouchesRequiredReached = true;
         m_timer->start(minPressDuration());
     }
-
 }
 
 void LongPressGestureRecognizer::onTouchMoved(const Touch *prev,
@@ -137,5 +137,7 @@ void LongPressGestureRecognizer::onTimeout()
     if (state() == State::Possible) {
         updateCentralPoint();
         setState(State::Began);
+        handleTouchOwnership();
+        callListener();
     }
 }
