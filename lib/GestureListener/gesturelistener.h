@@ -26,16 +26,17 @@ class GestureListener
 public:
     GestureListener(const GestureRecognizer *recognizer = nullptr);
     virtual ~GestureListener() = default;
-    virtual void onBegan() {}
-    virtual void onRecognized() {}
-    virtual void onChanged() {}
-    virtual void onCanceled() {}
-    virtual void onEnded() {}
-    virtual void onFailed() {}
+    virtual void onBegan() = 0;
+    virtual void onRecognized() = 0;
+    virtual void onChanged()  = 0;
+    virtual void onCanceled() = 0;
+    virtual void onEnded()  = 0;
+    virtual void onFailed() = 0;
 
-    void setGestureRecognizer(const GestureRecognizer *recognizer);
     const GestureRecognizer* gestureRecognizer() const;
 protected:
+    void setGestureRecognizer(GestureRecognizer *recognizer);
+
     const GestureRecognizer *m_recognizer;
 };
 

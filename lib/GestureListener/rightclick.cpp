@@ -20,6 +20,11 @@
 #include "rightclick.h"
 #include "longpressgesturerecognizer.h"
 
+void RightClick::setGestureRecognizer(LongPressGestureRecognizer *recognizer)
+{
+    GestureListener::setGestureRecognizer(recognizer);
+}
+
 void RightClick::onBegan()
 {
     qDebug() << "RighClick onBegan";

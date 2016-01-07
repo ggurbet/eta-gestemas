@@ -30,6 +30,7 @@
         <minScale>1.2</minScale>
         <maxAllowableDrift>0.001</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <accumulator>10</accumulator>
       </TwoTouchPinch>
       <Tap>
         <numTouchesRequired>2</numTouchesRequired>
@@ -54,6 +55,7 @@
         <minScale>1.4</minScale>
         <maxAllowableDrift>0.001</maxAllowableDrift>
         <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+        <accumulator>11</accumulator>
       </TwoTouchPinch>
       <Tap>
         <numTouchesRequired>3</numTouchesRequired>

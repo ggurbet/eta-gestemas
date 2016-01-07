@@ -12,11 +12,11 @@
 #include <QtCore/QtDebug>
 
 #include "rightclick.h"
+#include "zoom.h"
 
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
       m_configFile(nullptr),
-      m_listener(nullptr),
       m_currentTarget(nullptr)
 {
     m_configReader = new QXmlStreamReader;
@@ -52,16 +52,6 @@ QString TargetFactory::configFileName() const
     }
 
     return m_configFile->fileName();
-}
-
-void TargetFactory::setGestureListener(GestureListener *listener)
-{
-    m_listener = listener;
-}
-
-GestureListener* TargetFactory::gestureListener() const
-{
-    return m_listener;
 }
 
 Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
@@ -101,13 +91,21 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
         if (gestureRecognizers.size() > 1) {
             QList<GestureRecognizer*> abortList;
             GestureRecognizer *gestureRecognizer = nullptr;
+            int i = 0;
             foreach(gestureRecognizer, gestureRecognizers) {
-                if (!gestureRecognizer->allowsSimultaneousRecognition()) {
-                    abortList = m_currentTarget->gestureRecognizers();
-                    // Abort gestures except for itself
+                if (gestureRecognizer->allowsSimultaneousRecognition()) {
+                    // Abort gestures which don't allow simultaneous recognition
+                    for (i = 0; i < gestureRecognizers.size(); ++i) {
+                        if (!gestureRecognizers[i]->allowsSimultaneousRecognition()) {
+                            abortList.append(gestureRecognizers[i]);
+                        }
+                    }
+                } else {
+                    // Abort all gestures except for itself
+                    abortList = gestureRecognizers;
                     abortList.removeAll(gestureRecognizer);
-                    gestureRecognizer->setGestureRecognizersToAbort(abortList);
                 }
+                gestureRecognizer->setGestureRecognizersToAbort(abortList);
             }
         }
     }
@@ -219,7 +217,7 @@ void TargetFactory::processLongPress()
             QString listenerName = m_configReader->readElementText();
             if (listenerName == "RightClick") {
                 RightClick *listener = new RightClick;
-                gr->setGestureListener(listener);
+                listener->setGestureRecognizer(gr);
             }
         }
     }
@@ -316,6 +314,18 @@ void TargetFactory::processTwoTouchPinch()
             allowSimultaneousRecognition =
                 m_configReader->readElementText() == "true" ? true : false;
             gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
+        } else if (m_configReader->name() == "gestureListener") {
+            QString listenerName = m_configReader->readElementText();
+            if (listenerName == "Zoom") {
+                Zoom *listener = new Zoom;
+                listener->setGestureRecognizer(gr);
+            }
+        } else if (m_configReader->name() == "accumulator") {
+            int accumulator =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                gr->setAccumulator(accumulator);
+            }
         }
     }
     m_currentTarget->addGestureRecognizer(gr);

@@ -25,7 +25,7 @@
 
 int main(int argc, char *argv[])
 {
-    qDebug() << "XLibWindowManagerAdapter Test";
+    qDebug() << "LongPressGestureRecognizer Test";
     QCoreApplication app(argc, argv);
     XLibWindowManagerAdapter windowManagerAdapter(&app);
     LibFrameTouchManager touchManager((Display*)windowManagerAdapter.display());

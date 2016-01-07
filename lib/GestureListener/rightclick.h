@@ -21,6 +21,8 @@
 
 #include "xtestgesturelistener.h"
 
+class LongPressGestureRecognizer;
+
 class RightClick : public XTestGestureListener
 {
 public:
@@ -29,6 +31,8 @@ public:
         :XTestGestureListener(display, recognizer){}
 
     virtual ~RightClick() = default;
+
+    void setGestureRecognizer(LongPressGestureRecognizer *recognizer);
 
     virtual void onBegan();
     virtual void onRecognized();

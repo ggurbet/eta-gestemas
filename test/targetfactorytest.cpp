@@ -50,6 +50,7 @@ void TargetFactoryTester::initTestCase()
     gr3->setMinScale(1.2);
     gr3->setMaxAllowableDrift(0.001f);
     gr3->setAllowSimultaneousRecognition(false);
+    gr3->setAccumulator(10);
     expectedTargetChromium.addGestureRecognizer(gr3);
     TapGestureRecognizer *gr4 = new TapGestureRecognizer;
     gr4->setNumTouchesRequired(2);
@@ -77,6 +78,7 @@ void TargetFactoryTester::initTestCase()
     gr3->setMinScale(1.4);
     gr3->setMaxAllowableDrift(0.001f);
     gr3->setAllowSimultaneousRecognition(true);
+    gr3->setAccumulator(11);
     expectedTargetFirefox.addGestureRecognizer(gr3);
     gr4 = new TapGestureRecognizer;
     gr4->setNumTouchesRequired(3);

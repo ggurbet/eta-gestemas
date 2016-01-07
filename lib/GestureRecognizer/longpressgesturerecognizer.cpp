@@ -69,6 +69,7 @@ void LongPressGestureRecognizer::onTouchBegan(const Touch *touch)
         } else {
             ignoreTouch(touch);
         }
+        return;
     }
     if (numTouches() == numTouchesRequired()) {
         m_numTouchesRequiredReached = true;

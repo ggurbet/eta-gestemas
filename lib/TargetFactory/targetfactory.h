@@ -21,9 +21,6 @@ public:
     void setConfigurationFileName(const QString& configFileName);
     QString configFileName() const;
 
-    void setGestureListener(GestureListener *listener);
-    GestureListener* gestureListener() const;
-
     TargetFactory(const TargetFactory&) = delete;
     TargetFactory& operator=(const TargetFactory&) = delete;
 private:
@@ -37,7 +34,6 @@ private:
 
     QXmlStreamReader *m_configReader;
     QFile *m_configFile;
-    GestureListener *m_listener;
     Target *m_currentTarget;
 };
 

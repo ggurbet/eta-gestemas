@@ -24,6 +24,7 @@ set(libgestemas_SOURCES
   GestureListener/gesturelistener.cpp
   GestureListener/xtestgesturelistener.cpp
   GestureListener/rightclick.cpp
+  GestureListener/zoom.cpp
 )
 
 set(libgestemas_HEADERS
@@ -48,6 +49,7 @@ set(libgestemas_HEADERS
   GestureListener/gesturelistener.h
   GestureListener/xtestgesturelistener.h
   GestureListener/rightclick.h
+  GestureListener/zoom.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})

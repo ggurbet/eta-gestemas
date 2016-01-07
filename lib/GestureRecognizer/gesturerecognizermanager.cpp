@@ -131,7 +131,11 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
     prev->setY(y);
     prev->setTimeStamp(timeStamp);
     handleTouchOwnership(prev);
-    Q_ASSERT(prev->ownershipState() != Touch::Deferred);
+    if (prev->ownershipState() == Touch::Deferred) {
+        qDebug() << "Rejecting ended defered touch " << touchId;
+        rejectTouch(prev);
+    }
+
     foreach (gestureRecognizer, gestureRecognizers) {
         gestureRecognizer->callListener();
     }

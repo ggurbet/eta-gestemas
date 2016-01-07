@@ -115,7 +115,7 @@ void GestureRecognizer::setManager(GestureRecognizerManager* manager)
 
 void GestureRecognizer::setState(const State& newState)
 {
-    qDebug() << m_state.toString() << "->" << newState.toString();
+    // qDebug() << m_state.toString() << "->" << newState.toString();
     Q_ASSERT(m_state.canTransitionTo(newState));
     m_state = newState;
     m_states.append(m_state);
@@ -182,7 +182,6 @@ const Touch* GestureRecognizer::findTouch(uint32_t touchId)
 void GestureRecognizer::setGestureListener(GestureListener *listener)
 {
     m_listener = listener;
-    m_listener->setGestureRecognizer(this);
 }
 
 const GestureListener* GestureRecognizer::listener() const

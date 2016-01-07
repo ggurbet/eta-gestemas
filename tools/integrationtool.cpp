@@ -16,21 +16,22 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gesturelistener.h"
-#include "gesturerecognizer.h"
+#include "xlibwindowmanageradapter.h"
+#include "windowmanageradapterlistener.h"
+#include "targetfactory.h"
+#include <QtCore/QCoreApplication>
+#include <QtCore/QtDebug>
+#include "libframetouchmanager.h"
 
-GestureListener::GestureListener(const GestureRecognizer *recognizer)
-    :m_recognizer(recognizer)
+int main(int argc, char *argv[])
 {
-}
-
-void GestureListener::setGestureRecognizer(GestureRecognizer *recognizer)
-{
-    recognizer->setGestureListener(this);
-    m_recognizer = recognizer;
-}
-
-const GestureRecognizer* GestureListener::gestureRecognizer() const
-{
-    return m_recognizer;
+    qDebug() << "Gesture Recognizer Integration Test";
+    QCoreApplication app(argc, argv);
+    XLibWindowManagerAdapter windowManagerAdapter(&app);
+    LibFrameTouchManager touchManager((Display*)windowManagerAdapter.display());
+    TargetFactory targetFactory("integration.xml");
+    WindowManagerAdapterListener windowManagerAdapterListener(&touchManager, &targetFactory);
+    windowManagerAdapter.setListener(&windowManagerAdapterListener);
+    windowManagerAdapter.dispatchEvents();
+    return app.exec();
 }

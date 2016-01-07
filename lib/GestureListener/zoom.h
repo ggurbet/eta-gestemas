@@ -16,21 +16,30 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gesturelistener.h"
-#include "gesturerecognizer.h"
+#ifndef ZOOM_H
+#define ZOOM_H
 
-GestureListener::GestureListener(const GestureRecognizer *recognizer)
-    :m_recognizer(recognizer)
-{
-}
+#include "xtestgesturelistener.h"
 
-void GestureListener::setGestureRecognizer(GestureRecognizer *recognizer)
-{
-    recognizer->setGestureListener(this);
-    m_recognizer = recognizer;
-}
+class TwoTouchPinchGestureRecognizer;
 
-const GestureRecognizer* GestureListener::gestureRecognizer() const
+class Zoom : public XTestGestureListener
 {
-    return m_recognizer;
-}
+public:
+    Zoom(Display* display = nullptr,
+               const GestureRecognizer *recognizer = nullptr)
+        :XTestGestureListener(display, recognizer){}
+
+    virtual ~Zoom() = default;
+
+    void setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer);
+
+    virtual void onBegan();
+    virtual void onRecognized();
+    virtual void onChanged();
+    virtual void onCanceled();
+    virtual void onEnded();
+    virtual void onFailed();
+};
+
+#endif /* ZOOM_H */
