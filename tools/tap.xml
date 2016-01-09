@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Targets>
+  <Target>
+    <name>root</name>
+    <GestureRecognizers>
+      <Tap>
+        <numTouchesRequired>1</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>400</maxTapDelay>
+        <maxTapDuration>1000</maxTapDuration>
+        <maxTapDistance>100.0</maxTapDistance>
+        <maxAllowableDrift>5.0</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>LeftClick</gestureListener>
+      </Tap>
+    </GestureRecognizers>
+  </Target>
+  <Target>
+    <name>Firefox</name>
+    <GestureRecognizers>
+      <Tap>
+        <numTouchesRequired>3</numTouchesRequired>
+        <numTapsRequired>2</numTapsRequired>
+        <maxTapDelay>400</maxTapDelay>
+        <maxTapDuration>1000</maxTapDuration>
+        <maxTapDistance>100.0</maxTapDistance>
+        <maxAllowableDrift>5.0</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+      </Tap>
+    </GestureRecognizers>
+  </Target>
+  <Target>
+    <name>Dolphin</name>
+    <GestureRecognizers>
+      <Tap>
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>3</numTapsRequired>
+        <maxTapDelay>400</maxTapDelay>
+        <maxTapDuration>1000</maxTapDuration>
+        <maxTapDistance>100.0</maxTapDistance>
+        <maxAllowableDrift>5.0</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+      </Tap>
+    </GestureRecognizers>
+  </Target>
+</Targets>

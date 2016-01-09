@@ -145,7 +145,8 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
         target = findTarget(prev->targetId());
         gestureRecognizers = target->gestureRecognizers();
         foreach (gestureRecognizer, gestureRecognizers) {
-            gestureRecognizer->reset();
+            if (gestureRecognizer->state().isLeaf())
+                gestureRecognizer->reset();
         }
     }
     m_gestureRecognizersForTouches.remove(touchId);

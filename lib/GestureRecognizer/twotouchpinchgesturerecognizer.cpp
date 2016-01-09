@@ -52,7 +52,7 @@ bool TwoTouchPinchGestureRecognizer::isEqual(const GestureRecognizer& other) con
 
 void TwoTouchPinchGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    // qDebug() << "TwoTouchPinch onTouchBegan";
+    qDebug() << "TwoTouchPinch onTouchBegan";
     // qDebug() << "touchId:" << touch->touchId()
     //          << "x:" << touch->x()
     //          << "y:" << touch->y()
@@ -91,7 +91,7 @@ void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *prev,
 {
     (void)prev;
     // const Touch *touch = current;
-    // qDebug() << "TwoTouchPinch onTouchMoved";
+    qDebug() << "TwoTouchPinch onTouchMoved";
     // qDebug() << "touchId:" << touch->touchId()
     //          << "x:" << touch->x()
     //          << "y:" << touch->y()
@@ -163,7 +163,7 @@ void TwoTouchPinchGestureRecognizer::onTouchEnded(const Touch *prev,
 {
     (void)current;
     // const Touch *touch = current;
-    // qDebug() << "TwoTouchPinch onTouchEnded";
+    qDebug() << "TwoTouchPinch onTouchEnded";
     // qDebug() << "touchId:" << touch->touchId()
     //          << "x:" << touch->x()
     //          << "y:" << touch->y()

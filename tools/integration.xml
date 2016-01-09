@@ -7,11 +7,21 @@
     <GestureRecognizers>
       <LongPress>
         <numTouchesRequired>1</numTouchesRequired>
-        <minPressDuration>950</minPressDuration>
+        <minPressDuration>1100</minPressDuration>
         <maxAllowableDrift>10.0</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         <gestureListener>RightClick</gestureListener>
       </LongPress>
+      <Tap>
+        <numTouchesRequired>1</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>400</maxTapDelay>
+        <maxTapDuration>950</maxTapDuration>
+        <maxTapDistance>100.0</maxTapDistance>
+        <maxAllowableDrift>1.0</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>LeftClick</gestureListener>
+      </Tap>
     </GestureRecognizers>
   </Target>
   <Target>

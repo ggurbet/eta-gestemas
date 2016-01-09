@@ -55,7 +55,7 @@ bool LongPressGestureRecognizer::isEqual(const GestureRecognizer& other) const
 
 void LongPressGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    // qDebug() << "LongPress onTouchBegan";
+    qDebug() << "LongPress onTouchBegan";
     // qDebug() << "touchId:" << touch->touchId()
     //          << "x:" << touch->x()
     //          << "y:" << touch->y()
@@ -81,7 +81,7 @@ void LongPressGestureRecognizer::onTouchMoved(const Touch *prev,
                                               const Touch *current)
 {
     // const Touch *touch = current;
-    // qDebug() << "LongPress onTouchMoved";
+    qDebug() << "LongPress onTouchMoved";
     // qDebug() << "touchId:" << touch->touchId()
     //          << "x:" << touch->x()
     //          << "y:" << touch->y()
@@ -106,7 +106,7 @@ void LongPressGestureRecognizer::onTouchEnded(const Touch *prev,
                                               const Touch *current)
 {
     // const Touch *touch = current;
-    // qDebug() << "LongPress onTouchEnded";
+    qDebug() << "LongPress onTouchEnded";
     // qDebug() << "touchId:" << touch->touchId()
     //          << "x:" << touch->x()
     //          << "y:" << touch->y()
@@ -121,7 +121,9 @@ void LongPressGestureRecognizer::onTouchEnded(const Touch *prev,
             return;
         }
     }
-    setState(State::Failed);
+    if (state() == State::Possible) {
+        setState(State::Failed);
+    }
 }
 
 void LongPressGestureRecognizer::reset()

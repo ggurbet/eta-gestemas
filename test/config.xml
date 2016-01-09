@@ -34,6 +34,10 @@
       </TwoTouchPinch>
       <Tap>
         <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>400</maxTapDelay>
+        <maxTapDuration>1000</maxTapDuration>
+        <maxTapDistance>100.0</maxTapDistance>
         <maxAllowableDrift>0.001</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </Tap>
@@ -59,6 +63,10 @@
       </TwoTouchPinch>
       <Tap>
         <numTouchesRequired>3</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>400</maxTapDelay>
+        <maxTapDuration>1000</maxTapDuration>
+        <maxTapDistance>100.0</maxTapDistance>
         <maxAllowableDrift>0.0001</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
       </Tap>

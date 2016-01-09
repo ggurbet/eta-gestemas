@@ -12,6 +12,7 @@
 #include <QtCore/QtDebug>
 
 #include "rightclick.h"
+#include "leftclick.h"
 #include "zoom.h"
 
 TargetFactory::TargetFactory()
@@ -340,6 +341,10 @@ void TargetFactory::processTap()
 
     bool ok = false;
     int numTouchesRequired = 0;
+    int numTapsRequired = 0;
+    int maxTapDelay = 0;
+    int maxTapDuration = 0;
+    float maxTapDistance = 0.0f;
     float maxAllowableDrift = 0.0f;
     bool allowSimultaneousRecognition = false;
     TapGestureRecognizer *gr = new TapGestureRecognizer;
@@ -351,6 +356,30 @@ void TargetFactory::processTap()
             if (ok) {
                 gr->setNumTouchesRequired(numTouchesRequired);
             }
+        } else if(m_configReader->name() == "numTapsRequired") {
+            numTapsRequired =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                gr->setNumTapsRequired(numTapsRequired);
+            }
+        } else if(m_configReader->name() == "maxTapDelay") {
+            maxTapDelay =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                gr->setMaxTapDelay(maxTapDelay);
+            }
+        } else if(m_configReader->name() == "maxTapDuration") {
+            maxTapDuration =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                gr->setMaxTapDuration(maxTapDuration);
+            }
+        } else if(m_configReader->name() == "maxTapDistance") {
+            maxTapDistance =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                gr->setMaxTapDistance(maxTapDistance);
+            }
         } else if (m_configReader->name() == "maxAllowableDrift") {
             maxAllowableDrift =
                 m_configReader->readElementText().toFloat(&ok);
@@ -361,6 +390,12 @@ void TargetFactory::processTap()
             allowSimultaneousRecognition =
                 m_configReader->readElementText() == "true" ? true : false;
             gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
+        } else if (m_configReader->name() == "gestureListener") {
+            QString listenerName = m_configReader->readElementText();
+            if (listenerName == "LeftClick") {
+                LeftClick *listener = new LeftClick;
+                listener->setGestureRecognizer(gr);
+            }
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
