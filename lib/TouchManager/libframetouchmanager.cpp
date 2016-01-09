@@ -26,18 +26,19 @@
 
 LibFrameTouchManager::LibFrameTouchManager(Display* display,
                                            QObject *parent)
-    :QObject(parent), m_display(nullptr)
+    :QObject(parent), m_display(nullptr),
+     m_shouldCloseDisplay(false)
 {
     UFStatus status;
-    Display* disp = nullptr;
     if (!display) {
-        disp = XOpenDisplay(nullptr);
-        Q_CHECK_PTR(disp);
-        m_display = disp;
+        m_display = XOpenDisplay(nullptr);
+        Q_CHECK_PTR(m_display);
+        m_shouldCloseDisplay = true;
     } else {
-        disp = display;
+        m_display = display;
+        m_shouldCloseDisplay = false;
     }
-    status = frame_x11_new(disp, &m_frameHandle);
+    status = frame_x11_new(m_display, &m_frameHandle);
     Q_ASSERT(status == UFStatusSuccess);
 
     m_socketNotifier =
@@ -51,7 +52,7 @@ LibFrameTouchManager::LibFrameTouchManager(Display* display,
 
 LibFrameTouchManager::~LibFrameTouchManager()
 {
-    if (!m_display) {
+    if (m_shouldCloseDisplay) {
         XCloseDisplay(m_display);
     }
     frame_x11_delete(m_frameHandle);
@@ -241,29 +242,28 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
                                            UFDevice device, Window window)
 {
   uint32_t touchId = 0UL;
-  float x = 0.0f;
-  float y = 0.0f;
+  float windowX = 0.0f;
+  float windowY = 0.0f;
   float resolutionX = 0.0f;
   float resolutionY = 0.0f;
   uint64_t timeStamp = 0ULL;
 
   touchId = frame_x11_get_touch_id(frame_touch_get_id(touch));
-  x = frame_touch_get_window_x(touch);
-  y = frame_touch_get_window_y(touch);
+  windowX = frame_touch_get_window_x(touch);
+  windowY = frame_touch_get_window_y(touch);
   timeStamp = frame_touch_get_time(touch);
   getDeviceResolution(device, &resolutionX, &resolutionY);
-
   Q_ASSERT(m_grm != nullptr);
   switch (frame_touch_get_state(touch)) {
     case UFTouchStateBegin:
-        m_grm->onTouchBegan(touchId, x, y, resolutionX, resolutionY,
+        m_grm->onTouchBegan(touchId, windowX, windowY, resolutionX, resolutionY,
                             window, device, timeStamp);
       break;
     case UFTouchStateUpdate:
-        m_grm->onTouchUpdated(touchId, x, y, timeStamp);
+        m_grm->onTouchUpdated(touchId, windowX, windowY, timeStamp);
       break;
     case UFTouchStateEnd:
-        m_grm->onTouchEnded(touchId, x, y, timeStamp);
+        m_grm->onTouchEnded(touchId, windowX, windowY, timeStamp);
       break;
   }
 }

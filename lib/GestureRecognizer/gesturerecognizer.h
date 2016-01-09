@@ -77,6 +77,8 @@ public:
     void setGestureListener(GestureListener *listener);
     const GestureListener* listener() const;
 
+    uint32_t targetId() const;
+
     GestureRecognizer(const GestureRecognizer&) = delete;
     GestureRecognizer& operator=(const GestureRecognizer&) = delete;
 protected:
@@ -105,6 +107,7 @@ private:
     GestureListener *m_listener;
     State m_state;
     QList<State> m_states;
+    uint32_t m_targetId;
 };
 
 #endif /* GESTURERECOGNIZER_H */

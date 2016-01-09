@@ -57,6 +57,7 @@ void GestureRecognizer::touchBeganHandler(const Touch *touch)
     Q_ASSERT(prev == nullptr);
     prev = touch;
     m_touches.append(prev);
+    m_targetId = prev->targetId();
     onTouchBegan(prev);
 }
 
@@ -159,6 +160,9 @@ void GestureRecognizer::updateCentralPoint()
             m_centralX = x / size;
             m_centralY = y / size;
         }
+    } else {
+        m_centralX = 0.0f;
+        m_centralY = 0.0f;
     }
 }
 
@@ -187,4 +191,9 @@ void GestureRecognizer::setGestureListener(GestureListener *listener)
 const GestureListener* GestureRecognizer::listener() const
 {
     return m_listener;
+}
+
+uint32_t GestureRecognizer::targetId() const
+{
+    return m_targetId;
 }

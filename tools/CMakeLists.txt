@@ -72,6 +72,24 @@ target_include_directories(taptool PRIVATE
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tap.xml
     ${CMAKE_CURRENT_BINARY_DIR}/tap.xml COPYONLY)
 
+# taptool
+add_executable(pantool pantool.cpp)
+
+target_link_libraries(pantool
+  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  ${X11_XTest_LIB} ${FRAME_LIB}
+  ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
+
+target_include_directories(pantool PRIVATE
+  ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter
+  ${CMAKE_SOURCE_DIR}/lib/TouchManager
+  ${CMAKE_SOURCE_DIR}/lib/GestureRecognizer
+  ${CMAKE_SOURCE_DIR}/lib/TargetFactory
+  ${CMAKE_SOURCE_DIR}/lib/GestureListener)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pan.xml
+    ${CMAKE_CURRENT_BINARY_DIR}/pan.xml COPYONLY)
+
 # integrationtool
 add_executable(integrationtool integrationtool.cpp)
 

@@ -133,7 +133,7 @@ void TapGestureRecognizer::onTouchMoved(const Touch *prev,
     float y1 = prev->y();
     float y2 = current->y();
     if (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) >
-        SQUARED(maxAllowableDrift())) {
+        SQUARED(maxAllowableDrift()) && state() == State::Possible) {
         setState(State::Failed);
     }
 

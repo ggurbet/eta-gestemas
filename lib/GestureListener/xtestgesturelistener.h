@@ -34,10 +34,12 @@ public:
     void setDisplay(Display* display = nullptr);
     Display* display() const;
 protected:
-    void movePointer(int x, int y);
+    void movePointer();
     void injectKey(KeySym ks, const char *modifiers[]);
     void injectButton(int btn, const char *modifiers[]);
     void injectMixed(KeySym ks, int btn, const char *modifiers[]);
+    void injectLeftButtonPress();
+    void injectLeftButtonRelease();
 
     Display* m_display;
     bool m_shouldCloseDisplay;

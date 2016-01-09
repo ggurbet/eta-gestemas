@@ -22,6 +22,15 @@
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         <gestureListener>LeftClick</gestureListener>
       </Tap>
+      <Pan>
+        <maxNumTouchesRequired>1</maxNumTouchesRequired>
+        <minNumTouchesRequired>1</minNumTouchesRequired>
+        <maxVelocity>20.2</maxVelocity>
+        <minVelocity>0.2</minVelocity>
+        <maxAllowableDrift>1.0</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>Drag</gestureListener>
+      </Pan>
     </GestureRecognizers>
   </Target>
   <Target>
@@ -30,11 +39,20 @@
       <TwoTouchPinch>
         <maxScale>1.0051</maxScale>
         <minScale>1.0032</minScale>
-        <maxAllowableDrift>10</maxAllowableDrift>
+        <maxAllowableDrift>10.0</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        <accumulator>7</accumulator>
+        <accumulator>10</accumulator>
         <gestureListener>Zoom</gestureListener>
       </TwoTouchPinch>
+      <Pan>
+        <maxNumTouchesRequired>3</maxNumTouchesRequired>
+        <minNumTouchesRequired>2</minNumTouchesRequired>
+        <maxVelocity>40.0</maxVelocity>
+        <minVelocity>0.000001</minVelocity>
+        <maxAllowableDrift>10.0</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>Scroll</gestureListener>
+      </Pan>
     </GestureRecognizers>
   </Target>
   <Target>
@@ -43,11 +61,20 @@
       <TwoTouchPinch>
         <maxScale>1.0051</maxScale>
         <minScale>1.0032</minScale>
-        <maxAllowableDrift>10</maxAllowableDrift>
+        <maxAllowableDrift>1.0</maxAllowableDrift>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         <accumulator>7</accumulator>
         <gestureListener>Zoom</gestureListener>
       </TwoTouchPinch>
+      <Pan>
+        <maxNumTouchesRequired>2</maxNumTouchesRequired>
+        <minNumTouchesRequired>2</minNumTouchesRequired>
+        <maxVelocity>5.0</maxVelocity>
+        <minVelocity>1.0</minVelocity>
+        <maxAllowableDrift>1.0</maxAllowableDrift>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <gestureListener>Scroll</gestureListener>
+      </Pan>
     </GestureRecognizers>
   </Target>
 </Targets>

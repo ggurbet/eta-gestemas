@@ -38,10 +38,12 @@ public:
     int minNumTouchesRequired() const
     {return m_minNumTouchesRequired;}
 
-    void setVelocity(float velocity)
-    {m_velocity = velocity;}
-    float velocity() const
-    {return m_velocity;}
+    float velocity() const;
+
+    float velocityX() const
+    {return m_velocityX;}
+    float velocityY() const
+    {return m_velocityY;}
 
     void setMaxVelocity(float maxVelocity)
     {m_maxVelocity = maxVelocity;}
@@ -59,9 +61,16 @@ protected:
 private:
     int m_maxNumTouchesRequired;
     int m_minNumTouchesRequired;
-    float m_velocity;
     float m_maxVelocity;
     float m_minVelocity;
+
+    float m_velocityX;
+    float m_velocityY;
+    float m_translationX;
+    float m_translationY;
+    float m_prevCentralX;
+    float m_prevCentralY;
+    uint64_t m_timeStamp;
 };
 
 #endif /* PANGESTURERECOGNIZER_H */

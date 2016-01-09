@@ -14,6 +14,8 @@
 #include "rightclick.h"
 #include "leftclick.h"
 #include "zoom.h"
+#include "drag.h"
+#include "scroll.h"
 
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
@@ -274,6 +276,16 @@ void TargetFactory::processPan()
             allowSimultaneousRecognition =
                 m_configReader->readElementText() == "true" ? true : false;
             gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
+        } else if (m_configReader->name() == "gestureListener") {
+            QString listenerName = m_configReader->readElementText();
+            if (listenerName == "Drag") {
+                Drag *listener = new Drag;
+                listener->setGestureRecognizer(gr);
+            }
+            if (listenerName == "Scroll") {
+                Scroll *listener = new Scroll;
+                listener->setGestureRecognizer(gr);
+            }
         }
     }
     m_currentTarget->addGestureRecognizer(gr);

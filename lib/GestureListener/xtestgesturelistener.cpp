@@ -22,6 +22,7 @@
  * original author : Mohamed-Ikbel Boulabiar <boulabiar@gmail.com>
  */
 
+#include "gesturerecognizer.h"
 #include "xtestgesturelistener.h"
 #include <cstring>
 
@@ -55,9 +56,23 @@ Display* XTestGestureListener::display() const
     return m_display;
 }
 
-void XTestGestureListener::movePointer(int x, int y)
+void XTestGestureListener::movePointer()
 {
-    XTestFakeMotionEvent(m_display, 0, x, y, CurrentTime);
+    int targetX = static_cast<int>(m_recognizer->centralX());
+    int targetY = static_cast<int>(m_recognizer->centralY());
+    Window rootWindow;
+    Window returnedWindow;
+    Window targetWindow = m_recognizer->targetId();
+    rootWindow = XDefaultRootWindow(m_display);
+    int rootX = 0;
+    int rootY = 0;
+    bool coordinatesTranslated =
+        XTranslateCoordinates(m_display,
+                              targetWindow, rootWindow, targetX, targetY,
+                              &rootX, &rootY, &returnedWindow);
+
+    Q_ASSERT(coordinatesTranslated);
+    XTestFakeMotionEvent(m_display, 0, rootX, rootY, CurrentTime);
 }
 
 void XTestGestureListener::injectKey(KeySym ks, const char *modifiers[])
@@ -126,5 +141,17 @@ void XTestGestureListener::injectMixed(KeySym ks, int btn, const char *modifiers
                                                            [i])), False,
                           CurrentTime);
     XTestFakeButtonEvent(m_display, btn, False, CurrentTime);
+    XFlush(m_display);
+}
+
+void XTestGestureListener::injectLeftButtonPress()
+{
+    XTestFakeButtonEvent(m_display, 1, True, CurrentTime);
+    XFlush(m_display);
+}
+
+void XTestGestureListener::injectLeftButtonRelease()
+{
+    XTestFakeButtonEvent(m_display, 1, False, CurrentTime);
     XFlush(m_display);
 }

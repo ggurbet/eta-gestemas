@@ -60,6 +60,7 @@ private:
     UFHandle m_frameHandle;
     Display* m_display;
     QSocketNotifier* m_socketNotifier;
+    bool m_shouldCloseDisplay;
 };
 
 #endif /* LIBFRAMETOUCHMANAGER_H */
