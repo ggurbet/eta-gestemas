@@ -61,6 +61,8 @@ private:
     float m_maxScale;
     float m_minScale;
     int m_accumulator;
+    int m_counter;
+    float m_averageScale;
 };
 
 #endif /* ZOOM_H */

@@ -2,6 +2,7 @@
 #include <QtCore/QtDebug>
 #include "zoom.h"
 #include "twotouchpinchgesturerecognizer.h"
+#include "utilities.h"
 
 void Zoom::setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer)
 {
@@ -11,6 +12,8 @@ void Zoom::setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer)
 void Zoom::onBegan()
 {
     qDebug() << "Zoom onBegan";
+    m_counter = m_accumulator;
+    m_averageScale = 0.0f;
 }
 void Zoom::onRecognized()
 {
@@ -18,17 +21,29 @@ void Zoom::onRecognized()
 }
 void Zoom::onChanged()
 {
-    qDebug() << "Zoom onChanged";
     const TwoTouchPinchGestureRecognizer *p
         = static_cast<const TwoTouchPinchGestureRecognizer*>(m_recognizer);
-    float scale = p->scale();
-    if (scale >= 1.0f) {
-        qDebug() << "zoom out: " << scale;
-        zoomOut();
-    } else {
-        qDebug() << "zoom in: " << scale;
-        zoomIn();
+    if (m_counter != 0) {
+        m_averageScale += p->scale();
+        --m_counter;
+        return;
     }
+    qDebug() << "Zoom onChanged";
+    m_averageScale /= m_accumulator;
+    qDebug() << "scale: " << m_averageScale;
+    if (m_averageScale > 1.0f) {
+        if (CHECK_RANGE(m_averageScale, minScale(), maxScale())) {
+            qDebug() << "zoom out";
+            zoomOut();
+        }
+    } else if (m_averageScale < 1.0f){
+        if (CHECK_RANGE(m_averageScale, 1.0f/maxScale(), 1.0f/minScale())) {
+            qDebug() << "zoom in";
+            zoomIn();
+        }
+    }
+    m_averageScale = 0.0f;
+    m_counter = m_accumulator;
 }
 void Zoom::onCanceled()
 {

@@ -40,14 +40,6 @@ bool TwoTouchPinchGestureRecognizer::isEqual(const GestureRecognizer& other) con
 
 void TwoTouchPinchGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    qDebug() << "TwoTouchPinch onTouchBegan";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
     if (numTouches() > 2) {
         if (state() == State::Possible) {
             setState(State::Failed);
@@ -74,23 +66,12 @@ void TwoTouchPinchGestureRecognizer::onTouchBegan(const Touch *touch)
     }
 }
 
-void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *prev,
-                                              const Touch *current)
+void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *touch)
 {
-    (void)prev;
-    // const Touch *touch = current;
-    qDebug() << "TwoTouchPinch onTouchMoved";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
-    float x1 = current->startX();
-    float y1 = current->startY();
-    float x2 = current->x();
-    float y2 = current->y();
+    float x1 = touch->startX();
+    float y1 = touch->startY();
+    float x2 = touch->x();
+    float y2 = touch->y();
     if (numTouches() < 2) {
         if ((state() == State::Possible)
             && (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) >=
@@ -119,19 +100,8 @@ void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *prev,
     }
 }
 
-void TwoTouchPinchGestureRecognizer::onTouchEnded(const Touch *prev,
-                                              const Touch *current)
+void TwoTouchPinchGestureRecognizer::onTouchEnded(const Touch *touch)
 {
-    (void)current;
-    // const Touch *touch = current;
-    qDebug() << "TwoTouchPinch onTouchEnded";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
     if (numTouches() == 0) {
         if (state() == State::Began || state() == State::Changed) {
             updateCentralPoint();
@@ -140,7 +110,7 @@ void TwoTouchPinchGestureRecognizer::onTouchEnded(const Touch *prev,
             setState(State::Failed);
         }
     } else { // numTouches() == 1
-        if (m_touch1 == prev) {
+        if (m_touch1 == touch) {
             m_touch1 = m_touch2;
         }
         m_touch2 = nullptr;

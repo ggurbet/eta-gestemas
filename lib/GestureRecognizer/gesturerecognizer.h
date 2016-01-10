@@ -87,8 +87,8 @@ public:
     static float movementThreshold;
 protected:
     virtual void onTouchBegan(const Touch *touch) = 0;
-    virtual void onTouchMoved(const Touch *prev, const Touch *current) = 0;
-    virtual void onTouchEnded(const Touch *prev, const Touch *current) = 0;
+    virtual void onTouchMoved(const Touch *touch) = 0;
+    virtual void onTouchEnded(const Touch *touch) = 0;
 
     void handleTouchOwnership() const;
 

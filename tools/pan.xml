@@ -1,45 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Targets>
+<gestemas>
+  <movementThreshold>5.0</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <Pan>
         <maxNumTouchesRequired>1</maxNumTouchesRequired>
         <minNumTouchesRequired>1</minNumTouchesRequired>
-        <maxVelocity>20.2</maxVelocity>
-        <minVelocity>0.2</minVelocity>
-        <maxAllowableDrift>1.0</maxAllowableDrift>
+        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        <gestureListener>Drag</gestureListener>
+        <Drag>
+        </Drag>
       </Pan>
-    </GestureRecognizers>
-  </Target>
-  <Target>
-    <name>Firefox</name>
-    <GestureRecognizers>
       <Pan>
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
-        <maxVelocity>5.0</maxVelocity>
-        <minVelocity>1.0</minVelocity>
-        <maxAllowableDrift>1.0</maxAllowableDrift>
+        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        <gestureListener>Scroll</gestureListener>
+        <Scroll>
+          <accumulator>2</accumulator>
+          <maxVelocity>20.0</maxVelocity>
+          <minVelocity>1.0</minVelocity>
+        </Scroll>
       </Pan>
     </GestureRecognizers>
   </Target>
-  <Target>
-    <name>Dolphin</name>
-    <GestureRecognizers>
-      <Pan>
-        <maxNumTouchesRequired>3</maxNumTouchesRequired>
-        <minNumTouchesRequired>2</minNumTouchesRequired>
-        <maxVelocity>5.0</maxVelocity>
-        <minVelocity>1.0</minVelocity>
-        <maxAllowableDrift>1.0</maxAllowableDrift>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        <gestureListener>Scroll</gestureListener>
-      </Pan>
-    </GestureRecognizers>
-  </Target>
-</Targets>
+</gestemas>

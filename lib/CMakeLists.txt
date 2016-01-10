@@ -31,6 +31,7 @@ set(libgestemas_SOURCES
 )
 
 set(libgestemas_HEADERS
+  utilities.h
   WindowManagerAdapter/windowmanageradapter.h
   WindowManagerAdapter/windowmanageradapterlistenerinterface.h
   WindowManagerAdapter/windowmanageradapterlistener.h
@@ -46,7 +47,6 @@ set(libgestemas_HEADERS
   GestureRecognizer/pangesturerecognizer.h
   GestureRecognizer/twotouchpinchgesturerecognizer.h
   GestureRecognizer/tapgesturerecognizer.h
-  GestureRecognizer/utilities.h
   TouchManager/touchmanager.h
   TouchManager/libframetouchmanager.h
   GestureListener/gesturelistener.h
@@ -64,6 +64,7 @@ target_link_libraries(gestemas Qt5::Core
   ${X11_X11_LIB} ${X11_Xi_LIB} ${X11_XTest_LIB} ${FRAME_LIB})
 
 target_include_directories(gestemas PRIVATE
+  ${CMAKE_SOURCE_DIR}/lib
   ${CMAKE_SOURCE_DIR}/lib/WindowManagerAdapter
   ${CMAKE_SOURCE_DIR}/lib/TargetFactory
   ${CMAKE_SOURCE_DIR}/lib/TouchManager

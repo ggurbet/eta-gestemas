@@ -28,7 +28,7 @@ public:
     TargetFactory(const TargetFactory&) = delete;
     TargetFactory& operator=(const TargetFactory&) = delete;
 private:
-    void processTargets(const QString& targetName);
+    void processAll(const QString& targetName);
     void processTarget(const QString& targetName);
     void processGestureRecognizers();
     void processGestureRecognizer(GestureRecognizer *gr);

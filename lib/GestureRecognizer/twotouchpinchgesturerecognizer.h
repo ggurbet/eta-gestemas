@@ -35,8 +35,8 @@ public:
 
 protected:
     virtual void onTouchBegan(const Touch *touch);
-    virtual void onTouchMoved(const Touch *prev, const Touch *current);
-    virtual void onTouchEnded(const Touch *prev, const Touch *current);
+    virtual void onTouchMoved(const Touch *touch);
+    virtual void onTouchEnded(const Touch *touch);
 private:
     float m_scale;
     const Touch *m_touch1;

@@ -19,6 +19,7 @@
 #include <QtCore/QtDebug>
 #include "scroll.h"
 #include "pangesturerecognizer.h"
+#include "utilities.h"
 
 void Scroll::setGestureRecognizer(PanGestureRecognizer *recognizer)
 {
@@ -28,6 +29,9 @@ void Scroll::setGestureRecognizer(PanGestureRecognizer *recognizer)
 void Scroll::onBegan()
 {
     qDebug() << "Scroll onBegan";
+    m_counter = m_accumulator;
+    m_averageVelocityX = 0.0f;
+    m_averageVelocityY = 0.0f;
 }
 void Scroll::onRecognized()
 {
@@ -35,33 +39,41 @@ void Scroll::onRecognized()
 }
 void Scroll::onChanged()
 {
-    qDebug() << "Scroll onChanged";
     const PanGestureRecognizer *p =
         static_cast<const PanGestureRecognizer*>(m_recognizer);
-    qDebug() << "vx: " << p->velocityX()
-             << "vy: " << p->velocityY();
-    if (p->velocityX() > 0.0f) {
-        if (p->velocityX() <= maxVelocity()
-            && p->velocityX() >= minVelocity()) {
+    if (m_counter != 0) {
+        m_averageVelocityX += p->velocityX();
+        m_averageVelocityY += p->velocityY();
+        --m_counter;
+        return;
+    }
+    qDebug() << "Scroll onChanged";
+    m_averageVelocityX /= m_accumulator;
+    m_averageVelocityY /= m_accumulator;
+
+    qDebug() << "vx: " << m_averageVelocityX
+             << " vy: " << m_averageVelocityY;
+    if (m_averageVelocityX > 0.0f) {
+        if (CHECK_RANGE(m_averageVelocityX, minVelocity(), maxVelocity())) {
             scrollLeft();
-            }
+        }
     } else {
-        if (p->velocityX() >= -maxVelocity()
-            && p->velocityX() <= -minVelocity()) {
+        if (CHECK_RANGE(m_averageVelocityX, -maxVelocity(), -minVelocity())) {
             scrollRight();
         }
     }
-    if (p->velocityY() > 0.0f) {
-        if (p->velocityY() <= maxVelocity()
-            && p->velocityY() >= minVelocity()) {
+    if (m_averageVelocityY > 0.0f) {
+        if (CHECK_RANGE(m_averageVelocityY, minVelocity(), maxVelocity())) {
             scrollUp();
         }
     } else {
-        if (p->velocityY() >= -maxVelocity()
-            && p->velocityY() <= -minVelocity()) {
+        if (CHECK_RANGE(m_averageVelocityY, -maxVelocity(), -minVelocity())) {
             scrollDown();
         }
     }
+    m_averageVelocityX = 0.0f;
+    m_averageVelocityY = 0.0f;
+    m_counter = m_accumulator;
 }
 void Scroll::onCanceled()
 {

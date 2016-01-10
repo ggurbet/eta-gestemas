@@ -76,7 +76,7 @@ target_include_directories(taptool PRIVATE
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tap.xml
     ${CMAKE_CURRENT_BINARY_DIR}/tap.xml COPYONLY)
 
-# taptool
+# pantool
 add_executable(pantool pantool.cpp)
 add_dependencies(pantool gestemas)
 

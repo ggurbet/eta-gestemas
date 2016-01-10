@@ -63,6 +63,9 @@ private:
     float m_maxVelocity;
     float m_minVelocity;
     int m_accumulator;
+    int m_counter;
+    float m_averageVelocityX;
+    float m_averageVelocityY;
 };
 
 #endif /* SCROLL_H */

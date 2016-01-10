@@ -46,14 +46,6 @@ bool PanGestureRecognizer::isEqual(const GestureRecognizer& other) const
 
 void PanGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    qDebug() << "Pan onTouchBegan";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
     if (numTouches() > maxNumTouchesRequired()) {
         if (state() == State::Possible) {
             setState(State::Failed);
@@ -68,44 +60,31 @@ void PanGestureRecognizer::onTouchBegan(const Touch *touch)
     }
 }
 
-void PanGestureRecognizer::onTouchMoved(const Touch *prev,
-                                              const Touch *current)
+void PanGestureRecognizer::onTouchMoved(const Touch *touch)
 {
-    // const Touch *touch = current;
-    qDebug() << "Pan onTouchMoved";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
     if (numTouches() < minNumTouchesRequired()) {
         return;
     }
 
-    float x1 = prev->x();
-    float y1 = prev->y();
-    float x2 = current->x();
-    float y2 = current->y();
-    float deltaTranslation = 0.0f;
+    const Touch *t = touch;
+    float displacement= 0.0f;
     uint64_t deltaTime = 0;
     if (state() == State::Possible) {
         m_prevCentralX = centralX();
         m_prevCentralY = centralY();
         updateCentralPoint();
-        deltaTime = current->timeStamp() - m_timeStamp;
+        deltaTime = t->timeStamp() - m_timeStamp;
         deltaTime = (deltaTime == 0) ? 1 : deltaTime;
-        m_timeStamp = current->timeStamp();
-        if (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) >
+        m_timeStamp = t->timeStamp();
+        if ((SQUARED(t->deltaX()) + SQUARED(t->deltaY())) >
             SQUARED(recognitionThreshold())) {
-            deltaTranslation = centralX() - m_prevCentralX;
-            m_velocityX = deltaTranslation / deltaTime;
-            m_translationX = deltaTranslation;
+            displacement = centralX() - m_prevCentralX;
+            m_velocityX = displacement / deltaTime;
+            m_translationX = displacement;
 
-            deltaTranslation = centralY() - m_prevCentralY;
-            m_velocityY = deltaTranslation / deltaTime;
-            m_translationY = deltaTranslation;
+            displacement = centralY() - m_prevCentralY;
+            m_velocityY = displacement / deltaTime;
+            m_translationY = displacement;
 
             setState(State::Began);
         }
@@ -113,34 +92,23 @@ void PanGestureRecognizer::onTouchMoved(const Touch *prev,
         m_prevCentralX = centralX();
         m_prevCentralY = centralY();
         updateCentralPoint();
-        deltaTime = current->timeStamp() - m_timeStamp;
+        deltaTime = t->timeStamp() - m_timeStamp;
         deltaTime = (deltaTime == 0) ? 1 : deltaTime;
-        m_timeStamp = current->timeStamp();
-        deltaTranslation = centralX() - m_prevCentralX;
-        m_velocityX = deltaTranslation / deltaTime;
-        m_translationX += deltaTranslation;
+        m_timeStamp = t->timeStamp();
+        displacement = centralX() - m_prevCentralX;
+        m_velocityX = displacement / deltaTime;
+        m_translationX += displacement;
 
-        deltaTranslation = centralY() - m_prevCentralY;
-        m_velocityY = deltaTranslation / deltaTime;
-        m_translationY += deltaTranslation;
+        displacement = centralY() - m_prevCentralY;
+        m_velocityY = displacement / deltaTime;
+        m_translationY += displacement;
         setState(State::Changed);
     }
 }
 
-void PanGestureRecognizer::onTouchEnded(const Touch *prev,
-                                              const Touch *current)
+void PanGestureRecognizer::onTouchEnded(const Touch *touch)
 {
-    (void)prev;
-    (void)current;
-    // const Touch *touch = current;
-    qDebug() << "Pan onTouchEnded";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
+    (void)touch;
     if (numTouches() < minNumTouchesRequired()) {
         if (state() == State::Possible) {
             setState(State::Failed);

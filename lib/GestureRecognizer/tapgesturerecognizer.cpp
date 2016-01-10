@@ -56,14 +56,6 @@ bool TapGestureRecognizer::isEqual(const GestureRecognizer& other) const
 
 void TapGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    qDebug() << "Tap onTouchBegan";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
     if (numTouches() > numTouchesRequired()) {
         if (state() == State::Possible) {
             setState(State::Failed);
@@ -114,42 +106,19 @@ void TapGestureRecognizer::onTouchBegan(const Touch *touch)
     }
 }
 
-void TapGestureRecognizer::onTouchMoved(const Touch *prev,
-                                              const Touch *current)
+void TapGestureRecognizer::onTouchMoved(const Touch *touch)
 {
-    // const Touch *touch = current;
-    qDebug() << "Tap onTouchMoved";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
-    float x1 = prev->x();
-    float x2 = current->x();
-    float y1 = prev->y();
-    float y2 = current->y();
-    if (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) >
+    const Touch *t = touch;
+    if ((SQUARED(t->deltaX()) + SQUARED(t->deltaY())) >
         SQUARED(recognitionThreshold()) && state() == State::Possible) {
         setState(State::Failed);
     }
 
 }
 
-void TapGestureRecognizer::onTouchEnded(const Touch *prev,
-                                              const Touch *current)
+void TapGestureRecognizer::onTouchEnded(const Touch *touch)
 {
-    (void)prev;
-    // const Touch *touch = current;
-    qDebug() << "Tap onTouchEnded";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
+    (void)touch;
     if (!m_numTouchesRequiredReached) {
         setState(State::Failed);
     } else if (numTouches() == 0) {

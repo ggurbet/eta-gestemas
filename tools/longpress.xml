@@ -1,27 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Targets>
+<gestemas>
+  <movementThreshold>5.0</movementThreshold>
   <Target>
-    <name>Firefox</name>
+    <name>root</name>
     <GestureRecognizers>
       <LongPress>
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <maxAllowableDrift>10.0</maxAllowableDrift>
+        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        <gestureListener>RightClick</gestureListener>
+        <RightClick>
+        </RightClick>
       </LongPress>
     </GestureRecognizers>
   </Target>
-  <Target>
-    <name>Dolphin</name>
-    <GestureRecognizers>
-      <LongPress>
-        <numTouchesRequired>2</numTouchesRequired>
-        <minPressDuration>500</minPressDuration>
-        <maxAllowableDrift>10.0</maxAllowableDrift>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        <gestureListener>RightClick</gestureListener>
-      </LongPress>
-    </GestureRecognizers>
-  </Target>
-</Targets>
+</gestemas>

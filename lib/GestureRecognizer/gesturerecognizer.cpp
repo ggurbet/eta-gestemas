@@ -72,30 +72,30 @@ void GestureRecognizer::reset()
 
 void GestureRecognizer::touchBeganHandler(const Touch *touch)
 {
-    const Touch *prev = nullptr;
-    prev = findTouch(touch->touchId());
-    Q_ASSERT(prev == nullptr);
-    prev = touch;
-    m_touches.append(prev);
-    m_targetId = prev->targetId();
-    onTouchBegan(prev);
+    const Touch *t = nullptr;
+    t = findTouch(touch->touchId());
+    Q_ASSERT(t == nullptr);
+    t = touch;
+    m_touches.append(t);
+    m_targetId = t->targetId();
+    onTouchBegan(t);
 }
 
 void GestureRecognizer::touchMovedHandler(const Touch *touch)
 {
-    const Touch *prev = nullptr;
-    prev = findTouch(touch->touchId());
-    Q_ASSERT(prev != nullptr);
-    onTouchMoved(prev, touch);
+    const Touch *t = nullptr;
+    t = findTouch(touch->touchId());
+    Q_ASSERT(t != nullptr);
+    onTouchMoved(touch);
 }
 
 void GestureRecognizer::touchEndedHandler(const Touch *touch)
 {
-    const Touch *prev = nullptr;
-    prev = findTouch(touch->touchId());
-    Q_ASSERT(prev != nullptr);
-    m_touches.removeAll(prev);
-    onTouchEnded(prev, touch);
+    const Touch *t = nullptr;
+    t = findTouch(touch->touchId());
+    Q_ASSERT(t != nullptr);
+    m_touches.removeAll(t);
+    onTouchEnded(touch);
 }
 
 void GestureRecognizer::callListener()
@@ -123,7 +123,6 @@ void GestureRecognizer::callListener()
     }
 }
 
-
 void GestureRecognizer::handleTouchOwnership() const
 {
     m_manager->handleTouchOwnership();
@@ -136,7 +135,7 @@ void GestureRecognizer::setManager(GestureRecognizerManager* manager)
 
 void GestureRecognizer::setState(const State& newState)
 {
-    qDebug() << m_state.toString() << "->" << newState.toString();
+    // qDebug() << m_state.toString() << "->" << newState.toString();
     Q_ASSERT(m_state.canTransitionTo(newState));
     m_state = newState;
     m_states.append(m_state);

@@ -76,7 +76,7 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
 
         if (m_configReader->readNextStartElement()
             && m_configReader->name() == "gestemas") {
-            processTargets(targetName);
+            processAll(targetName);
             if (m_configReader->tokenType() == QXmlStreamReader::Invalid) {
                 m_configReader->readNext();
             }
@@ -115,7 +115,7 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
     return m_currentTarget;
 }
 
-void TargetFactory::processTargets(const QString& targetName)
+void TargetFactory::processAll(const QString& targetName)
 {
     if (!m_configReader->isStartElement()
         || m_configReader->name() != "gestemas") {

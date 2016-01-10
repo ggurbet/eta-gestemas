@@ -70,6 +70,16 @@ public:
     float y() const
     {return m_y;}
 
+    void setDeltaX(float x)
+    {m_deltaX = x;}
+    float deltaX() const
+    {return m_deltaX;}
+
+    void setDeltaY(float y)
+    {m_deltaY = y;}
+    float deltaY() const
+    {return m_deltaY;}
+
     void setResolutionX(float x)
     {m_resolutionX = x;}
     float resolutionX() const
@@ -105,6 +115,8 @@ private:
     float m_startY;
     float m_x;
     float m_y;
+    float m_deltaX;
+    float m_deltaY;
     float m_resolutionX;
     float m_resolutionY;
     void *m_device;

@@ -53,14 +53,6 @@ bool LongPressGestureRecognizer::isEqual(const GestureRecognizer& other) const
 
 void LongPressGestureRecognizer::onTouchBegan(const Touch *touch)
 {
-    qDebug() << "LongPress onTouchBegan";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
     if (numTouches() > numTouchesRequired()) {
         if (state() == State::Possible) {
             setState(State::Failed);
@@ -75,25 +67,15 @@ void LongPressGestureRecognizer::onTouchBegan(const Touch *touch)
     }
 }
 
-void LongPressGestureRecognizer::onTouchMoved(const Touch *prev,
-                                              const Touch *current)
+void LongPressGestureRecognizer::onTouchMoved(const Touch *touch)
 {
-    // const Touch *touch = current;
-    qDebug() << "LongPress onTouchMoved";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
-    const Touch *t = current;
-    float driftSquared = SQUARED_PYTHAGOREAN(t->y(), t->startY(),
+    const Touch *t = touch;
+    float displacementSquared = SQUARED_PYTHAGOREAN(t->y(), t->startY(),
                                             t->x(), t->startX());
     float threshold = recognitionThreshold();
     if (state() == State::Possible
         && threshold > 0.0f
-        && driftSquared > SQUARED(threshold)) {
+        && displacementSquared > SQUARED(threshold)) {
         setState(State::Failed);
     } else if (state() == State::Began || state() == State::Changed) {
         updateCentralPoint();
@@ -101,18 +83,9 @@ void LongPressGestureRecognizer::onTouchMoved(const Touch *prev,
     }
 }
 
-void LongPressGestureRecognizer::onTouchEnded(const Touch *prev,
-                                              const Touch *current)
+void LongPressGestureRecognizer::onTouchEnded(const Touch *touch)
 {
-    // const Touch *touch = current;
-    qDebug() << "LongPress onTouchEnded";
-    // qDebug() << "touchId:" << touch->touchId()
-    //          << "x:" << touch->x()
-    //          << "y:" << touch->y()
-    //          << "resolutionX:" << touch->resolutionX()
-    //          << "resolutionY:" << touch->resolutionY()
-    //          << "timeStamp:" <<  touch->timeStamp();
-
+    (void)touch;
     if (m_numTouchesRequiredReached) {
         if (state() == State::Began || state() == State::Changed) {
             updateCentralPoint();
