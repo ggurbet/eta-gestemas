@@ -9,6 +9,7 @@ set(gestemas_SOURCES
 )
 
 add_executable(${GESTEMAS_APPLICATION_NAME} ${gestemas_SOURCES})
+add_dependencies(${GESTEMAS_APPLICATION_NAME} gestemas)
 
 target_link_libraries(${GESTEMAS_APPLICATION_NAME}
     Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}

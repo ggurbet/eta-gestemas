@@ -10,6 +10,7 @@ set(xlibwmatool_SOURCES
 
 # xlibwmatool
 add_executable(xlibwmatool xlibwmatool.cpp)
+add_dependencies(xlibwmatool gestemas)
 
 target_link_libraries(xlibwmatool
     Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
@@ -20,6 +21,7 @@ target_include_directories(xlibwmatool PRIVATE
 
 # longpresstool
 add_executable(longpresstool longpresstool.cpp)
+add_dependencies(longpresstool gestemas)
 
 target_link_libraries(longpresstool
   Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
@@ -38,6 +40,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/longpress.xml
 
 # twotouchpinchtool
 add_executable(twotouchpinchtool twotouchpinchtool.cpp)
+add_dependencies(twotouchpinchtool gestemas)
 
 target_link_libraries(twotouchpinchtool
   Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
@@ -56,6 +59,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/twotouchpinch.xml
 
 # taptool
 add_executable(taptool taptool.cpp)
+add_dependencies(taptool gestemas)
 
 target_link_libraries(taptool
   Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
@@ -74,6 +78,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tap.xml
 
 # taptool
 add_executable(pantool pantool.cpp)
+add_dependencies(pantool gestemas)
 
 target_link_libraries(pantool
   Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
@@ -92,6 +97,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pan.xml
 
 # integrationtool
 add_executable(integrationtool integrationtool.cpp)
+add_dependencies(integrationtool gestemas)
 
 target_link_libraries(integrationtool
   Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}

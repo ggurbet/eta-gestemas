@@ -8,6 +8,7 @@ find_package(X11)
 
 # xlibwmatest
 add_executable(xlibwmatest xlibwmatest.cpp)
+add_dependencies(xlibwmatest gestemas)
 add_test(xlibwmatest xlibwmatest)
 
 target_link_libraries(xlibwmatest
@@ -20,6 +21,7 @@ target_include_directories(xlibwmatest PRIVATE
 
 # targetfactorytest
 add_executable(targetfactorytest targetfactorytest.cpp)
+add_dependencies(targetfactorytest gestemas)
 add_test(targetfactorytest targetfactorytest)
 
 target_link_libraries(targetfactorytest
@@ -39,6 +41,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.xml
 
 # statetest
 add_executable(statetest statetest.cpp)
+add_dependencies(statetest gestemas)
 add_test(statetest statetest)
 
 target_link_libraries(statetest
