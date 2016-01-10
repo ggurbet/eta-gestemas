@@ -7,6 +7,11 @@
 #include "pangesturerecognizer.h"
 #include "twotouchpinchgesturerecognizer.h"
 #include "tapgesturerecognizer.h"
+#include "rightclick.h"
+#include "leftclick.h"
+#include "drag.h"
+#include "scroll.h"
+#include "zoom.h"
 
 class TargetFactoryTester : public QObject
 {
@@ -34,74 +39,130 @@ void TargetFactoryTester::initTestCase()
     LongPressGestureRecognizer *gr1 = new LongPressGestureRecognizer;
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
-    gr1->setMaxAllowableDrift(0.001f);
+    gr1->setRecognitionThresholdFactor(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
+    RightClick *listener1 = new RightClick;
+    listener1->setGestureRecognizer(gr1);
     expectedTargetChromium.addGestureRecognizer(gr1);
     PanGestureRecognizer *gr2 = new PanGestureRecognizer;
-    gr2->setMaxNumTouchesRequired(2);
-    gr2->setMinNumTouchesRequired(2);
-    gr2->setMaxVelocity(20.0f);
-    gr2->setMinVelocity(0.1f);
-    gr2->setMaxAllowableDrift(0.001f);
+    gr2->setMaxNumTouchesRequired(1);
+    gr2->setMinNumTouchesRequired(1);
+    gr2->setRecognitionThresholdFactor(1.0f);
     gr2->setAllowSimultaneousRecognition(false);
+    Drag *listener2 = new Drag;
+    listener2->setGestureRecognizer(gr2);
     expectedTargetChromium.addGestureRecognizer(gr2);
-    TwoTouchPinchGestureRecognizer *gr3 = new TwoTouchPinchGestureRecognizer;
-    gr3->setMaxScale(3.0f);
-    gr3->setMinScale(1.2);
-    gr3->setMaxAllowableDrift(0.001f);
+    TapGestureRecognizer *gr3 = new TapGestureRecognizer;
+    gr3->setNumTouchesRequired(1);
+    gr3->setNumTapsRequired(1);
+    gr3->setMaxTapDelay(400);
+    gr3->setMaxTapDuration(1000);
+    gr3->setMaxTapDistance(100.0f);
+    gr3->setRecognitionThresholdFactor(1.0f);
     gr3->setAllowSimultaneousRecognition(false);
-    gr3->setAccumulator(10);
+    LeftClick *listener3 = new LeftClick;
+    listener3->setGestureRecognizer(gr3);
     expectedTargetChromium.addGestureRecognizer(gr3);
-    TapGestureRecognizer *gr4 = new TapGestureRecognizer;
-    gr4->setNumTouchesRequired(2);
-    gr4->setNumTapsRequired(1);
-    gr4->setMaxTapDelay(400);
-    gr4->setMaxTapDuration(1000);
-    gr4->setMaxTapDistance(100.0f);
-    gr4->setMaxAllowableDrift(0.001f);
+    PanGestureRecognizer *gr4 = new PanGestureRecognizer;
+    gr4->setMaxNumTouchesRequired(2);
+    gr4->setMinNumTouchesRequired(2);
+    gr4->setRecognitionThresholdFactor(1.0f);
     gr4->setAllowSimultaneousRecognition(false);
+    Scroll *listener4 = new Scroll;
+    listener4->setAccumulator(10);
+    listener4->setMaxVelocity(20.0f);
+    listener4->setMinVelocity(1.0f);
+    listener4->setGestureRecognizer(gr4);
     expectedTargetChromium.addGestureRecognizer(gr4);
+    TwoTouchPinchGestureRecognizer *gr5 = new TwoTouchPinchGestureRecognizer;
+    gr5->setRecognitionThresholdFactor(1.0f);
+    gr5->setAllowSimultaneousRecognition(false);
+    Zoom *listener5 = new Zoom;
+    listener5->setAccumulator(10);
+    listener5->setMaxScale(3.0f);
+    listener5->setMinScale(1.2f);
+    listener5->setGestureRecognizer(gr5);
+    expectedTargetChromium.addGestureRecognizer(gr5);
 
     expectedTargetFirefox.setTargetId(201);
     expectedTargetFirefox.setTargetName("Firefox");
     gr1 = new LongPressGestureRecognizer;
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
-    gr1->setMaxAllowableDrift(0.001f);
+    gr1->setRecognitionThresholdFactor(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
+    listener1 = new RightClick;
+    listener1->setGestureRecognizer(gr1);
     expectedTargetFirefox.addGestureRecognizer(gr1);
     gr2 = new PanGestureRecognizer;
-    gr2->setMaxNumTouchesRequired(3);
-    gr2->setMinNumTouchesRequired(3);
-    gr2->setMaxVelocity(20.2f);
-    gr2->setMinVelocity(0.2f);
-    gr2->setMaxAllowableDrift(0.001f);
+    gr2->setMaxNumTouchesRequired(1);
+    gr2->setMinNumTouchesRequired(1);
+    gr2->setRecognitionThresholdFactor(1.0f);
+    gr2->setAllowSimultaneousRecognition(false);
+    listener2 = new Drag;
+    listener2->setGestureRecognizer(gr2);
     expectedTargetFirefox.addGestureRecognizer(gr2);
-    gr3 = new TwoTouchPinchGestureRecognizer;
-    gr3->setMaxScale(4.0f);
-    gr3->setMinScale(1.4);
-    gr3->setMaxAllowableDrift(0.001f);
-    gr3->setAllowSimultaneousRecognition(true);
-    gr3->setAccumulator(11);
+    gr3 = new TapGestureRecognizer;
+    gr3->setNumTouchesRequired(1);
+    gr3->setNumTapsRequired(1);
+    gr3->setMaxTapDelay(400);
+    gr3->setMaxTapDuration(1000);
+    gr3->setMaxTapDistance(100.0f);
+    gr3->setRecognitionThresholdFactor(1.0f);
+    gr3->setAllowSimultaneousRecognition(false);
+    listener3 = new LeftClick;
+    listener3->setGestureRecognizer(gr3);
     expectedTargetFirefox.addGestureRecognizer(gr3);
-    gr4 = new TapGestureRecognizer;
-    gr4->setNumTouchesRequired(3);
-    gr4->setNumTapsRequired(1);
-    gr4->setMaxTapDelay(400);
-    gr4->setMaxTapDuration(1000);
-    gr4->setMaxTapDistance(100.0f);
-    gr4->setMaxAllowableDrift(0.0001f);
+    gr4 = new PanGestureRecognizer;
+    gr4->setMaxNumTouchesRequired(2);
+    gr4->setMinNumTouchesRequired(2);
+    gr4->setRecognitionThresholdFactor(1.0f);
     gr4->setAllowSimultaneousRecognition(false);
+    listener4 = new Scroll;
+    listener4->setAccumulator(15);
+    listener4->setMaxVelocity(20.0f);
+    listener4->setMinVelocity(1.0f);
+    listener4->setGestureRecognizer(gr4);
     expectedTargetFirefox.addGestureRecognizer(gr4);
+    gr5 = new TwoTouchPinchGestureRecognizer;
+    gr5->setRecognitionThresholdFactor(1.0f);
+    gr5->setAllowSimultaneousRecognition(false);
+    listener5 = new Zoom;
+    listener5->setAccumulator(10);
+    listener5->setMaxScale(3.0f);
+    listener5->setMinScale(1.2f);
+    listener5->setGestureRecognizer(gr5);
+    expectedTargetFirefox.addGestureRecognizer(gr5);
 
     expectedTargetOther.setTargetId(202);
     expectedTargetOther.setTargetName("Other");
     gr1 = new LongPressGestureRecognizer;
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
-    gr1->setMaxAllowableDrift(0.001f);
+    gr1->setRecognitionThresholdFactor(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
+    listener1 = new RightClick;
+    listener1->setGestureRecognizer(gr1);
     expectedTargetOther.addGestureRecognizer(gr1);
+    gr2 = new PanGestureRecognizer;
+    gr2->setMaxNumTouchesRequired(1);
+    gr2->setMinNumTouchesRequired(1);
+    gr2->setRecognitionThresholdFactor(1.0f);
+    gr2->setAllowSimultaneousRecognition(false);
+    listener2 = new Drag;
+    listener2->setGestureRecognizer(gr2);
+    expectedTargetOther.addGestureRecognizer(gr2);
+    gr3 = new TapGestureRecognizer;
+    gr3->setNumTouchesRequired(1);
+    gr3->setNumTapsRequired(1);
+    gr3->setMaxTapDelay(400);
+    gr3->setMaxTapDuration(1000);
+    gr3->setMaxTapDistance(100.0f);
+    gr3->setRecognitionThresholdFactor(1.0f);
+    gr3->setAllowSimultaneousRecognition(false);
+    listener3 = new LeftClick;
+    listener3->setGestureRecognizer(gr3);
+    expectedTargetOther.addGestureRecognizer(gr3);
 
     // Parsed targets
     targetFactory.setConfigurationFileName("config.xml");
@@ -125,6 +186,7 @@ void TargetFactoryTester::testTargetFactory()
     QVERIFY(!parsedTargetOther->isEqual(expectedTargetChromium));
     QVERIFY(!parsedTargetOther->isEqual(expectedTargetFirefox));
     QVERIFY(!parsedTargetChromium->isEqual(expectedTargetFirefox));
+    QVERIFY(GestureRecognizer::movementThreshold == 10.0f);
 }
 
 QTEST_MAIN(TargetFactoryTester)

@@ -25,8 +25,6 @@ PanGestureRecognizer::PanGestureRecognizer()
     :GestureRecognizer(),
      m_maxNumTouchesRequired(2),
      m_minNumTouchesRequired(2),
-     m_maxVelocity(20.0f),
-     m_minVelocity(0.1f),
      m_velocityX(0.0f),
      m_velocityY(0.0f),
      m_translationX(0.0f),
@@ -36,16 +34,12 @@ PanGestureRecognizer::PanGestureRecognizer()
 
 bool PanGestureRecognizer::isEqual(const GestureRecognizer& other) const
 {
+    if (!GestureRecognizer::isEqual(other)) return false;
+
     const PanGestureRecognizer *p =
         static_cast<const PanGestureRecognizer*>(&other);
-
-    if (m_maxVelocity != p->m_maxVelocity) return false;
-    if (m_minVelocity != p->m_minVelocity) return false;
     if (m_maxNumTouchesRequired != p->m_maxNumTouchesRequired) return false;
     if (m_minNumTouchesRequired != p->m_minNumTouchesRequired) return false;
-    if (m_maxAllowableDrift != p->m_maxAllowableDrift) return false;
-    if (m_allowSimultaneousRecognition !=
-        p->m_allowSimultaneousRecognition) return false;
 
     return true;
 }
@@ -104,7 +98,7 @@ void PanGestureRecognizer::onTouchMoved(const Touch *prev,
         deltaTime = (deltaTime == 0) ? 1 : deltaTime;
         m_timeStamp = current->timeStamp();
         if (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) >
-            SQUARED(maxAllowableDrift())) {
+            SQUARED(recognitionThreshold())) {
             deltaTranslation = centralX() - m_prevCentralX;
             m_velocityX = deltaTranslation / deltaTime;
             m_translationX = deltaTranslation;

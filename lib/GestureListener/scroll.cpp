@@ -41,24 +41,24 @@ void Scroll::onChanged()
     qDebug() << "vx: " << p->velocityX()
              << "vy: " << p->velocityY();
     if (p->velocityX() > 0.0f) {
-        if (p->velocityX() <= p->maxVelocity()
-            && p->velocityX() >= p->minVelocity()) {
+        if (p->velocityX() <= maxVelocity()
+            && p->velocityX() >= minVelocity()) {
             scrollLeft();
             }
     } else {
-        if (p->velocityX() >= -p->maxVelocity()
-            && p->velocityX() <= -p->minVelocity()) {
+        if (p->velocityX() >= -maxVelocity()
+            && p->velocityX() <= -minVelocity()) {
             scrollRight();
         }
     }
     if (p->velocityY() > 0.0f) {
-        if (p->velocityY() <= p->maxVelocity()
-            && p->velocityY() >= p->minVelocity()) {
+        if (p->velocityY() <= maxVelocity()
+            && p->velocityY() >= minVelocity()) {
             scrollUp();
         }
     } else {
-        if (p->velocityY() >= -p->maxVelocity()
-            && p->velocityY() <= -p->minVelocity()) {
+        if (p->velocityY() >= -maxVelocity()
+            && p->velocityY() <= -minVelocity()) {
             scrollDown();
         }
     }
@@ -101,3 +101,12 @@ void Scroll::scrollRight()
     injectKey(XStringToKeysym("Right"), modifiers);
 }
 
+bool Scroll::isEqual(const GestureListener& other) const
+{
+    const Scroll *p = static_cast<const Scroll*>(&other);
+    if (m_accumulator != p->m_accumulator) return false;
+    if (m_maxVelocity != p->m_maxVelocity) return false;
+    if (m_minVelocity != p->m_minVelocity) return false;
+
+    return true;
+}

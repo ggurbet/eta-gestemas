@@ -26,20 +26,19 @@ class PanGestureRecognizer;
 class Drag : public XTestGestureListener
 {
 public:
-    Drag(Display* display = nullptr,
-                const GestureRecognizer *recognizer = nullptr)
-        :XTestGestureListener(display, recognizer){}
+    Drag(Display* display = nullptr)
+        :XTestGestureListener(display){}
 
     virtual ~Drag() = default;
-
-    void setGestureRecognizer(PanGestureRecognizer *recognizer);
-
+    virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
     virtual void onChanged();
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+
+    void setGestureRecognizer(PanGestureRecognizer *recognizer);
 };
 
 #endif /* DRAG_H */

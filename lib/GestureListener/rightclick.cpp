@@ -27,27 +27,33 @@ void RightClick::setGestureRecognizer(LongPressGestureRecognizer *recognizer)
 
 void RightClick::onBegan()
 {
-    qDebug() << "RighClick onBegan";
+    qDebug() << "RightClick onBegan";
     const char *modifiers[] = {""};
     injectButton(3, modifiers);
 }
 void RightClick::onRecognized()
 {
-    qDebug() << "RighClick onRecognized";
+    qDebug() << "RightClick onRecognized";
 }
 void RightClick::onChanged()
 {
-    qDebug() << "RighClick onChanged";
+    qDebug() << "RightClick onChanged";
 }
 void RightClick::onCanceled()
 {
-    qDebug() << "RighClick onCanceled";
+    qDebug() << "RightClick onCanceled";
 }
 void RightClick::onEnded()
 {
-    qDebug() << "RighClick onEnded";
+    qDebug() << "RightClick onEnded";
 }
 void RightClick::onFailed()
 {
-    qDebug() << "RighClick onFailed";
+    qDebug() << "RightClick onFailed";
+}
+
+bool RightClick::isEqual(const GestureListener& other) const
+{
+    (void)other;
+    return true;
 }

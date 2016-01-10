@@ -19,11 +19,6 @@
 #include "gesturelistener.h"
 #include "gesturerecognizer.h"
 
-GestureListener::GestureListener(const GestureRecognizer *recognizer)
-    :m_recognizer(recognizer)
-{
-}
-
 void GestureListener::setGestureRecognizer(GestureRecognizer *recognizer)
 {
     recognizer->setGestureListener(this);

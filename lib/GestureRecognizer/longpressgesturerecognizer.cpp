@@ -41,14 +41,12 @@ LongPressGestureRecognizer::LongPressGestureRecognizer()
 
 bool LongPressGestureRecognizer::isEqual(const GestureRecognizer& other) const
 {
+    if (!GestureRecognizer::isEqual(other)) return false;
+
     const LongPressGestureRecognizer *p =
         static_cast<const LongPressGestureRecognizer*>(&other);
-
     if (m_numTouchesRequired != p->m_numTouchesRequired) return false;
     if (m_minPressDuration != p->m_minPressDuration) return false;
-    if (m_maxAllowableDrift != p->m_maxAllowableDrift) return false;
-    if (m_allowSimultaneousRecognition !=
-        p->m_allowSimultaneousRecognition) return false;
 
     return true;
 }
@@ -92,9 +90,10 @@ void LongPressGestureRecognizer::onTouchMoved(const Touch *prev,
     const Touch *t = current;
     float driftSquared = SQUARED_PYTHAGOREAN(t->y(), t->startY(),
                                             t->x(), t->startX());
+    float threshold = recognitionThreshold();
     if (state() == State::Possible
-        && maxAllowableDrift() > 0
-        && driftSquared > SQUARED(maxAllowableDrift())) {
+        && threshold > 0.0f
+        && driftSquared > SQUARED(threshold)) {
         setState(State::Failed);
     } else if (state() == State::Began || state() == State::Changed) {
         updateCentralPoint();

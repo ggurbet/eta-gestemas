@@ -24,8 +24,9 @@ class GestureRecognizer;
 class GestureListener
 {
 public:
-    GestureListener(const GestureRecognizer *recognizer = nullptr);
+    GestureListener() : m_recognizer(nullptr) {}
     virtual ~GestureListener() = default;
+    virtual bool isEqual(const GestureListener& other) const = 0;
     virtual void onBegan() = 0;
     virtual void onRecognized() = 0;
     virtual void onChanged()  = 0;

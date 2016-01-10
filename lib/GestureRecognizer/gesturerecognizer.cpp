@@ -24,9 +24,11 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QtDebug>
 
+float GestureRecognizer::movementThreshold = 2.0f;
+
 GestureRecognizer::GestureRecognizer(QObject *parent)
     :QObject(parent), m_manager(nullptr), m_centralX(0.0f), m_centralY(0.0f),
-     m_maxAllowableDrift(0.0001f), m_allowSimultaneousRecognition(false),
+     m_recognitionThresholdFactor(1.0f), m_allowSimultaneousRecognition(false),
      m_listener(nullptr)
 {
 }
@@ -35,6 +37,24 @@ GestureRecognizer::~GestureRecognizer()
 {
     delete m_listener;
     m_listener = nullptr;
+}
+
+bool GestureRecognizer::isEqual(const GestureRecognizer& other) const
+{
+    if (m_recognitionThresholdFactor != other.m_recognitionThresholdFactor) {
+        return false;
+    }
+    if (m_allowSimultaneousRecognition != other.m_allowSimultaneousRecognition) {
+        return false;
+    }
+
+    if (m_listener && other.m_listener) {
+        if (!m_listener->isEqual(*other.m_listener)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void GestureRecognizer::reset()
@@ -180,7 +200,7 @@ const Touch* GestureRecognizer::findTouch(uint32_t touchId)
             return touch;
         }
     }
-    return nullptr;;
+    return nullptr;
 }
 
 void GestureRecognizer::setGestureListener(GestureListener *listener)

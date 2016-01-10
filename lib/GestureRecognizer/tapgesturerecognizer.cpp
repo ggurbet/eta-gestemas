@@ -41,17 +41,15 @@ TapGestureRecognizer::TapGestureRecognizer()
 
 bool TapGestureRecognizer::isEqual(const GestureRecognizer& other) const
 {
+    if (!GestureRecognizer::isEqual(other)) return false;
+
     const TapGestureRecognizer *p =
         static_cast<const TapGestureRecognizer*>(&other);
-
     if (m_numTouchesRequired != p->m_numTouchesRequired) return false;
     if (m_numTapsRequired != p->m_numTapsRequired) return false;
     if (m_maxTapDelay != p->m_maxTapDelay) return false;
     if (m_maxTapDuration != p->m_maxTapDuration) return false;
     if (m_maxTapDistance != p->m_maxTapDistance) return false;
-    if (m_maxAllowableDrift != p->m_maxAllowableDrift) return false;
-    if (m_allowSimultaneousRecognition !=
-        p->m_allowSimultaneousRecognition) return false;
 
     return true;
 }
@@ -133,7 +131,7 @@ void TapGestureRecognizer::onTouchMoved(const Touch *prev,
     float y1 = prev->y();
     float y2 = current->y();
     if (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) >
-        SQUARED(maxAllowableDrift()) && state() == State::Possible) {
+        SQUARED(recognitionThreshold()) && state() == State::Possible) {
         setState(State::Failed);
     }
 

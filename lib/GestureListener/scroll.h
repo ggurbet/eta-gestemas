@@ -26,25 +26,43 @@ class PanGestureRecognizer;
 class Scroll : public XTestGestureListener
 {
 public:
-    Scroll(Display* display = nullptr,
-                const GestureRecognizer *recognizer = nullptr)
-        :XTestGestureListener(display, recognizer){}
+    Scroll(Display* display = nullptr)
+        :XTestGestureListener(display){}
 
     virtual ~Scroll() = default;
-
-    void setGestureRecognizer(PanGestureRecognizer *recognizer);
-
+    virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
     virtual void onChanged();
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+
+    void setGestureRecognizer(PanGestureRecognizer *recognizer);
+
+    void setMaxVelocity(float maxVelocity)
+    {m_maxVelocity = maxVelocity;}
+    float maxVelocity() const
+    {return m_maxVelocity;}
+
+    void setMinVelocity(float minVelocity)
+    {m_minVelocity = minVelocity;}
+    float minVelocity() const
+    {return m_minVelocity;}
+
+    void setAccumulator(int accumulator)
+    {m_accumulator = accumulator;}
+    int accumulator() const
+    {return m_accumulator;}
 private:
     void scrollUp();
     void scrollDown();
     void scrollLeft();
     void scrollRight();
+
+    float m_maxVelocity;
+    float m_minVelocity;
+    int m_accumulator;
 };
 
 #endif /* SCROLL_H */

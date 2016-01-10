@@ -75,7 +75,7 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
     m_configReader->setDevice(m_configFile);
 
         if (m_configReader->readNextStartElement()
-            && m_configReader->name() == "Targets") {
+            && m_configReader->name() == "gestemas") {
             processTargets(targetName);
             if (m_configReader->tokenType() == QXmlStreamReader::Invalid) {
                 m_configReader->readNext();
@@ -118,12 +118,20 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
 void TargetFactory::processTargets(const QString& targetName)
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Targets") {
+        || m_configReader->name() != "gestemas") {
         return;
     }
     while (m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "Target") {
             processTarget(targetName);
+        } else if (m_configReader->name() == "movementThreshold") {
+            bool ok = false;
+            float movementThreshold =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                GestureRecognizer::movementThreshold = movementThreshold;
+            }
+
         } else {
             m_configReader->skipCurrentElement();
         }
@@ -179,6 +187,22 @@ void TargetFactory::processGestureRecognizers()
     }
 }
 
+void TargetFactory::processGestureRecognizer(GestureRecognizer *gr)
+{
+    if (m_configReader->name() == "recognitionThresholdFactor") {
+        bool ok = false;
+        float factor =
+            m_configReader->readElementText().toFloat(&ok);
+        if (ok) {
+            gr->setRecognitionThresholdFactor(factor);
+        }
+    } else if (m_configReader->name() == "allowSimultaneousRecognition") {
+        bool allowSimultaneousRecognition =
+            m_configReader->readElementText() == "true" ? true : false;
+        gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
+    }
+}
+
 void TargetFactory::processLongPress()
 {
     if (!m_configReader->isStartElement()
@@ -187,41 +211,24 @@ void TargetFactory::processLongPress()
     }
 
     bool ok = false;
-    int numTouchesRequired = 0;
-    int minPressDuration = 0;
-    float maxAllowableDrift = 0.0f;
-    bool allowSimultaneousRecognition = false;
     LongPressGestureRecognizer *gr = new LongPressGestureRecognizer;
     Q_CHECK_PTR(gr);
     while (m_configReader->readNextStartElement()) {
+        processGestureRecognizer(gr);
         if (m_configReader->name() == "numTouchesRequired") {
-            numTouchesRequired =
+            int numTouchesRequired =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setNumTouchesRequired(numTouchesRequired);
             }
         } else if (m_configReader->name() == "minPressDuration") {
-            minPressDuration =
+            int minPressDuration =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setMinPressDuration(minPressDuration);
             }
-        } else if (m_configReader->name() == "maxAllowableDrift") {
-            maxAllowableDrift =
-                m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMaxAllowableDrift(maxAllowableDrift);
-            }
-        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
-            allowSimultaneousRecognition =
-                m_configReader->readElementText() == "true" ? true : false;
-            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
-        } else if (m_configReader->name() == "gestureListener") {
-            QString listenerName = m_configReader->readElementText();
-            if (listenerName == "RightClick") {
-                RightClick *listener = new RightClick;
-                listener->setGestureRecognizer(gr);
-            }
+        } else if (m_configReader->name() == "RightClick") {
+            processRightClick(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -235,57 +242,26 @@ void TargetFactory::processPan()
     }
 
     bool ok = false;
-    int maxNumTouchesRequired = 0;
-    int minNumTouchesRequired = 0;
-    float maxVelocity = 0.0f;
-    float minVelocity = 0.0f;
-    float maxAllowableDrift = 0.0f;
-    bool allowSimultaneousRecognition = false;
     PanGestureRecognizer *gr = new PanGestureRecognizer;
     Q_CHECK_PTR(gr);
     while (m_configReader->readNextStartElement()) {
+        processGestureRecognizer(gr);
         if (m_configReader->name() == "maxNumTouchesRequired") {
-            maxNumTouchesRequired =
+            int maxNumTouchesRequired =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setMaxNumTouchesRequired(maxNumTouchesRequired);
             }
         } else if (m_configReader->name() == "minNumTouchesRequired") {
-            minNumTouchesRequired =
+            int minNumTouchesRequired =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setMinNumTouchesRequired(minNumTouchesRequired);
             }
-        } else if (m_configReader->name() == "maxVelocity") {
-            maxVelocity = m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMaxVelocity(maxVelocity);
-            }
-        } else if (m_configReader->name() == "minVelocity") {
-            minVelocity = m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMinVelocity(minVelocity);
-            }
-        } else if (m_configReader->name() == "maxAllowableDrift") {
-            maxAllowableDrift =
-                m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMaxAllowableDrift(maxAllowableDrift);
-            }
-        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
-            allowSimultaneousRecognition =
-                m_configReader->readElementText() == "true" ? true : false;
-            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
-        } else if (m_configReader->name() == "gestureListener") {
-            QString listenerName = m_configReader->readElementText();
-            if (listenerName == "Drag") {
-                Drag *listener = new Drag;
-                listener->setGestureRecognizer(gr);
-            }
-            if (listenerName == "Scroll") {
-                Scroll *listener = new Scroll;
-                listener->setGestureRecognizer(gr);
-            }
+        } else if (m_configReader->name() == "Drag") {
+            processDrag(gr);
+        } else if (m_configReader->name() == "Scroll") {
+            processScroll(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -298,47 +274,13 @@ void TargetFactory::processTwoTouchPinch()
         return;
     }
 
-    bool ok = false;
-    float maxScale = 0.0f;
-    float minScale = 0.0f;
-    float maxAllowableDrift = 0.0f;
-    bool allowSimultaneousRecognition = false;
     TwoTouchPinchGestureRecognizer * gr =
         new TwoTouchPinchGestureRecognizer;
     Q_CHECK_PTR(gr);
     while (m_configReader->readNextStartElement()) {
-        if (m_configReader->name() == "maxScale") {
-            maxScale = m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMaxScale(maxScale);
-            }
-        } else if (m_configReader->name() == "minScale") {
-            minScale = m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMinScale(minScale);
-            }
-        } else if (m_configReader->name() == "maxAllowableDrift") {
-            maxAllowableDrift =
-                m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMaxAllowableDrift(maxAllowableDrift);
-            }
-        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
-            allowSimultaneousRecognition =
-                m_configReader->readElementText() == "true" ? true : false;
-            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
-        } else if (m_configReader->name() == "gestureListener") {
-            QString listenerName = m_configReader->readElementText();
-            if (listenerName == "Zoom") {
-                Zoom *listener = new Zoom;
-                listener->setGestureRecognizer(gr);
-            }
-        } else if (m_configReader->name() == "accumulator") {
-            int accumulator =
-                m_configReader->readElementText().toInt(&ok, 10);
-            if (ok) {
-                gr->setAccumulator(accumulator);
-            }
+        processGestureRecognizer(gr);
+        if (m_configReader->name() == "Zoom") {
+            processZoom(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -352,63 +294,145 @@ void TargetFactory::processTap()
     }
 
     bool ok = false;
-    int numTouchesRequired = 0;
-    int numTapsRequired = 0;
-    int maxTapDelay = 0;
-    int maxTapDuration = 0;
-    float maxTapDistance = 0.0f;
-    float maxAllowableDrift = 0.0f;
-    bool allowSimultaneousRecognition = false;
     TapGestureRecognizer *gr = new TapGestureRecognizer;
     Q_CHECK_PTR(gr);
     while (m_configReader->readNextStartElement()) {
+        processGestureRecognizer(gr);
         if (m_configReader->name() == "numTouchesRequired") {
-            numTouchesRequired =
+            int numTouchesRequired =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setNumTouchesRequired(numTouchesRequired);
             }
         } else if(m_configReader->name() == "numTapsRequired") {
-            numTapsRequired =
+            int numTapsRequired =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setNumTapsRequired(numTapsRequired);
             }
         } else if(m_configReader->name() == "maxTapDelay") {
-            maxTapDelay =
+            int maxTapDelay =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setMaxTapDelay(maxTapDelay);
             }
         } else if(m_configReader->name() == "maxTapDuration") {
-            maxTapDuration =
+            int maxTapDuration =
                 m_configReader->readElementText().toInt(&ok, 10);
             if (ok) {
                 gr->setMaxTapDuration(maxTapDuration);
             }
         } else if(m_configReader->name() == "maxTapDistance") {
-            maxTapDistance =
+            float maxTapDistance =
                 m_configReader->readElementText().toFloat(&ok);
             if (ok) {
                 gr->setMaxTapDistance(maxTapDistance);
             }
-        } else if (m_configReader->name() == "maxAllowableDrift") {
-            maxAllowableDrift =
-                m_configReader->readElementText().toFloat(&ok);
-            if (ok) {
-                gr->setMaxAllowableDrift(maxAllowableDrift);
-            }
-        } else if (m_configReader->name() == "allowSimultaneousRecognition") {
-            allowSimultaneousRecognition =
-                m_configReader->readElementText() == "true" ? true : false;
-            gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
-        } else if (m_configReader->name() == "gestureListener") {
-            QString listenerName = m_configReader->readElementText();
-            if (listenerName == "LeftClick") {
-                LeftClick *listener = new LeftClick;
-                listener->setGestureRecognizer(gr);
-            }
+        } else if (m_configReader->name() == "LeftClick") {
+            processLeftClick(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
+}
+
+void TargetFactory::processRightClick(LongPressGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "RightClick") {
+        return;
+    }
+
+    RightClick *listener = new RightClick;
+    m_configReader->readNextStartElement();
+    listener->setGestureRecognizer(gr);
+}
+
+void TargetFactory::processDrag(PanGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "Drag") {
+        return;
+    }
+
+    Drag *listener = new Drag;
+    m_configReader->readNextStartElement();
+    listener->setGestureRecognizer(gr);
+}
+
+void TargetFactory::processScroll(PanGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "Scroll") {
+        return;
+    }
+
+    Scroll *listener = new Scroll;
+    bool ok = false;
+    while (m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "accumulator") {
+            int accumulator =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                listener->setAccumulator(accumulator);
+            }
+        } else if (m_configReader->name() == "maxVelocity") {
+            float maxVelocity =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                listener->setMaxVelocity(maxVelocity);
+            }
+        } else if (m_configReader->name() == "minVelocity") {
+            float minVelocity =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                listener->setMinVelocity(minVelocity);
+            }
+        }
+    }
+    listener->setGestureRecognizer(gr);
+}
+
+void TargetFactory::processLeftClick(TapGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "LeftClick") {
+        return;
+    }
+
+    LeftClick *listener = new LeftClick;
+    m_configReader->readNextStartElement();
+    listener->setGestureRecognizer(gr);
+}
+
+void TargetFactory::processZoom(TwoTouchPinchGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "Zoom") {
+        return;
+    }
+
+    bool ok = false;
+    Zoom *listener = new Zoom;
+    while (m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "accumulator") {
+            int accumulator =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                listener->setAccumulator(accumulator);
+            }
+        } else if (m_configReader->name() == "maxScale") {
+            float maxScale =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                listener->setMaxScale(maxScale);
+            }
+        } else if (m_configReader->name() == "minScale") {
+            float minScale =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                listener->setMinScale(minScale);
+            }
+        }
+    }
+    listener->setGestureRecognizer(gr);
 }

@@ -34,7 +34,7 @@ public:
     explicit GestureRecognizer(QObject *parent = nullptr);
     virtual ~GestureRecognizer();
     virtual void reset();
-    virtual bool isEqual(const GestureRecognizer& other) const = 0;
+    virtual bool isEqual(const GestureRecognizer& other) const;
     void touchBeganHandler(const Touch *touch);
     void touchMovedHandler(const Touch *touch);
     void touchEndedHandler(const Touch *touch);
@@ -46,10 +46,12 @@ public:
     const State& state() const
     {return m_state;}
 
-    void setMaxAllowableDrift(float maxAllowableDrift)
-    {m_maxAllowableDrift = maxAllowableDrift;}
-    float maxAllowableDrift() const
-    {return m_maxAllowableDrift;}
+    void setRecognitionThresholdFactor(float factor)
+    {m_recognitionThresholdFactor = factor;}
+    float recognitionThresholdFactor() const
+    {return m_recognitionThresholdFactor;}
+    float recognitionThreshold() const
+    {return m_recognitionThresholdFactor * GestureRecognizer::movementThreshold;}
 
     void setAllowSimultaneousRecognition(bool b)
     {m_allowSimultaneousRecognition = b;}
@@ -81,6 +83,8 @@ public:
 
     GestureRecognizer(const GestureRecognizer&) = delete;
     GestureRecognizer& operator=(const GestureRecognizer&) = delete;
+
+    static float movementThreshold;
 protected:
     virtual void onTouchBegan(const Touch *touch) = 0;
     virtual void onTouchMoved(const Touch *prev, const Touch *current) = 0;
@@ -97,7 +101,7 @@ protected:
     GestureRecognizerManager *m_manager;
     float m_centralX;
     float m_centralY;
-    float m_maxAllowableDrift;
+    float m_recognitionThresholdFactor;
     bool m_allowSimultaneousRecognition;
     QList<const Touch*> m_touches;
     QList<GestureRecognizer*> m_gestureRecognizersToAbort;

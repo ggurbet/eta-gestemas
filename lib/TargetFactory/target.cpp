@@ -18,6 +18,7 @@
 
 #include "target.h"
 #include "gesturerecognizer.h"
+#include <QtCore/QtDebug>
 
 Target::Target(unsigned long targetId, const QString& targetName)
     :m_targetId(targetId), m_targetName(targetName)

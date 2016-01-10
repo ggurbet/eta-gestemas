@@ -26,9 +26,8 @@
 #include "xtestgesturelistener.h"
 #include <cstring>
 
-XTestGestureListener::XTestGestureListener(Display* display,
-                     const GestureRecognizer *recognizer)
-    :GestureListener(recognizer), m_shouldCloseDisplay(false)
+XTestGestureListener::XTestGestureListener(Display* display)
+    :GestureListener(), m_shouldCloseDisplay(false)
 {
     setDisplay(display);
 }

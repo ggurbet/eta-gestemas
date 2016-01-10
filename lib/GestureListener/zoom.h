@@ -26,20 +26,41 @@ class TwoTouchPinchGestureRecognizer;
 class Zoom : public XTestGestureListener
 {
 public:
-    Zoom(Display* display = nullptr,
-               const GestureRecognizer *recognizer = nullptr)
-        :XTestGestureListener(display, recognizer){}
+    Zoom(Display* display = nullptr)
+        :XTestGestureListener(display){}
 
     virtual ~Zoom() = default;
-
-    void setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer);
-
+    virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
     virtual void onChanged();
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+
+    void setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer);
+
+    void setMaxScale(float maxScale)
+    {m_maxScale = maxScale;}
+    float maxScale() const
+    {return m_maxScale;}
+
+    void setMinScale(float minScale)
+    {m_minScale = minScale;}
+    float minScale() const
+    {return m_minScale;}
+
+    void setAccumulator(int accumulator)
+    {m_accumulator = accumulator;}
+    int accumulator() const
+    {return m_accumulator;}
+private:
+    void zoomIn();
+    void zoomOut();
+
+    float m_maxScale;
+    float m_minScale;
+    int m_accumulator;
 };
 
 #endif /* ZOOM_H */

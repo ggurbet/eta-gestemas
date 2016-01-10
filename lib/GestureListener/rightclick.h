@@ -26,20 +26,19 @@ class LongPressGestureRecognizer;
 class RightClick : public XTestGestureListener
 {
 public:
-    RightClick(Display* display = nullptr,
-                const GestureRecognizer *recognizer = nullptr)
-        :XTestGestureListener(display, recognizer){}
+    RightClick(Display* display = nullptr)
+        :XTestGestureListener(display){}
 
     virtual ~RightClick() = default;
-
-    void setGestureRecognizer(LongPressGestureRecognizer *recognizer);
-
+    virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
     virtual void onChanged();
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+
+    void setGestureRecognizer(LongPressGestureRecognizer *recognizer);
 };
 
 #endif /* RIGHTCLICK_H */

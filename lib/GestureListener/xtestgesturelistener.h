@@ -27,8 +27,7 @@
 class XTestGestureListener : public GestureListener
 {
 public:
-    XTestGestureListener(Display* display = nullptr,
-                         const GestureRecognizer *recognizer = nullptr);
+    XTestGestureListener(Display* display = nullptr);
     virtual ~XTestGestureListener();
 
     void setDisplay(Display* display = nullptr);

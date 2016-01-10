@@ -51,3 +51,9 @@ void LeftClick::onFailed()
 {
     qDebug() << "LeftClick onFailed";
 }
+
+bool LeftClick::isEqual(const GestureListener& other) const
+{
+    (void)other;
+    return true;
+}

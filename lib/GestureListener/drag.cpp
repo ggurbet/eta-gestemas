@@ -54,3 +54,9 @@ void Drag::onFailed()
 {
     qDebug() << "Drag onFailed";
 }
+
+bool Drag::isEqual(const GestureListener& other) const
+{
+    (void)other;
+    return true;
+}

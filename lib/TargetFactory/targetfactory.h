@@ -6,7 +6,11 @@ class QXmlStreamReader;
 class QFile;
 class QString;
 
-class GestureListener;
+class GestureRecognizer;
+class LongPressGestureRecognizer;
+class PanGestureRecognizer;
+class TwoTouchPinchGestureRecognizer;
+class TapGestureRecognizer;
 class Target;
 
 class TargetFactory
@@ -27,10 +31,17 @@ private:
     void processTargets(const QString& targetName);
     void processTarget(const QString& targetName);
     void processGestureRecognizers();
+    void processGestureRecognizer(GestureRecognizer *gr);
     void processLongPress();
     void processPan();
     void processTwoTouchPinch();
     void processTap();
+
+    void processRightClick(LongPressGestureRecognizer *gr);
+    void processDrag(PanGestureRecognizer *gr);
+    void processScroll(PanGestureRecognizer *gr);
+    void processLeftClick(TapGestureRecognizer *gr);
+    void processZoom(TwoTouchPinchGestureRecognizer *gr);
 
     QXmlStreamReader *m_configReader;
     QFile *m_configFile;

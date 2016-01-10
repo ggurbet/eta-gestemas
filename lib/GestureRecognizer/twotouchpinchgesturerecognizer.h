@@ -30,39 +30,18 @@ public:
     virtual bool isEqual(const GestureRecognizer& other) const;
     virtual void reset();
 
-    void setScale(float scale)
-    {m_scale = scale;}
     float scale() const
     {return m_scale;}
 
-    void setMaxScale(float maxScale)
-    {m_maxScale = maxScale;}
-    float maxScale() const
-    {return m_maxScale;}
-
-    void setMinScale(float minScale)
-    {m_minScale = minScale;}
-    float minScale() const
-    {return m_minScale;}
-
-    void setAccumulator(int accumulator)
-    {m_accumulator = (accumulator > 1) ? accumulator : 1;}
-    int accumulator() const
-    {return m_accumulator;}
 protected:
     virtual void onTouchBegan(const Touch *touch);
     virtual void onTouchMoved(const Touch *prev, const Touch *current);
     virtual void onTouchEnded(const Touch *prev, const Touch *current);
 private:
     float m_scale;
-    float m_maxScale;
-    float m_minScale;
-    int m_accumulator;
-
     const Touch *m_touch1;
     const Touch *m_touch2;
     float m_distanceSquared;
-    int m_counter;
 
 };
 

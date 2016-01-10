@@ -26,20 +26,19 @@ class TapGestureRecognizer;
 class LeftClick : public XTestGestureListener
 {
 public:
-    LeftClick(Display* display = nullptr,
-                const GestureRecognizer *recognizer = nullptr)
-        :XTestGestureListener(display, recognizer){}
+    LeftClick(Display* display = nullptr)
+        :XTestGestureListener(display){}
 
     virtual ~LeftClick() = default;
-
-    void setGestureRecognizer(TapGestureRecognizer *recognizer);
-
+    virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
     virtual void onChanged();
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+
+    void setGestureRecognizer(TapGestureRecognizer *recognizer);
 };
 
 #endif /* LEFTCLICK_H */
