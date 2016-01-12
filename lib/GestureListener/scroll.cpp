@@ -90,15 +90,14 @@ void Scroll::onFailed()
 
 void Scroll::scrollUp()
 {
-
     const char* modifiers[] = {""};
-    injectButton(5, modifiers);
+    injectButton(4, modifiers);
 }
 
 void Scroll::scrollDown()
 {
     const char* modifiers[] = {""};
-    injectButton(4, modifiers);
+    injectButton(5, modifiers);
 }
 
 void Scroll::scrollLeft()

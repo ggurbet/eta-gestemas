@@ -27,7 +27,7 @@ TwoTouchPinchGestureRecognizer::TwoTouchPinchGestureRecognizer()
       m_scale(1.0f),
       m_touch1(nullptr),
       m_touch2(nullptr),
-      m_distanceSquared(1.0f)
+      m_distance(1.0f)
 {
 }
 
@@ -57,43 +57,35 @@ void TwoTouchPinchGestureRecognizer::onTouchBegan(const Touch *touch)
         float y1 = m_touch1->y();
         float x2 = m_touch2->x();
         float y2 = m_touch2->y();
-        m_distanceSquared =
-            SQUARED_PYTHAGOREAN(y1, y2, x1, x2);
-        // Just in case
-        if (m_distanceSquared == 0.0f) {
-            m_distanceSquared = 1.0f;
-        }
+        m_distance =
+            sqrtf(SQUARED_PYTHAGOREAN(y1, y2, x1, x2));
     }
 }
 
 void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *touch)
 {
-    float x1 = touch->startX();
-    float y1 = touch->startY();
-    float x2 = touch->x();
-    float y2 = touch->y();
     if (numTouches() < 2) {
-        if ((state() == State::Possible)
-            && (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) >=
-                SQUARED(recognitionThreshold()))) {
-            setState(State::Failed);
-        }
         return;
     }
 
-    float currentDistanceSquared = 0.0f;
-    x1 = m_touch1->x();
-    y1 = m_touch1->y();
-    x2 = m_touch2->x();
-    y2 = m_touch2->y();
-    currentDistanceSquared = SQUARED_PYTHAGOREAN(y1, y2, x1, x2);
+    float currentDistance = 0.0f;
+    float diff = 0.0f;
+    float x1 = m_touch1->x();
+    float y1 = m_touch1->y();
+    float x2 = m_touch2->x();
+    float y2 = m_touch2->y();
 
-    m_scale = sqrtf(currentDistanceSquared / m_distanceSquared);
-    m_distanceSquared = currentDistanceSquared;
+    currentDistance = sqrt(SQUARED_PYTHAGOREAN(y1, y2, x1, x2));
+    diff = (currentDistance - m_distance);
+    m_distance = (m_distance == 0.0f) ? 1.0f : m_distance;
+    m_scale = currentDistance / m_distance;
+    m_distance = currentDistance;
 
     if (state() == State::Possible) {
-        updateCentralPoint();
-        setState(State::Began);
+        if (fabsf(diff) > recognitionThreshold()) {
+            updateCentralPoint();
+            setState(State::Began);
+        }
     } else if (state() == State::Began || state() == State::Changed) {
         updateCentralPoint();
         setState(State::Changed);
@@ -114,6 +106,10 @@ void TwoTouchPinchGestureRecognizer::onTouchEnded(const Touch *touch)
             m_touch1 = m_touch2;
         }
         m_touch2 = nullptr;
+        if (state() == State::Began || state() == State::Changed) {
+            updateCentralPoint();
+            setState(State::Changed);
+        }
     }
 }
 
@@ -122,5 +118,5 @@ void TwoTouchPinchGestureRecognizer::reset()
     GestureRecognizer::reset();
     m_touch1 = m_touch2 = nullptr;
     m_scale = 1.0f;
-    m_distanceSquared = 1.0f;
+    m_distance = 1.0f;
 }

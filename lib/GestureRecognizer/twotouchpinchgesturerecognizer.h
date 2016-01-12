@@ -41,7 +41,7 @@ private:
     float m_scale;
     const Touch *m_touch1;
     const Touch *m_touch2;
-    float m_distanceSquared;
+    float m_distance;
 
 };
 

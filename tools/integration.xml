@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>1.0</movementThreshold>
+  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <LongPress>
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
+        <recognitionThresholdFactor>100.0</recognitionThresholdFactor>
         <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         <RightClick>
         </RightClick>
@@ -16,7 +16,7 @@
         <maxNumTouchesRequired>1</maxNumTouchesRequired>
         <minNumTouchesRequired>1</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
         <Drag>
         </Drag>
       </Pan>
@@ -35,20 +35,20 @@
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         <Scroll>
-          <accumulator>2</accumulator>
+          <accumulator>8</accumulator>
           <maxVelocity>20.0</maxVelocity>
-          <minVelocity>1.0</minVelocity>
+          <minVelocity>0.0001</minVelocity>
         </Scroll>
       </Pan>
       <TwoTouchPinch>
-        <recognitionThresholdFactor>2.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
+        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         <Zoom>
-          <accumulator>2</accumulator>
-          <maxScale>1.50</maxScale>
-          <minScale>1.01</minScale>
+          <accumulator>8</accumulator>
+          <maxScale>1.60</maxScale>
+          <minScale>1.0001</minScale>
         </Zoom>
       </TwoTouchPinch>
     </GestureRecognizers>
