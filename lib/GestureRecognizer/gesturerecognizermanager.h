@@ -63,10 +63,11 @@ public:
 private:
     void acceptTouch(Touch *t);
     void rejectTouch(Touch *t);
-    Touch* findTouch(uint32_t touchId);
-    Target* findTarget(uint32_t targetId);
+    Touch* findTouch(uint32_t touchId) const;
+    Target* findTarget(uint32_t targetId) const;
     void handleTouchOwnership(Touch* touch);
     void attachGestureRecognizer(const Touch *touch, GestureRecognizer* gr);
+    void printStates() const;
 
     TouchManager *m_touchManager;
     QList<Target*> m_targets;

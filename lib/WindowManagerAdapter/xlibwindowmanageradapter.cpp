@@ -31,7 +31,8 @@ static int x_error_handler(Display* display, XErrorEvent* error)
 {
     (void)display;
     (void)error;
-    Q_ASSERT_X(false, "x_error_handler", "Xlib generated an error");
+    // Q_ASSERT_X(false, "x_error_handler", "Xlib generated an error");
+    qDebug("bad happened");
     return 1;
 }
 
@@ -39,7 +40,8 @@ static int x_error_handler(Display* display, XErrorEvent* error)
 static int x_io_error_handler(Display* display)
 {
     (void)display;
-    Q_ASSERT_X(false, "x_io_error_handler", "Xlib generated an io error");
+    // Q_ASSERT_X(false, "x_io_error_handler", "Xlib generated an io error");
+    qDebug("worse happened");
     return 1;
 }
 

@@ -27,32 +27,32 @@ void Drag::setGestureRecognizer(PanGestureRecognizer *recognizer)
 
 void Drag::onBegan()
 {
-    qDebug() << "Drag onBegan";
+    // qDebug() << "Drag onBegan";
     movePointer();
     injectLeftButtonPress();
 }
 void Drag::onRecognized()
 {
-    qDebug() << "Drag onRecognized";
+    // qDebug() << "Drag onRecognized";
 }
 void Drag::onChanged()
 {
-    qDebug() << "Drag onChanged";
+    // qDebug() << "Drag onChanged";
     movePointer();
 }
 void Drag::onCanceled()
 {
-    qDebug() << "Drag onCanceled";
+    // qDebug() << "Drag onCanceled";
     injectLeftButtonRelease();
 }
 void Drag::onEnded()
 {
-    qDebug() << "Drag onEnded";
+    // qDebug() << "Drag onEnded";
     injectLeftButtonRelease();
 }
 void Drag::onFailed()
 {
-    qDebug() << "Drag onFailed";
+    // qDebug() << "Drag onFailed";
 }
 
 bool Drag::isEqual(const GestureListener& other) const

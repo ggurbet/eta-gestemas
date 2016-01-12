@@ -28,14 +28,14 @@ void Scroll::setGestureRecognizer(PanGestureRecognizer *recognizer)
 
 void Scroll::onBegan()
 {
-    qDebug() << "Scroll onBegan";
+    // qDebug() << "Scroll onBegan";
     m_counter = m_accumulator;
     m_averageVelocityX = 0.0f;
     m_averageVelocityY = 0.0f;
 }
 void Scroll::onRecognized()
 {
-    qDebug() << "Scroll onRecognized";
+    // qDebug() << "Scroll onRecognized";
 }
 void Scroll::onChanged()
 {
@@ -47,12 +47,10 @@ void Scroll::onChanged()
         --m_counter;
         return;
     }
-    qDebug() << "Scroll onChanged";
+    // qDebug() << "Scroll onChanged";
     m_averageVelocityX /= m_accumulator;
     m_averageVelocityY /= m_accumulator;
 
-    qDebug() << "vx: " << m_averageVelocityX
-             << " vy: " << m_averageVelocityY;
     if (m_averageVelocityX > 0.0f) {
         if (CHECK_RANGE(m_averageVelocityX, minVelocity(), maxVelocity())) {
             scrollLeft();
@@ -77,15 +75,15 @@ void Scroll::onChanged()
 }
 void Scroll::onCanceled()
 {
-    qDebug() << "Scroll onCanceled";
+    // qDebug() << "Scroll onCanceled";
 }
 void Scroll::onEnded()
 {
-    qDebug() << "Scroll onEnded";
+    // qDebug() << "Scroll onEnded";
 }
 void Scroll::onFailed()
 {
-    qDebug() << "Scroll onFailed";
+    // qDebug() << "Scroll onFailed";
 }
 
 void Scroll::scrollUp()

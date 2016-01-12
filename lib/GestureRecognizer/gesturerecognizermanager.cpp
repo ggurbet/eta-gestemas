@@ -77,6 +77,8 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
         gestureRecognizer->callListener();
     }
 
+    qDebug() << "Began";
+    printStates();
 }
 
 void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
@@ -115,6 +117,8 @@ void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
             gestureRecognizer->callListener();
         }
     }
+    qDebug() << "Updated";
+    printStates();
 }
 
 void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
@@ -144,6 +148,9 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
     foreach (gestureRecognizer, gestureRecognizers) {
         gestureRecognizer->callListener();
     }
+
+    qDebug() << "Ended";
+    printStates();
 
     m_touches.removeAll(touch);
     if (m_touches.size() == 0) {
@@ -232,7 +239,7 @@ void GestureRecognizerManager::rejectTouch(Touch *t)
     m_touchManager->rejectTouch(t->touchId(), t->targetId(), t->device());
 }
 
-Touch* GestureRecognizerManager::findTouch(uint32_t touchId)
+Touch* GestureRecognizerManager::findTouch(uint32_t touchId) const
 {
     Touch *touch = nullptr;
     foreach (touch, m_touches) {
@@ -243,7 +250,7 @@ Touch* GestureRecognizerManager::findTouch(uint32_t touchId)
     return nullptr;
 }
 
-Target* GestureRecognizerManager::findTarget(uint32_t targetId)
+Target* GestureRecognizerManager::findTarget(uint32_t targetId) const
 {
     Target *target = nullptr;
     foreach (target, m_targets) {
@@ -281,6 +288,24 @@ void GestureRecognizerManager::handleTouchOwnership(Touch* touch)
         }
         if (touch->ownershipState() == Touch::Deferred) {
             acceptTouch(touch);
+        }
+    }
+}
+
+void GestureRecognizerManager::printStates() const
+{
+    const Touch *touch = nullptr;
+    const Target *target = nullptr;
+    QList<GestureRecognizer*> recognizers;
+    int i = 0;
+    foreach (touch, m_touches) {
+        target = findTarget(touch->targetId());
+        QDebug debug = qDebug();
+        if (target) {
+            recognizers = target->gestureRecognizers();
+            for (i = 0; i < recognizers.size(); ++i) {
+                debug << recognizers[i]->state().toString();
+            }
         }
     }
 }

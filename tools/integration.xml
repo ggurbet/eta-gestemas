@@ -35,7 +35,7 @@
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
         <Scroll>
           <accumulator>8</accumulator>
           <maxVelocity>20.0</maxVelocity>
@@ -44,7 +44,7 @@
       </Pan>
       <TwoTouchPinch>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
         <Zoom>
           <accumulator>8</accumulator>
           <maxScale>1.60</maxScale>

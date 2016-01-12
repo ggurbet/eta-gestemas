@@ -11,13 +11,13 @@ void Zoom::setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer)
 
 void Zoom::onBegan()
 {
-    qDebug() << "Zoom onBegan";
+    // qDebug() << "Zoom onBegan";
     m_counter = m_accumulator;
     m_averageScale = 0.0f;
 }
 void Zoom::onRecognized()
 {
-    qDebug() << "Zoom onRecognized";
+    // qDebug() << "Zoom onRecognized";
 }
 void Zoom::onChanged()
 {
@@ -28,17 +28,17 @@ void Zoom::onChanged()
         --m_counter;
         return;
     }
-    qDebug() << "Zoom onChanged";
+    // qDebug() << "Zoom onChanged";
     m_averageScale /= m_accumulator;
-    qDebug() << "scale: " << m_averageScale;
+    // qDebug() << "scale: " << m_averageScale;
     if (m_averageScale > 1.0f) {
         if (CHECK_RANGE(m_averageScale, minScale(), maxScale())) {
-            qDebug() << "zoom out";
+            // qDebug() << "zoom out";
             zoomOut();
         }
     } else if (m_averageScale < 1.0f){
         if (CHECK_RANGE(m_averageScale, 1.0f/maxScale(), 1.0f/minScale())) {
-            qDebug() << "zoom in";
+            // qDebug() << "zoom in";
             zoomIn();
         }
     }
@@ -47,15 +47,15 @@ void Zoom::onChanged()
 }
 void Zoom::onCanceled()
 {
-    qDebug() << "Zoom onCanceled";
+    // qDebug() << "Zoom onCanceled";
 }
 void Zoom::onEnded()
 {
-    qDebug() << "Zoom onEnded";
+    // qDebug() << "Zoom onEnded";
 }
 void Zoom::onFailed()
 {
-    qDebug() << "Zoom onFailed";
+    // qDebug() << "Zoom onFailed";
 }
 
 void Zoom::zoomIn()

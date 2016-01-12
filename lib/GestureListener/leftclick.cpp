@@ -27,29 +27,29 @@ void LeftClick::setGestureRecognizer(TapGestureRecognizer *recognizer)
 
 void LeftClick::onBegan()
 {
-    qDebug() << "LeftClick onBegan";
+    // qDebug() << "LeftClick onBegan";
 }
 void LeftClick::onRecognized()
 {
-    qDebug() << "LeftClick onRecognized";
+    // qDebug() << "LeftClick onRecognized";
     const char *modifiers[] = {""};
     injectButton(1, modifiers);
 }
 void LeftClick::onChanged()
 {
-    qDebug() << "LeftClick onChanged";
+    // qDebug() << "LeftClick onChanged";
 }
 void LeftClick::onCanceled()
 {
-    qDebug() << "LeftClick onCanceled";
+    // qDebug() << "LeftClick onCanceled";
 }
 void LeftClick::onEnded()
 {
-    qDebug() << "LeftClick onEnded";
+    // qDebug() << "LeftClick onEnded";
 }
 void LeftClick::onFailed()
 {
-    qDebug() << "LeftClick onFailed";
+    // qDebug() << "LeftClick onFailed";
 }
 
 bool LeftClick::isEqual(const GestureListener& other) const
