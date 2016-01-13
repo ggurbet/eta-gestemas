@@ -1,6 +1,8 @@
 #ifndef TARGETFACTORY_H
 #define TARGETFACTORY_H
 
+#include <QtCore/QHash>
+#include <QtCore/QSet>
 
 class QXmlStreamReader;
 class QFile;
@@ -46,6 +48,7 @@ private:
     QXmlStreamReader *m_configReader;
     QFile *m_configFile;
     Target *m_currentTarget;
+    QHash<int, QSet<int> > m_abortTable;
 };
 
 #endif /* TARGETFACTORY_H */

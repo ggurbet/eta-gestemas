@@ -117,7 +117,7 @@ void TargetFactoryTester::initTestCase()
     gr4->setMaxNumTouchesRequired(2);
     gr4->setMinNumTouchesRequired(2);
     gr4->setRecognitionThresholdFactor(1.0f);
-    gr4->setAllowSimultaneousRecognition(false);
+    gr4->setAllowSimultaneousRecognition(true);
     listener4 = new Scroll;
     listener4->setAccumulator(15);
     listener4->setMaxVelocity(20.0f);
@@ -126,7 +126,7 @@ void TargetFactoryTester::initTestCase()
     expectedTargetFirefox.addGestureRecognizer(gr4);
     gr5 = new TwoTouchPinchGestureRecognizer;
     gr5->setRecognitionThresholdFactor(1.0f);
-    gr5->setAllowSimultaneousRecognition(false);
+    gr5->setAllowSimultaneousRecognition(true);
     listener5 = new Zoom;
     listener5->setAccumulator(10);
     listener5->setMaxScale(3.0f);

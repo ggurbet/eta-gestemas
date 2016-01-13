@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>5.0</movementThreshold>
+  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
-      <TwoTouchPinch>
+      <TwoTouchPinch id="5">
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+        </abortList>
         <Zoom>
-          <accumulator>2</accumulator>
-          <maxScale>1.50</maxScale>
-          <minScale>1.01</minScale>
+          <accumulator>8</accumulator>
+          <maxScale>1.60</maxScale>
+          <minScale>1.0001</minScale>
         </Zoom>
       </TwoTouchPinch>
     </GestureRecognizers>

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>5.0</movementThreshold>
+  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
-      <Tap>
+      <Tap id="3">
         <numTouchesRequired>1</numTouchesRequired>
         <numTapsRequired>1</numTapsRequired>
         <maxTapDelay>400</maxTapDelay>
         <maxTapDuration>900</maxTapDuration>
         <maxTapDistance>100.0</maxTapDistance>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
         <LeftClick>
         </LeftClick>
       </Tap>

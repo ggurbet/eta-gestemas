@@ -6,30 +6,36 @@
   <Target>
     <name>root</name>
     <GestureRecognizers>
-      <LongPress>
+      <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
         <RightClick>
         </RightClick>
       </LongPress>
-      <Pan>
+      <Pan id="2">
         <maxNumTouchesRequired>1</maxNumTouchesRequired>
         <minNumTouchesRequired>1</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
         <Drag>
         </Drag>
       </Pan>
-      <Tap>
+      <Tap id="3">
         <numTouchesRequired>1</numTouchesRequired>
         <numTapsRequired>1</numTapsRequired>
         <maxTapDelay>400</maxTapDelay>
         <maxTapDuration>1000</maxTapDuration>
         <maxTapDistance>100.0</maxTapDistance>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
         <LeftClick>
         </LeftClick>
       </Tap>
@@ -38,20 +44,24 @@
   <Target>
     <name>Chromium</name>
     <GestureRecognizers>
-      <Pan>
+      <Pan id="4">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
         <Scroll>
           <accumulator>10</accumulator>
           <maxVelocity>20.0</maxVelocity>
           <minVelocity>1.0</minVelocity>
         </Scroll>
       </Pan>
-      <TwoTouchPinch>
+      <TwoTouchPinch id="5">
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
         <Zoom>
           <accumulator>10</accumulator>
           <maxScale>3.0</maxScale>
@@ -63,20 +73,28 @@
   <Target>
     <name>Firefox</name>
     <GestureRecognizers>
-      <Pan>
+      <Pan id="4">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+          <id>2</id>
+          <id>5</id>
+        </abortList>
         <Scroll>
           <accumulator>15</accumulator>
           <maxVelocity>20.0</maxVelocity>
           <minVelocity>1.0</minVelocity>
         </Scroll>
       </Pan>
-      <TwoTouchPinch>
+      <TwoTouchPinch id="5">
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+          <id>2</id>
+          <id>4</id>
+        </abortList>
         <Zoom>
           <accumulator>10</accumulator>
           <maxScale>3.0</maxScale>

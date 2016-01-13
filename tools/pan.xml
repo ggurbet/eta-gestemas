@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>5.0</movementThreshold>
+  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
-      <Pan>
+      <Pan id ="2">
         <maxNumTouchesRequired>1</maxNumTouchesRequired>
         <minNumTouchesRequired>1</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+        </abortList>
         <Drag>
         </Drag>
       </Pan>
-      <Pan>
+      <Pan id="4">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <abortList>
+          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+          <id>2</id>
+        </abortList>
         <Scroll>
-          <accumulator>2</accumulator>
+          <accumulator>8</accumulator>
           <maxVelocity>20.0</maxVelocity>
-          <minVelocity>1.0</minVelocity>
+          <minVelocity>0.0001</minVelocity>
         </Scroll>
       </Pan>
     </GestureRecognizers>

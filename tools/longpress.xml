@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>5.0</movementThreshold>
+  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
-      <LongPress>
+      <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        <recognitionThresholdFactor>100.0</recognitionThresholdFactor>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
         <RightClick>
         </RightClick>
       </LongPress>

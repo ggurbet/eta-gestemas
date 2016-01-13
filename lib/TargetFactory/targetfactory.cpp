@@ -73,19 +73,19 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
     success = m_configFile->open(QIODevice::ReadOnly);
     Q_ASSERT_X(success, "setConfigurationFileName", "Failed to open config file");
     m_configReader->setDevice(m_configFile);
-
-        if (m_configReader->readNextStartElement()
-            && m_configReader->name() == "gestemas") {
-            processAll(targetName);
-            if (m_configReader->tokenType() == QXmlStreamReader::Invalid) {
-                m_configReader->readNext();
-            }
-            if (m_configReader->hasError()) {
-                m_configReader->raiseError("Xml Configuration Reader Error.");
-                qDebug() << m_configReader->errorString();
-            }
+    if (m_configReader->readNextStartElement()
+        && m_configReader->name() == "gestemas") {
+        processAll(targetName);
+        if (m_configReader->tokenType() == QXmlStreamReader::Invalid) {
+            m_configReader->readNext();
         }
+        if (m_configReader->hasError()) {
+            m_configReader->raiseError("Xml Configuration Reader Error.");
+            qDebug() << m_configReader->errorString();
+        }
+    }
     m_configFile->close();
+
     if (m_currentTarget) {
         m_currentTarget->setTargetId(targetId);
         m_currentTarget->setTargetName(targetName);
@@ -95,23 +95,29 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
             QList<GestureRecognizer*> abortList;
             GestureRecognizer *gestureRecognizer = nullptr;
             int i = 0;
+            int gestureId = 0;
+            int abortId = 0;
             foreach(gestureRecognizer, gestureRecognizers) {
                 if (gestureRecognizer->allowsSimultaneousRecognition()) {
-                    // Abort gestures which don't allow simultaneous recognition
+                    gestureId = gestureRecognizer->id();
+                    // Abort gestures given in config file
                     for (i = 0; i < gestureRecognizers.size(); ++i) {
-                        if (!gestureRecognizers[i]->allowsSimultaneousRecognition()) {
+                        abortId = gestureRecognizers[i]->id();
+                        if (m_abortTable[gestureId].contains(abortId)) {
                             abortList.append(gestureRecognizers[i]);
                         }
                     }
-                } else {
+                } else { // no simultaneous gestures
                     // Abort all gestures except for itself
                     abortList = gestureRecognizers;
                     abortList.removeAll(gestureRecognizer);
                 }
                 gestureRecognizer->setGestureRecognizersToAbort(abortList);
+                abortList.clear();
             }
         }
     }
+    m_abortTable.clear();
     return m_currentTarget;
 }
 
@@ -189,30 +195,50 @@ void TargetFactory::processGestureRecognizers()
 
 void TargetFactory::processGestureRecognizer(GestureRecognizer *gr)
 {
+    bool ok = false;
     if (m_configReader->name() == "recognitionThresholdFactor") {
-        bool ok = false;
         float factor =
             m_configReader->readElementText().toFloat(&ok);
         if (ok) {
             gr->setRecognitionThresholdFactor(factor);
         }
-    } else if (m_configReader->name() == "allowSimultaneousRecognition") {
-        bool allowSimultaneousRecognition =
-            m_configReader->readElementText() == "true" ? true : false;
-        gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
+    } else if (m_configReader->name() == "abortList") {
+        int id = 0;
+        while (m_configReader->readNextStartElement()) {
+            if (m_configReader->name() == "allowSimultaneousRecognition") {
+                bool allowSimultaneousRecognition =
+                    m_configReader->readElementText() == "true" ? true : false;
+                gr->setAllowSimultaneousRecognition(allowSimultaneousRecognition);
+            } else if (m_configReader->name() == "id") {
+                    id = m_configReader->readElementText().toInt(&ok, 10);
+                if (ok) {
+                    m_abortTable[gr->id()].insert(id);
+                }
+            }
+        }
     }
 }
 
 void TargetFactory::processLongPress()
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "LongPress") {
+        || m_configReader->name() != "LongPress"
+        || !m_configReader->attributes().hasAttribute("id")) {
         return;
     }
 
     bool ok = false;
+    int id = 0;
     LongPressGestureRecognizer *gr = new LongPressGestureRecognizer;
     Q_CHECK_PTR(gr);
+    id = m_configReader->attributes().value("id").toInt(&ok, 10);
+    if (ok) {
+        if (id <= 0) {
+            return;
+        }
+        gr->setId(id);
+    }
+
     while (m_configReader->readNextStartElement()) {
         processGestureRecognizer(gr);
         if (m_configReader->name() == "numTouchesRequired") {
@@ -237,13 +263,23 @@ void TargetFactory::processLongPress()
 void TargetFactory::processPan()
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Pan") {
+        || m_configReader->name() != "Pan"
+        || !m_configReader->attributes().hasAttribute("id")) {
         return;
     }
 
     bool ok = false;
+    int id = 0;
     PanGestureRecognizer *gr = new PanGestureRecognizer;
     Q_CHECK_PTR(gr);
+    id = m_configReader->attributes().value("id").toInt(&ok, 10);
+    if (ok) {
+        if (id <= 0) {
+            return;
+        }
+        gr->setId(id);
+    }
+
     while (m_configReader->readNextStartElement()) {
         processGestureRecognizer(gr);
         if (m_configReader->name() == "maxNumTouchesRequired") {
@@ -270,13 +306,24 @@ void TargetFactory::processPan()
 void TargetFactory::processTwoTouchPinch()
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "TwoTouchPinch") {
+        || m_configReader->name() != "TwoTouchPinch"
+        || !m_configReader->attributes().hasAttribute("id")) {
         return;
     }
 
+    bool ok = false;
+    int id = 0;
     TwoTouchPinchGestureRecognizer * gr =
         new TwoTouchPinchGestureRecognizer;
     Q_CHECK_PTR(gr);
+    id = m_configReader->attributes().value("id").toInt(&ok, 10);
+    if (ok) {
+        if (id <= 0) {
+            return;
+        }
+        gr->setId(id);
+    }
+
     while (m_configReader->readNextStartElement()) {
         processGestureRecognizer(gr);
         if (m_configReader->name() == "Zoom") {
@@ -289,13 +336,23 @@ void TargetFactory::processTwoTouchPinch()
 void TargetFactory::processTap()
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Tap") {
+        || m_configReader->name() != "Tap"
+        || !m_configReader->attributes().hasAttribute("id")) {
         return;
     }
 
     bool ok = false;
+    int id = 0;
     TapGestureRecognizer *gr = new TapGestureRecognizer;
     Q_CHECK_PTR(gr);
+    id = m_configReader->attributes().value("id").toInt(&ok, 10);
+    if (ok) {
+        if (id <= 0) {
+            return;
+        }
+        gr->setId(id);
+    }
+
     while (m_configReader->readNextStartElement()) {
         processGestureRecognizer(gr);
         if (m_configReader->name() == "numTouchesRequired") {
@@ -343,7 +400,7 @@ void TargetFactory::processRightClick(LongPressGestureRecognizer *gr)
     }
 
     RightClick *listener = new RightClick;
-    m_configReader->readNextStartElement();
+    while(m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 
@@ -355,7 +412,7 @@ void TargetFactory::processDrag(PanGestureRecognizer *gr)
     }
 
     Drag *listener = new Drag;
-    m_configReader->readNextStartElement();
+    while(m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 
@@ -400,7 +457,7 @@ void TargetFactory::processLeftClick(TapGestureRecognizer *gr)
     }
 
     LeftClick *listener = new LeftClick;
-    m_configReader->readNextStartElement();
+    while(m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 

@@ -76,6 +76,11 @@ public:
     float centralY() const
     {return m_centralY;}
 
+    void setId(int id)
+    {m_id = id;}
+    int id() const
+    {return m_id;}
+
     void setGestureListener(GestureListener *listener);
     const GestureListener* listener() const;
 
@@ -112,6 +117,7 @@ private:
     State m_state;
     QList<State> m_states;
     uint32_t m_targetId;
+    int m_id;
 };
 
 #endif /* GESTURERECOGNIZER_H */

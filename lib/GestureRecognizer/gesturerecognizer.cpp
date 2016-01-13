@@ -29,7 +29,7 @@ float GestureRecognizer::movementThreshold = 2.0f;
 GestureRecognizer::GestureRecognizer(QObject *parent)
     :QObject(parent), m_manager(nullptr), m_centralX(0.0f), m_centralY(0.0f),
      m_recognitionThresholdFactor(1.0f), m_allowSimultaneousRecognition(false),
-     m_listener(nullptr)
+     m_listener(nullptr), m_id(0)
 {
 }
 
@@ -144,8 +144,7 @@ void GestureRecognizer::setState(const State& newState)
         m_manager->detachGestureRecognizer(this);
     }
 
-    if (!m_allowSimultaneousRecognition
-        && (m_state == State::Began || m_state == State::Recognized)) {
+    if (m_state == State::Began || m_state == State::Recognized) {
         GestureRecognizer *gestureRecognizer = nullptr;
         State state;
         foreach (gestureRecognizer, gestureRecognizersToAbort()) {
