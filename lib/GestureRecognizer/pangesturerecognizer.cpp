@@ -56,7 +56,6 @@ void PanGestureRecognizer::onTouchBegan(const Touch *touch)
     }
     if (numTouches() >= minNumTouchesRequired()) {
         updateCentralPoint();
-        m_timeStamp = touch->timeStamp();
     }
 }
 
@@ -67,41 +66,37 @@ void PanGestureRecognizer::onTouchMoved(const Touch *touch)
     }
 
     const Touch *t = touch;
-    float displacement= 0.0f;
-    uint64_t deltaTime = 0;
+    float threshold = recognitionThreshold();
+
     if (state() == State::Possible) {
-        m_prevCentralX = centralX();
-        m_prevCentralY = centralY();
-        updateCentralPoint();
-        deltaTime = t->timeStamp() - m_timeStamp;
-        deltaTime = (deltaTime == 0) ? 1 : deltaTime;
-        m_timeStamp = t->timeStamp();
-        if ((SQUARED(t->deltaX()) + SQUARED(t->deltaY())) >
-            SQUARED(recognitionThreshold())) {
-            displacement = centralX() - m_prevCentralX;
-            m_velocityX = displacement / deltaTime;
-            m_translationX = displacement;
+        qDebug() << "Pan: "
+                 << fabsf(t->cumulativeDeltaX()) << " "
+                 << fabsf(t->cumulativeDeltaY()) << " "
+                 << threshold;
 
-            displacement = centralY() - m_prevCentralY;
-            m_velocityY = displacement / deltaTime;
-            m_translationY = displacement;
-
+        if (fabsf(t->cumulativeDeltaX()) > threshold
+            || fabsf(t->cumulativeDeltaY()) > threshold) {
             setState(State::Began);
         }
     } else if (state() == State::Began || state() == State::Changed) {
+        float delta = 0.0f;
+        uint64_t deltaTime = 0;
+
         m_prevCentralX = centralX();
         m_prevCentralY = centralY();
         updateCentralPoint();
-        deltaTime = t->timeStamp() - m_timeStamp;
-        deltaTime = (deltaTime == 0) ? 1 : deltaTime;
-        m_timeStamp = t->timeStamp();
-        displacement = centralX() - m_prevCentralX;
-        m_velocityX = displacement / deltaTime;
-        m_translationX += displacement;
 
-        displacement = centralY() - m_prevCentralY;
-        m_velocityY = displacement / deltaTime;
-        m_translationY += displacement;
+        deltaTime = GestureRecognizer::samplingPeriod;
+
+        delta = centralX() - m_prevCentralX;
+        m_velocityX = (deltaTime == 0.0f) ? 0 : delta / deltaTime;
+        m_translationX += delta;
+
+        delta = centralY() - m_prevCentralY;
+        m_velocityY = (deltaTime == 0.0f) ? 0 : delta / deltaTime;
+        m_translationY += delta;
+
+        qDebug() << "Pan : " << m_velocityX << " " << m_velocityY;
         setState(State::Changed);
     }
 }
@@ -123,6 +118,8 @@ void PanGestureRecognizer::onTouchEnded(const Touch *touch)
 void PanGestureRecognizer::reset()
 {
     GestureRecognizer::reset();
+    m_translationX = m_translationY = 0.0f;
+    m_velocityX = m_velocityY = 0.0f;
 }
 
 float PanGestureRecognizer::velocity() const

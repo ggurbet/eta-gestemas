@@ -33,15 +33,20 @@ public:
     float scale() const
     {return m_scale;}
 
+    float velocity() const
+    {return m_velocity;}
+
 protected:
     virtual void onTouchBegan(const Touch *touch);
     virtual void onTouchMoved(const Touch *touch);
     virtual void onTouchEnded(const Touch *touch);
 private:
     float m_scale;
+    float m_velocity;
     const Touch *m_touch1;
     const Touch *m_touch2;
     float m_distance;
+    float m_cumulativeDeltaDistance;
 
 };
 

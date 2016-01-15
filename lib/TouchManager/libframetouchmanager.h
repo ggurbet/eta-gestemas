@@ -21,6 +21,7 @@
 
 #include "touchmanager.h"
 #include <QtCore/QObject>
+#include <QtCore/QHash>
 #include <X11/extensions/XInput2.h>
 #include <oif/frame.h>
 
@@ -56,11 +57,17 @@ private:
     void onNewFrame(UFEvent event);
     void dispatchTouches(UFTouch touch,
                          UFDevice device, Window window);
+    void accept_touch(unsigned long touchId, unsigned long targetId,
+                             void* device);
+    void reject_touch(unsigned long touchId, unsigned long targetId,
+                             void* device);
 
     UFHandle m_frameHandle;
     Display* m_display;
     QSocketNotifier* m_socketNotifier;
     bool m_shouldCloseDisplay;
+    QHash <uint32_t, int> m_rootTouchHash;
+    static const int TARGET_BOUND = 3;
 };
 
 #endif /* LIBFRAMETOUCHMANAGER_H */

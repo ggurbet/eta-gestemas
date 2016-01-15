@@ -66,9 +66,26 @@ void LibFrameTouchManager::processTouchEvent(void *data)
         qWarning("Failed to inject X event");
     }
 }
+
 void LibFrameTouchManager::acceptTouch(unsigned long touchId,
                                        unsigned long targetId,
                                        void* device)
+{
+    (void)targetId;
+    accept_touch(touchId, XDefaultRootWindow(m_display), device);
+}
+
+void LibFrameTouchManager::rejectTouch(unsigned long touchId,
+                                       unsigned long targetId,
+                                       void* device)
+{
+    (void)targetId;
+    reject_touch(touchId, XDefaultRootWindow(m_display), device);
+}
+
+void LibFrameTouchManager::accept_touch(unsigned long touchId,
+                                        unsigned long targetId,
+                                        void* device)
 {
     UFTouchId ufTouchId = frame_x11_create_touch_id(touchId);
     UFWindowId ufWindowId = frame_x11_create_window_id(targetId);
@@ -77,9 +94,9 @@ void LibFrameTouchManager::acceptTouch(unsigned long touchId,
         qWarning() << "Failed to accept touch";
     }
 }
-void LibFrameTouchManager::rejectTouch(unsigned long touchId,
-                                       unsigned long targetId,
-                                       void* device)
+void LibFrameTouchManager::reject_touch(unsigned long touchId,
+                                        unsigned long targetId,
+                                        void* device)
 {
     UFTouchId ufTouchId = frame_x11_create_touch_id(touchId);
     UFWindowId ufWindowId = frame_x11_create_window_id(targetId);
@@ -88,7 +105,6 @@ void LibFrameTouchManager::rejectTouch(unsigned long touchId,
         qWarning() << "Failed to reject touch";
     }
 }
-
 void LibFrameTouchManager::onFrameEvent()
 {
     UFEvent event;
@@ -241,104 +257,136 @@ void LibFrameTouchManager::onNewFrame(UFEvent event)
 void LibFrameTouchManager::dispatchTouches(UFTouch touch,
                                            UFDevice device, Window window)
 {
-  uint32_t touchId = 0UL;
-  float windowX = 0.0f;
-  float windowY = 0.0f;
-  float resolutionX = 0.0f;
-  float resolutionY = 0.0f;
-  uint64_t timeStamp = 0ULL;
+    // This is messy!
+    uint32_t touchId = 0UL;
+    float windowX = 0.0f;
+    float windowY = 0.0f;
+    float resolutionX = 0.0f;
+    float resolutionY = 0.0f;
+    uint64_t timestamp = 0ULL;
+    Window root = XDefaultRootWindow(m_display);
 
-  touchId = frame_x11_get_touch_id(frame_touch_get_id(touch));
-  windowX = frame_touch_get_window_x(touch);
-  windowY = frame_touch_get_window_y(touch);
-  timeStamp = frame_touch_get_time(touch);
-  getDeviceResolution(device, &resolutionX, &resolutionY);
-  Q_ASSERT(m_grm != nullptr);
-  switch (frame_touch_get_state(touch)) {
+    touchId = frame_x11_get_touch_id(frame_touch_get_id(touch));
+    windowX = frame_touch_get_window_x(touch);
+    windowY = frame_touch_get_window_y(touch);
+    timestamp = frame_touch_get_time(touch);
+    getDeviceResolution(device, &resolutionX, &resolutionY);
+    Q_ASSERT(m_grm != nullptr);
+
+    switch (frame_touch_get_state(touch)) {
     case UFTouchStateBegin:
-        m_grm->onTouchBegan(touchId, windowX, windowY, resolutionX, resolutionY,
-                            window, device, timeStamp);
-      break;
+        if (window == root) {
+            m_rootTouchHash[touchId] = 1;
+        } else {
+            m_rootTouchHash[touchId] = 0;
+            reject_touch(touchId, window, device);
+            int targetX = static_cast<int>(windowX + 0.5f);
+            int targetY = static_cast<int>(windowY + 0.5f);
+            int rootX = 0;
+            int rootY = 0;
+            Window returnedWindow;
+            bool coordinatesTranslated =
+                XTranslateCoordinates(m_display,
+                                      window, root, targetX, targetY,
+                                      &rootX, &rootY, &returnedWindow);
+            Q_ASSERT(coordinatesTranslated);
+            m_grm->onTouchBegan(touchId, rootX, rootY,
+                                window, device, timestamp);
+        }
+        break;
     case UFTouchStateUpdate:
-        m_grm->onTouchUpdated(touchId, windowX, windowY, timeStamp);
-      break;
+        if (window == root) {
+            if (m_rootTouchHash[touchId] == 0) {
+                m_grm->onTouchUpdated(touchId, windowX, windowY, timestamp);
+            } else if (++m_rootTouchHash[touchId] > TARGET_BOUND) {
+                reject_touch(touchId, window, device);
+            }
+        }
+        break;
     case UFTouchStateEnd:
-        m_grm->onTouchEnded(touchId, windowX, windowY, timeStamp);
-      break;
-  }
+        if (window == root) {
+            if (m_rootTouchHash[touchId] == 0) {
+                m_grm->onTouchEnded(touchId, windowX, windowY, timestamp);
+            } else if (m_rootTouchHash[touchId] <= TARGET_BOUND) {
+                reject_touch(touchId, window, device);
+            }
+            m_rootTouchHash.remove(touchId);
+        }
+        break;
+    }
 }
 
 void LibFrameTouchManager::getAxisInfo(UFAxis axis, UFAxisType *type,
-                          const char **name, float *min,
-                          float *max, float *res) {
-  *type = frame_axis_get_type(axis);
+                                       const char **name, float *min,
+                                       float *max, float *res) {
+    *type = frame_axis_get_type(axis);
 
-  switch (*type) {
+    switch (*type) {
     case UFAxisTypeX:
-      *name = "X";
-      break;
+        *name = "X";
+        break;
 
     case UFAxisTypeY:
-      *name = "Y";
-      break;
+        *name = "Y";
+        break;
 
     case UFAxisTypeTouchMajor:
-      *name = "Touch major";
-      break;
+        *name = "Touch major";
+        break;
 
     case UFAxisTypeTouchMinor:
-      *name = "Touch minor";
-      break;
+        *name = "Touch minor";
+        break;
 
     case UFAxisTypeWidthMajor:
-      *name = "Width major";
-      break;
+        *name = "Width major";
+        break;
 
     case UFAxisTypeWidthMinor:
-      *name = "Width minor";
-      break;
+        *name = "Width minor";
+        break;
 
     case UFAxisTypeOrientation:
-      *name = "Orientation";
-      break;
+        *name = "Orientation";
+        break;
 
     case UFAxisTypeTool:
-      *name = "Tool";
-      break;
+        *name = "Tool";
+        break;
 
     case UFAxisTypeBlobId:
-      *name = "Blob ID";
-      break;
+        *name = "Blob ID";
+        break;
 
     case UFAxisTypeTrackingId:
-      *name = "Tracking ID";
-      break;
+        *name = "Tracking ID";
+        break;
 
     case UFAxisTypePressure:
-      *name = "Pressure";
-      break;
+        *name = "Pressure";
+        break;
 
     case UFAxisTypeDistance:
-      *name = "Distance";
-      break;
+        *name = "Distance";
+        break;
 
     default:
-      *name = "Unknown";
-      break;
-  }
+        *name = "Unknown";
+        break;
+    }
 
-  *min = frame_axis_get_minimum(axis);
-  *max = frame_axis_get_maximum(axis);
-  *res = frame_axis_get_resolution(axis);
+    *min = frame_axis_get_minimum(axis);
+    *max = frame_axis_get_maximum(axis);
+    *res = frame_axis_get_resolution(axis);
 }
 
 void LibFrameTouchManager::getDeviceResolution(UFDevice device,
                                                float *resx, float *resy)
 {
-      int device_direct_;
+    int device_direct_;
     /* Save direct property for gesture processing */
     UFStatus status = frame_device_get_property(device, UFDevicePropertyDirect,
-            &device_direct_);
+                                                &device_direct_);
     if (status != UFStatusSuccess) {
         qFatal("Failed to get property direct");
         return;

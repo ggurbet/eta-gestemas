@@ -60,7 +60,6 @@ private:
 
     float m_prevCentralX;
     float m_prevCentralY;
-    uint64_t m_timeStamp;
 };
 
 #endif /* PANGESTURERECOGNIZER_H */

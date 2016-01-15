@@ -30,6 +30,7 @@ void RightClick::onBegan()
     // qDebug() << "RightClick onBegan";
     const char *modifiers[] = {""};
     injectButton(3, modifiers);
+    // injectKey(XStringToKeysym("Menu"), modifiers);
 }
 void RightClick::onRecognized()
 {

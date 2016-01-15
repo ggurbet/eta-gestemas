@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <Pan id ="2">
         <maxNumTouchesRequired>1</maxNumTouchesRequired>
         <minNumTouchesRequired>1</minNumTouchesRequired>
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
+        <recognitionThreshold>1.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
         </abortList>
@@ -17,7 +16,7 @@
       <Pan id="4">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
+        <recognitionThreshold>1.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
           <id>2</id>

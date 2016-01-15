@@ -32,9 +32,8 @@ public:
 
     Touch();
     Touch(uint32_t touchId, uint32_t targetId,
-          float startX, float startY, float x, float y,
-          float resolutionX, float resolutionY,
-          void* device, uint64_t startTime, uint64_t timeStamp);
+          float startX, float startY,
+          void *device, uint64_t timestamp);
 
     ~Touch() = default;
     Touch(const Touch&) = default;
@@ -60,35 +59,31 @@ public:
     float startY() const
     {return m_startY;}
 
-    void setX(float x)
-    {m_x = x;}
-    float x() const
-    {return m_x;}
+    void setPreviousX(float x)
+    {m_previousX = x;}
+    float previousX() const
+    {return m_previousX;}
 
-    void setY(float y)
-    {m_y = y;}
-    float y() const
-    {return m_y;}
+    void setPreviousY(float y)
+    {m_previousY = y;}
+    float previousY() const
+    {return m_previousY;}
 
-    void setDeltaX(float x)
-    {m_deltaX = x;}
-    float deltaX() const
-    {return m_deltaX;}
+    void computeX(float deltaX)
+    {m_cumulativeDeltaX += deltaX;}
+    float computedX() const
+    {return m_startX + m_cumulativeDeltaX;}
 
-    void setDeltaY(float y)
-    {m_deltaY = y;}
-    float deltaY() const
-    {return m_deltaY;}
+    void computeY(float deltaY)
+    {m_cumulativeDeltaY += deltaY;}
+    float computedY() const
+    {return m_startY + m_cumulativeDeltaY;}
 
-    void setResolutionX(float x)
-    {m_resolutionX = x;}
-    float resolutionX() const
-    {return m_resolutionX;}
+    float cumulativeDeltaX() const
+    {return m_cumulativeDeltaX;}
 
-    void setResolutionY(float y)
-    {m_resolutionY = y;}
-    float resolutionY() const
-    {return m_resolutionY;}
+    float cumulativeDeltaY() const
+    {return m_cumulativeDeltaY;}
 
     void setDevice(void* device)
     {m_device = device;}
@@ -100,10 +95,10 @@ public:
     uint64_t startTime() const
     {return m_startTime;}
 
-    void setTimeStamp(uint64_t timeStamp)
-    {m_timeStamp = timeStamp;}
-    uint64_t timeStamp() const
-    {return m_timeStamp;}
+    void setTimestamp(uint64_t timestamp)
+    {m_timestamp = timestamp;}
+    uint64_t timestamp() const
+    {return m_timestamp;}
 
     void setOwnershipState(OwnershipState ownershipState);
     OwnershipState ownershipState() const
@@ -113,15 +108,13 @@ private:
     uint32_t m_targetId;
     float m_startX;
     float m_startY;
-    float m_x;
-    float m_y;
-    float m_deltaX;
-    float m_deltaY;
-    float m_resolutionX;
-    float m_resolutionY;
+    float m_previousX;
+    float m_previousY;
+    float m_cumulativeDeltaX;
+    float m_cumulativeDeltaY;
     void *m_device;
     uint64_t m_startTime;
-    uint64_t m_timeStamp;
+    uint64_t m_timestamp;
     OwnershipState m_ownershipState;
 };
 

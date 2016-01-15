@@ -127,17 +127,28 @@ void TargetFactory::processAll(const QString& targetName)
         || m_configReader->name() != "gestemas") {
         return;
     }
+    bool ok = false;
     while (m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "Target") {
             processTarget(targetName);
-        } else if (m_configReader->name() == "movementThreshold") {
-            bool ok = false;
-            float movementThreshold =
+        } else if (m_configReader->name() == "samplingPeriod") {
+            uint64_t samplingPeriod =
+                m_configReader->readElementText().toULongLong(&ok, 10);
+            if (ok) {
+                GestureRecognizer::samplingPeriod = samplingPeriod;
+            }
+        } else if (m_configReader->name() == "pointerEmulationRate") {
+            uint32_t pointerEmulationRate =
+                m_configReader->readElementText().toULong(&ok, 10);
+            if (ok) {
+                GestureRecognizer::pointerEmulationRate = pointerEmulationRate;
+            }
+        } else if (m_configReader->name() == "pointerEmulationDistance") {
+            float pointerEmulationDistance =
                 m_configReader->readElementText().toFloat(&ok);
             if (ok) {
-                GestureRecognizer::movementThreshold = movementThreshold;
+                GestureRecognizer::pointerEmulationDistance = pointerEmulationDistance;
             }
-
         } else {
             m_configReader->skipCurrentElement();
         }
@@ -196,11 +207,11 @@ void TargetFactory::processGestureRecognizers()
 void TargetFactory::processGestureRecognizer(GestureRecognizer *gr)
 {
     bool ok = false;
-    if (m_configReader->name() == "recognitionThresholdFactor") {
-        float factor =
+    if (m_configReader->name() == "recognitionThreshold") {
+        float threshold =
             m_configReader->readElementText().toFloat(&ok);
         if (ok) {
-            gr->setRecognitionThresholdFactor(factor);
+            gr->setRecognitionThreshold(threshold);
         }
     } else if (m_configReader->name() == "abortList") {
         int id = 0;

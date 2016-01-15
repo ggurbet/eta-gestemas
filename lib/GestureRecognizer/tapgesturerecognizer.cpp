@@ -72,21 +72,17 @@ void TapGestureRecognizer::onTouchBegan(const Touch *touch)
     if (numTapsRequired() > 1) {
         if (m_tapCounter == 0) {
             Point p;
-            p.x = touch->x();
-            p.y = touch->y();
+            p.x = touch->computedX();
+            p.y = touch->computedY();
             m_initialTouchPoints.append(p);
         } else {
             bool found = false;
-            float x1 = 0.0f;
-            float x2 = 0.0f;
-            float y1 = 0.0f;
-            float y2 = 0.0f;
+            float deltaX = 0.0f;
+            float deltaY = 0.0f;
             foreach (const Point& p, m_initialTouchPoints) {
-                x1 = p.x;
-                x2 = touch->x();
-                y1 = p.y;
-                y2 = touch->y();
-                if (SQUARED_PYTHAGOREAN(y1, y2, x1, x2) <=
+                deltaX = p.x - touch->computedX();
+                deltaY = p.y - touch->computedY();
+                if (SQUARED_PYTHAGOREAN(deltaY, deltaX) <=
                     SQUARED(maxTapDistance())) {
                     found = true;
                     break;
@@ -109,7 +105,7 @@ void TapGestureRecognizer::onTouchBegan(const Touch *touch)
 void TapGestureRecognizer::onTouchMoved(const Touch *touch)
 {
     const Touch *t = touch;
-    if ((SQUARED(t->deltaX()) + SQUARED(t->deltaY())) >
+    if ((SQUARED(t->cumulativeDeltaX()) + SQUARED(t->cumulativeDeltaY())) >
         SQUARED(recognitionThreshold()) && state() == State::Possible) {
         setState(State::Failed);
     }

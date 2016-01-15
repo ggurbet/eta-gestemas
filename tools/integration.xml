@@ -1,68 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>0.1</movementThreshold>
+  <samplingPeriod>85</samplingPeriod>
+  <pointerEmulationRate>2</pointerEmulationRate>
+  <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <recognitionThresholdFactor>100.0</recognitionThresholdFactor>
+        <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
         <RightClick>
         </RightClick>
       </LongPress>
-      <Pan id ="2">
-        <maxNumTouchesRequired>1</maxNumTouchesRequired>
-        <minNumTouchesRequired>1</minNumTouchesRequired>
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <abortList>
-          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-        </abortList>
-        <Drag>
-        </Drag>
-      </Pan>
-      <Tap id="3">
-        <numTouchesRequired>1</numTouchesRequired>
-        <numTapsRequired>1</numTapsRequired>
-        <maxTapDelay>400</maxTapDelay>
-        <maxTapDuration>900</maxTapDuration>
-        <maxTapDistance>100.0</maxTapDistance>
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
-        <abortList>
-          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        </abortList>
-        <LeftClick>
-        </LeftClick>
-      </Tap>
-      <Pan id="4">
+      <Pan id="2">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
+        <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-          <id>2</id>
-          <id>5</id>
+          <id>3</id>
         </abortList>
         <Scroll>
-          <accumulator>8</accumulator>
-          <maxVelocity>20.0</maxVelocity>
-          <minVelocity>0.0001</minVelocity>
+          <accumulator>2</accumulator>
+          <maxVelocity>25.0</maxVelocity>
+          <minVelocity>0.042</minVelocity>
         </Scroll>
       </Pan>
-      <TwoTouchPinch id="5">
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
+      <TwoTouchPinch id="3">
+        <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
           <id>2</id>
-          <id>4</id>
         </abortList>
         <Zoom>
-          <accumulator>8</accumulator>
+          <accumulator>1</accumulator>
           <maxScale>1.60</maxScale>
-          <minScale>1.0001</minScale>
+          <minScale>1.001</minScale>
         </Zoom>
       </TwoTouchPinch>
     </GestureRecognizers>

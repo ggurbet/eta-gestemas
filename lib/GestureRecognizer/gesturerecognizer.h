@@ -46,12 +46,10 @@ public:
     const State& state() const
     {return m_state;}
 
-    void setRecognitionThresholdFactor(float factor)
-    {m_recognitionThresholdFactor = factor;}
-    float recognitionThresholdFactor() const
-    {return m_recognitionThresholdFactor;}
+    void setRecognitionThreshold(float threshold)
+    {m_recognitionThreshold = threshold;}
     float recognitionThreshold() const
-    {return m_recognitionThresholdFactor * GestureRecognizer::movementThreshold;}
+    {return m_recognitionThreshold;}
 
     void setAllowSimultaneousRecognition(bool b)
     {m_allowSimultaneousRecognition = b;}
@@ -89,7 +87,9 @@ public:
     GestureRecognizer(const GestureRecognizer&) = delete;
     GestureRecognizer& operator=(const GestureRecognizer&) = delete;
 
-    static float movementThreshold;
+    static uint64_t samplingPeriod;
+    static uint32_t pointerEmulationRate;
+    static float pointerEmulationDistance;
 protected:
     virtual void onTouchBegan(const Touch *touch) = 0;
     virtual void onTouchMoved(const Touch *touch) = 0;
@@ -106,7 +106,7 @@ protected:
     GestureRecognizerManager *m_manager;
     float m_centralX;
     float m_centralY;
-    float m_recognitionThresholdFactor;
+    float m_recognitionThreshold;
     bool m_allowSimultaneousRecognition;
     QList<const Touch*> m_touches;
     QList<GestureRecognizer*> m_gestureRecognizersToAbort;

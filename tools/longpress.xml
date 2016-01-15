@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <recognitionThresholdFactor>100.0</recognitionThresholdFactor>
+        <recognitionThreshold>100.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>

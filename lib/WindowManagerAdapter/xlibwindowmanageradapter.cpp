@@ -22,6 +22,7 @@
 
 #include <QtCore/QtGlobal>
 #include <QtCore/QSocketNotifier>
+#include <QtCore/QtDebug>
 
 // Should be included after all Qt includes
 // or gives strange Status definition errors.
@@ -32,7 +33,7 @@ static int x_error_handler(Display* display, XErrorEvent* error)
     (void)display;
     (void)error;
     // Q_ASSERT_X(false, "x_error_handler", "Xlib generated an error");
-    qDebug("bad happened");
+    qWarning("x_error_handler called");
     return 1;
 }
 
@@ -41,7 +42,7 @@ static int x_io_error_handler(Display* display)
 {
     (void)display;
     // Q_ASSERT_X(false, "x_io_error_handler", "Xlib generated an io error");
-    qDebug("worse happened");
+    qWarning("x_io_error_handler called");
     return 1;
 }
 
@@ -69,11 +70,10 @@ XLibWindowManagerAdapterPrivate::XLibWindowManagerAdapterPrivate(
                   xi_major, xi_minor);
     }
 
-    root = DefaultRootWindow(m_display);
-
+    root = XDefaultRootWindow(m_display);
+    XSelectInput(m_display, root, PropertyChangeMask);
     XMapWindow(m_display, root);
     XFlush(m_display);
-    XSelectInput(m_display, root, PropertyChangeMask);
 
     m_mask.deviceid = XIAllMasterDevices;
     m_mask.mask_len = XIMaskLen(XI_LASTEVENT);
@@ -84,6 +84,9 @@ XLibWindowManagerAdapterPrivate::XLibWindowManagerAdapterPrivate(
     XISetMask(m_mask.mask, XI_TouchEnd);
     XISetMask(m_mask.mask, XI_TouchOwnership);
     XISetMask(m_mask.mask, XI_HierarchyChanged);
+
+    XIGrabTouchBegin(m_display, XIAllMasterDevices, root, 0,
+                     &m_mask, 1, &m_mods);
 
     XSetErrorHandler(x_error_handler);
     XSetIOErrorHandler(x_io_error_handler);
@@ -98,6 +101,7 @@ XLibWindowManagerAdapterPrivate::~XLibWindowManagerAdapterPrivate()
 
 void XLibWindowManagerAdapterPrivate::onNewEvent()
 {
+    XSync(m_display, False);
     XEvent event;
     while (XPending(m_display)) {
         XNextEvent(m_display, &event);
@@ -142,7 +146,6 @@ void XLibWindowManagerAdapterPrivate::onNewEvent()
                 qWarning("Failed to get X generic event data\n");
                 continue;
             }
-            //TODO: Fordward xcookie data to TouchManager here.
             if (q_ptr->m_listener) {
                 q_ptr->m_listener->onTouchEvent(xcookie);
             }
@@ -185,6 +188,7 @@ void XLibWindowManagerAdapterPrivate::handleCreatedWindow(Window window)
     }
     if (q_ptr->m_listener) {
         bool grabTouches = true;
+        qDebug() << "Created: " << window << " " << targetName;
         q_ptr->m_listener->onWindowCreated(window, targetName, &grabTouches);
         if (grabTouches) {
             XIGrabTouchBegin(m_display, XIAllMasterDevices, window, 0,
@@ -195,35 +199,10 @@ void XLibWindowManagerAdapterPrivate::handleCreatedWindow(Window window)
 
 void XLibWindowManagerAdapterPrivate::handleDestroyedWindow(Window window)
 {
-    //     A window neither created nor destroyed
-    //     A window neither created nor destroyed
-    //     Target Destroyed: 0x3602791
-    //     X Error of failed request:  BadWindow (invalid Window parameter)
-    //     Major opcode of failed request:  131 (XInputExtension)
-    //     Minor opcode of failed request:  55 ()
-    //     Resource id in failed request:  0x3602791
-    //     Serial number of failed request:  50
-    //     Current serial number in output stream:  50
-
-
-    // Reproduced on krunner system activity close
-    /* Possible solutions are
-      1-)Search destroyed window id in GestureRecognizerManager
-      if not found, do not ungrab.
-      2-) Consider implementing following and setting and defaulting error handler
-      before a call that might fail.
-      int (*XSetErrorHandler(int (*handler)(Display *, XErrorEvent *)))();
-      int (*XSetIOErrorHandler(int (*handler)(Display *)))();
-      3-) Do something in the case "A window neither created nor distroyed"
-      4-) Do not ungrab at all.
-     */
-
     if(q_ptr->m_listener) {
+        qDebug() << "Destroyed: " << window;
         q_ptr->m_listener->onWindowDestroyed(window);
     }
-    // XIUngrabTouchBegin(m_display, XIAllMasterDevices, window, 1, &m_mods);
-
-    //TODO: Forward window to GestureRecognizerManager here.
 }
 
 void XLibWindowManagerAdapterPrivate::dispatchOpenWindowEvents()

@@ -24,11 +24,13 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QtDebug>
 
-float GestureRecognizer::movementThreshold = 2.0f;
+uint64_t GestureRecognizer::samplingPeriod = 80;
+uint32_t GestureRecognizer::pointerEmulationRate = 10;
+float GestureRecognizer::pointerEmulationDistance = 10.0f;
 
 GestureRecognizer::GestureRecognizer(QObject *parent)
     :QObject(parent), m_manager(nullptr), m_centralX(0.0f), m_centralY(0.0f),
-     m_recognitionThresholdFactor(1.0f), m_allowSimultaneousRecognition(false),
+     m_recognitionThreshold(1.0f), m_allowSimultaneousRecognition(false),
      m_listener(nullptr), m_id(0)
 {
 }
@@ -41,7 +43,7 @@ GestureRecognizer::~GestureRecognizer()
 
 bool GestureRecognizer::isEqual(const GestureRecognizer& other) const
 {
-    if (m_recognitionThresholdFactor != other.m_recognitionThresholdFactor) {
+    if (m_recognitionThreshold != other.m_recognitionThreshold) {
         return false;
     }
     if (m_allowSimultaneousRecognition != other.m_allowSimultaneousRecognition) {
@@ -168,8 +170,8 @@ void GestureRecognizer::updateCentralPoint()
     if (size > 0) {
         const Touch *touch = nullptr;
         foreach (touch, m_touches) {
-            x += touch->x();
-            y += touch->y();
+            x += touch->computedX();
+            y += touch->computedY();
         }
         if (size == 1) {
             m_centralX = x;

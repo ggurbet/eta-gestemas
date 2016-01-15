@@ -41,16 +41,15 @@ GestureRecognizerManager::~GestureRecognizerManager()
 }
 
 void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
-                                           float resolutionX, float resolutionY,
-                  uint32_t targetId, void* device, uint64_t timeStamp)
+                            uint32_t targetId, void* device, uint64_t timestamp)
 {
     Touch *touch = nullptr;
     Target *target = nullptr;
 
     touch = findTouch(touchId);
     Q_ASSERT(touch == nullptr);
-    touch = new Touch(touchId, targetId, x, y, x, y, resolutionX, resolutionY,
-                      device, timeStamp, timeStamp);
+    touch = new Touch(touchId, targetId, x, y,
+                      device, timestamp);
 
     Q_CHECK_PTR(touch);
     m_touches.append(touch);
@@ -77,61 +76,73 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
         gestureRecognizer->callListener();
     }
 
-    qDebug() << "Began";
-    printStates();
+    // qDebug() << "Began";
+    // printStates();
 }
 
 void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
-                                        float x, float y, uint64_t timeStamp)
+                                        float x, float y, uint64_t timestamp)
 {
     Touch *t = nullptr;
 
     t = findTouch(touchId);
     Q_ASSERT(t != nullptr);
 
-    if (t->ownershipState() == Touch::Rejected) return;
-
-    bool moved = SQUARED_PYTHAGOREAN(t->y(), y, t->x(), x) >
-        SQUARED(GestureRecognizer::movementThreshold);
-
-    if (moved) {
-        t->setDeltaX(x - t->x());
-        t->setDeltaY(y - t->y());
-        t->setTimeStamp(timeStamp);
-    } else {
-        t->setDeltaX(0.0f);
-        t->setDeltaY(0.0f);
+    if (t->ownershipState() == Touch::Rejected) {
+        return;
     }
-    t->setX(x);
-    t->setY(y);
 
-    if (moved) {
-        QList<GestureRecognizer*> gestureRecognizers =
-            m_gestureRecognizersForTouches.values(touchId);
-        GestureRecognizer *gestureRecognizer = nullptr;
-        foreach (gestureRecognizer, gestureRecognizers) {
-            gestureRecognizer->touchMovedHandler(t);
-        }
-        handleTouchOwnership(t);
-        foreach (gestureRecognizer, gestureRecognizers) {
-            gestureRecognizer->callListener();
-        }
+    if (numTouches() == 1
+        && t->ownershipState() == Touch::Deferred
+        && timestamp - t->startTime() >
+        GestureRecognizer::samplingPeriod *
+        GestureRecognizer::pointerEmulationRate
+        && SQUARED_PYTHAGOREAN(t->cumulativeDeltaY(), t->cumulativeDeltaX()) >
+        SQUARED(GestureRecognizer::pointerEmulationDistance)) {
+            rejectTouch(t);
+            return;
     }
-    qDebug() << "Updated";
-    printStates();
+
+    t->computeX(x - t->previousX());
+    t->computeY(y - t->previousY());
+    t->setPreviousX(x);
+    t->setPreviousY(y);
+
+    float deltaTime = timestamp - t->timestamp();
+    if (deltaTime < GestureRecognizer::samplingPeriod) {
+        return;
+    }
+
+    t->setTimestamp(timestamp);
+    QList<GestureRecognizer*> gestureRecognizers =
+        m_gestureRecognizersForTouches.values(touchId);
+    GestureRecognizer *gestureRecognizer = nullptr;
+    foreach (gestureRecognizer, gestureRecognizers) {
+        gestureRecognizer->touchMovedHandler(t);
+    }
+    handleTouchOwnership(t);
+    foreach (gestureRecognizer, gestureRecognizers) {
+        gestureRecognizer->callListener();
+    }
+
+    // qDebug() << "Updated";
+    // printStates();
 }
 
 void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
-                                        float x, float y, uint64_t timeStamp)
+                                        float x, float y, uint64_t timestamp)
 {
     Touch *touch = nullptr;
     Target *target = nullptr;
 
     touch = findTouch(touchId);
     Q_ASSERT(touch != nullptr);
-    touch->setX(x);
-    touch->setY(y);
-    touch->setTimeStamp(timeStamp);
+
+    touch->computeX(x - touch->previousX());
+    touch->computeY(y - touch->previousY());
+    touch->setPreviousX(x);
+    touch->setPreviousY(y);
+    touch->setTimestamp(timestamp);
 
     QList<GestureRecognizer*> gestureRecognizers =
         m_gestureRecognizersForTouches.values(touchId);
@@ -149,8 +160,8 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
         gestureRecognizer->callListener();
     }
 
-    qDebug() << "Ended";
-    printStates();
+    // qDebug() << "Ended";
+    // printStates();
 
     m_touches.removeAll(touch);
     if (m_touches.size() == 0) {

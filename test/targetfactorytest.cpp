@@ -39,7 +39,7 @@ void TargetFactoryTester::initTestCase()
     LongPressGestureRecognizer *gr1 = new LongPressGestureRecognizer;
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
-    gr1->setRecognitionThresholdFactor(1.0f);
+    gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
     RightClick *listener1 = new RightClick;
     listener1->setGestureRecognizer(gr1);
@@ -47,7 +47,7 @@ void TargetFactoryTester::initTestCase()
     PanGestureRecognizer *gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(1);
     gr2->setMinNumTouchesRequired(1);
-    gr2->setRecognitionThresholdFactor(1.0f);
+    gr2->setRecognitionThreshold(1.0f);
     gr2->setAllowSimultaneousRecognition(false);
     Drag *listener2 = new Drag;
     listener2->setGestureRecognizer(gr2);
@@ -58,7 +58,7 @@ void TargetFactoryTester::initTestCase()
     gr3->setMaxTapDelay(400);
     gr3->setMaxTapDuration(1000);
     gr3->setMaxTapDistance(100.0f);
-    gr3->setRecognitionThresholdFactor(1.0f);
+    gr3->setRecognitionThreshold(1.0f);
     gr3->setAllowSimultaneousRecognition(false);
     LeftClick *listener3 = new LeftClick;
     listener3->setGestureRecognizer(gr3);
@@ -66,7 +66,7 @@ void TargetFactoryTester::initTestCase()
     PanGestureRecognizer *gr4 = new PanGestureRecognizer;
     gr4->setMaxNumTouchesRequired(2);
     gr4->setMinNumTouchesRequired(2);
-    gr4->setRecognitionThresholdFactor(1.0f);
+    gr4->setRecognitionThreshold(1.0f);
     gr4->setAllowSimultaneousRecognition(false);
     Scroll *listener4 = new Scroll;
     listener4->setAccumulator(10);
@@ -75,7 +75,7 @@ void TargetFactoryTester::initTestCase()
     listener4->setGestureRecognizer(gr4);
     expectedTargetChromium.addGestureRecognizer(gr4);
     TwoTouchPinchGestureRecognizer *gr5 = new TwoTouchPinchGestureRecognizer;
-    gr5->setRecognitionThresholdFactor(1.0f);
+    gr5->setRecognitionThreshold(1.0f);
     gr5->setAllowSimultaneousRecognition(false);
     Zoom *listener5 = new Zoom;
     listener5->setAccumulator(10);
@@ -89,7 +89,7 @@ void TargetFactoryTester::initTestCase()
     gr1 = new LongPressGestureRecognizer;
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
-    gr1->setRecognitionThresholdFactor(1.0f);
+    gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
     listener1 = new RightClick;
     listener1->setGestureRecognizer(gr1);
@@ -97,7 +97,7 @@ void TargetFactoryTester::initTestCase()
     gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(1);
     gr2->setMinNumTouchesRequired(1);
-    gr2->setRecognitionThresholdFactor(1.0f);
+    gr2->setRecognitionThreshold(1.0f);
     gr2->setAllowSimultaneousRecognition(false);
     listener2 = new Drag;
     listener2->setGestureRecognizer(gr2);
@@ -108,7 +108,7 @@ void TargetFactoryTester::initTestCase()
     gr3->setMaxTapDelay(400);
     gr3->setMaxTapDuration(1000);
     gr3->setMaxTapDistance(100.0f);
-    gr3->setRecognitionThresholdFactor(1.0f);
+    gr3->setRecognitionThreshold(1.0f);
     gr3->setAllowSimultaneousRecognition(false);
     listener3 = new LeftClick;
     listener3->setGestureRecognizer(gr3);
@@ -116,7 +116,7 @@ void TargetFactoryTester::initTestCase()
     gr4 = new PanGestureRecognizer;
     gr4->setMaxNumTouchesRequired(2);
     gr4->setMinNumTouchesRequired(2);
-    gr4->setRecognitionThresholdFactor(1.0f);
+    gr4->setRecognitionThreshold(1.0f);
     gr4->setAllowSimultaneousRecognition(true);
     listener4 = new Scroll;
     listener4->setAccumulator(15);
@@ -125,7 +125,7 @@ void TargetFactoryTester::initTestCase()
     listener4->setGestureRecognizer(gr4);
     expectedTargetFirefox.addGestureRecognizer(gr4);
     gr5 = new TwoTouchPinchGestureRecognizer;
-    gr5->setRecognitionThresholdFactor(1.0f);
+    gr5->setRecognitionThreshold(1.0f);
     gr5->setAllowSimultaneousRecognition(true);
     listener5 = new Zoom;
     listener5->setAccumulator(10);
@@ -139,7 +139,7 @@ void TargetFactoryTester::initTestCase()
     gr1 = new LongPressGestureRecognizer;
     gr1->setNumTouchesRequired(1);
     gr1->setMinPressDuration(950);
-    gr1->setRecognitionThresholdFactor(1.0f);
+    gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
     listener1 = new RightClick;
     listener1->setGestureRecognizer(gr1);
@@ -147,7 +147,7 @@ void TargetFactoryTester::initTestCase()
     gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(1);
     gr2->setMinNumTouchesRequired(1);
-    gr2->setRecognitionThresholdFactor(1.0f);
+    gr2->setRecognitionThreshold(1.0f);
     gr2->setAllowSimultaneousRecognition(false);
     listener2 = new Drag;
     listener2->setGestureRecognizer(gr2);
@@ -158,7 +158,7 @@ void TargetFactoryTester::initTestCase()
     gr3->setMaxTapDelay(400);
     gr3->setMaxTapDuration(1000);
     gr3->setMaxTapDistance(100.0f);
-    gr3->setRecognitionThresholdFactor(1.0f);
+    gr3->setRecognitionThreshold(1.0f);
     gr3->setAllowSimultaneousRecognition(false);
     listener3 = new LeftClick;
     listener3->setGestureRecognizer(gr3);
@@ -186,7 +186,6 @@ void TargetFactoryTester::testTargetFactory()
     QVERIFY(!parsedTargetOther->isEqual(expectedTargetChromium));
     QVERIFY(!parsedTargetOther->isEqual(expectedTargetFirefox));
     QVERIFY(!parsedTargetChromium->isEqual(expectedTargetFirefox));
-    QVERIFY(GestureRecognizer::movementThreshold == 10.0f);
 }
 
 QTEST_MAIN(TargetFactoryTester)

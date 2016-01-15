@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <movementThreshold>0.1</movementThreshold>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <TwoTouchPinch id="5">
-        <recognitionThresholdFactor>1.0</recognitionThresholdFactor>
+        <recognitionThreshold>1.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
         </abortList>

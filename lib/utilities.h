@@ -21,8 +21,8 @@
 
 #define SQUARED(x) ((x) *(x))
 
-#define SQUARED_PYTHAGOREAN(y1, y2, x1, x2) \
-    (SQUARED((x2) - (x1)) + SQUARED((y2) - (y1)))
+#define SQUARED_PYTHAGOREAN(deltaY, deltaX) \
+    (SQUARED((deltaX)) + SQUARED((deltaY)))
 
 #define CHECK_RANGE(val, min, max)          \
     ((val) >= (min) && (val) <= (max))

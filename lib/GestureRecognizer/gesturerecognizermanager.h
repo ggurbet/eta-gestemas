@@ -35,10 +35,9 @@ public:
     ~GestureRecognizerManager();
 
     void onTouchBegan(uint32_t touchId, float x, float y,
-                      float resolutionX, float resolutionY,
-                    uint32_t targetId, void* device, uint64_t timeStamp);
-    void onTouchUpdated(uint32_t touchId, float x, float y, uint64_t timeStamp);
-    void onTouchEnded(uint32_t touchId, float x, float y, uint64_t timeStamp);
+                    uint32_t targetId, void* device, uint64_t timestamp);
+    void onTouchUpdated(uint32_t touchId, float x, float y, uint64_t timestamp);
+    void onTouchEnded(uint32_t touchId, float x, float y, uint64_t timestamp);
 
     void detachGestureRecognizer(const Touch *touch, GestureRecognizer* gr);
     void detachGestureRecognizer(GestureRecognizer* gr);

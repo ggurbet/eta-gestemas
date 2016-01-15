@@ -57,8 +57,8 @@ Display* XTestGestureListener::display() const
 
 void XTestGestureListener::movePointer()
 {
-    int targetX = static_cast<int>(m_recognizer->centralX());
-    int targetY = static_cast<int>(m_recognizer->centralY());
+    int targetX = static_cast<int>(m_recognizer->centralX() + 0.5f);
+    int targetY = static_cast<int>(m_recognizer->centralY() + 0.5f);
     Window rootWindow;
     Window returnedWindow;
     Window targetWindow = m_recognizer->targetId();
