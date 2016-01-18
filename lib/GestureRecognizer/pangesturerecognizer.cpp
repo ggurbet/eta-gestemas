@@ -69,13 +69,12 @@ void PanGestureRecognizer::onTouchMoved(const Touch *touch)
     float threshold = recognitionThreshold();
 
     if (state() == State::Possible) {
-        qDebug() << "Pan: "
-                 << fabsf(t->cumulativeDeltaX()) << " "
-                 << fabsf(t->cumulativeDeltaY()) << " "
-                 << threshold;
-
-        if (fabsf(t->cumulativeDeltaX()) > threshold
-            || fabsf(t->cumulativeDeltaY()) > threshold) {
+        // qDebug() << "Pan: "
+        //          << fabsf(t->cumulativeDeltaXInMeters()) << " "
+        //          << fabsf(t->cumulativeDeltaYInMeters()) << " "
+        //          << threshold;
+        if (fabsf(t->cumulativeDeltaXInMeters()) > threshold
+            || fabsf(t->cumulativeDeltaYInMeters()) > threshold) {
             setState(State::Began);
         }
     } else if (state() == State::Began || state() == State::Changed) {
@@ -96,7 +95,6 @@ void PanGestureRecognizer::onTouchMoved(const Touch *touch)
         m_velocityY = (deltaTime == 0.0f) ? 0 : delta / deltaTime;
         m_translationY += delta;
 
-        qDebug() << "Pan : " << m_velocityX << " " << m_velocityY;
         setState(State::Changed);
     }
 }

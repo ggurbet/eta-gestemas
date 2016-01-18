@@ -54,8 +54,8 @@ void TwoTouchPinchGestureRecognizer::onTouchBegan(const Touch *touch)
         m_touch1 = touch;
     } else { //numTouches() == 2
         m_touch2 = touch;
-        float deltaX = m_touch1->computedX() - m_touch2->computedX();
-        float deltaY = m_touch1->computedY() - m_touch2->computedY();
+        float deltaX = m_touch1->computedXInMeters() - m_touch2->computedXInMeters();
+        float deltaY = m_touch1->computedYInMeters() - m_touch2->computedYInMeters();
         m_distance =
             sqrtf(SQUARED_PYTHAGOREAN(deltaY, deltaX));
     }
@@ -69,16 +69,16 @@ void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *touch)
     }
 
     float currentDistance = 0.0f;
-    float deltaX = m_touch1->computedX() - m_touch2->computedX();
-    float deltaY = m_touch1->computedY() - m_touch2->computedY();
+    float deltaX = m_touch1->computedXInMeters() - m_touch2->computedXInMeters();
+    float deltaY = m_touch1->computedYInMeters() - m_touch2->computedYInMeters();
     currentDistance =
         sqrtf(SQUARED_PYTHAGOREAN(deltaY, deltaX));
     updateCentralPoint();
     if (state() == State::Possible) {
         m_cumulativeDeltaDistance += (currentDistance - m_distance);
-        qDebug() << "Pinch: "
-                 << fabs(m_cumulativeDeltaDistance) << " "
-                 << recognitionThreshold();
+        // qDebug() << "Pinch: "
+        //          << fabs(m_cumulativeDeltaDistance) << " "
+        //          << recognitionThreshold();
         if (fabs(m_cumulativeDeltaDistance) > recognitionThreshold()) {
             setState(State::Began);
         }

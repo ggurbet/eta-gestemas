@@ -259,18 +259,24 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
 {
     // This is messy!
     uint32_t touchId = 0UL;
-    float windowX = 0.0f;
-    float windowY = 0.0f;
+    float x = 0.0f;
+    float y = 0.0f;
+    int device_direct = 0;
     float resolutionX = 0.0f;
     float resolutionY = 0.0f;
     uint64_t timestamp = 0ULL;
     Window root = XDefaultRootWindow(m_display);
 
     touchId = frame_x11_get_touch_id(frame_touch_get_id(touch));
-    windowX = frame_touch_get_window_x(touch);
-    windowY = frame_touch_get_window_y(touch);
+    getDeviceResolution(device, &resolutionX, &resolutionY, &device_direct);
+    if (device_direct) {
+        x = frame_touch_get_window_x(touch);
+        y = frame_touch_get_window_y(touch);
+    } else {
+        x = frame_touch_get_device_x(touch);
+        y = frame_touch_get_device_y(touch);
+    }
     timestamp = frame_touch_get_time(touch);
-    getDeviceResolution(device, &resolutionX, &resolutionY);
     Q_ASSERT(m_grm != nullptr);
 
     switch (frame_touch_get_state(touch)) {
@@ -280,24 +286,31 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
         } else {
             m_rootTouchHash[touchId] = 0;
             reject_touch(touchId, window, device);
-            int targetX = static_cast<int>(windowX + 0.5f);
-            int targetY = static_cast<int>(windowY + 0.5f);
-            int rootX = 0;
-            int rootY = 0;
-            Window returnedWindow;
-            bool coordinatesTranslated =
-                XTranslateCoordinates(m_display,
-                                      window, root, targetX, targetY,
-                                      &rootX, &rootY, &returnedWindow);
-            Q_ASSERT(coordinatesTranslated);
-            m_grm->onTouchBegan(touchId, rootX, rootY,
+            if (device_direct) {
+                // (x,y) is non-root window coordinates.
+                // We have to translate them into
+                // root coordinates for the first time.
+                int windowX = static_cast<int>(x + 0.5f);
+                int windowY = static_cast<int>(y + 0.5f);
+                int positionX = 0;
+                int positionY = 0;
+                Window returnedWindow;
+                bool coordinatesTranslated =
+                    XTranslateCoordinates(m_display,
+                                          window, root, windowX, windowY,
+                                          &positionX, &positionY, &returnedWindow);
+                Q_ASSERT(coordinatesTranslated);
+                x = positionX;
+                y = positionY;
+            }
+            m_grm->onTouchBegan(touchId, x, y, resolutionX, resolutionY,
                                 window, device, timestamp);
         }
         break;
     case UFTouchStateUpdate:
         if (window == root) {
             if (m_rootTouchHash[touchId] == 0) {
-                m_grm->onTouchUpdated(touchId, windowX, windowY, timestamp);
+                m_grm->onTouchUpdated(touchId, x, y, timestamp);
             } else if (++m_rootTouchHash[touchId] > TARGET_BOUND) {
                 reject_touch(touchId, window, device);
             }
@@ -306,7 +319,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
     case UFTouchStateEnd:
         if (window == root) {
             if (m_rootTouchHash[touchId] == 0) {
-                m_grm->onTouchEnded(touchId, windowX, windowY, timestamp);
+                m_grm->onTouchEnded(touchId, x, y, timestamp);
             } else if (m_rootTouchHash[touchId] <= TARGET_BOUND) {
                 reject_touch(touchId, window, device);
             }
@@ -381,18 +394,16 @@ void LibFrameTouchManager::getAxisInfo(UFAxis axis, UFAxisType *type,
 }
 
 void LibFrameTouchManager::getDeviceResolution(UFDevice device,
-                                               float *resx, float *resy)
+                                               float *resx, float *resy, int *device_direct)
 {
-    int device_direct_;
-    /* Save direct property for gesture processing */
     UFStatus status = frame_device_get_property(device, UFDevicePropertyDirect,
-                                                &device_direct_);
+                                                device_direct);
     if (status != UFStatusSuccess) {
         qFatal("Failed to get property direct");
         return;
     }
 
-    if (device_direct_) {
+    if (*device_direct) {
         *resx = frame_device_get_window_resolution_x(device);
         *resy = frame_device_get_window_resolution_y(device);
 

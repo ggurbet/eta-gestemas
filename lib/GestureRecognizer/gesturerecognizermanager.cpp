@@ -41,6 +41,7 @@ GestureRecognizerManager::~GestureRecognizerManager()
 }
 
 void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
+                                            float resolutionX, float resolutionY,
                             uint32_t targetId, void* device, uint64_t timestamp)
 {
     Touch *touch = nullptr;
@@ -48,7 +49,7 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
 
     touch = findTouch(touchId);
     Q_ASSERT(touch == nullptr);
-    touch = new Touch(touchId, targetId, x, y,
+    touch = new Touch(touchId, targetId, x, y, resolutionX, resolutionY,
                       device, timestamp);
 
     Q_CHECK_PTR(touch);
@@ -76,8 +77,8 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
         gestureRecognizer->callListener();
     }
 
-    // qDebug() << "Began";
-    // printStates();
+    qDebug() << "Began";
+    printStates();
 }
 
 void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
@@ -97,7 +98,8 @@ void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
         && timestamp - t->startTime() >
         GestureRecognizer::samplingPeriod *
         GestureRecognizer::pointerEmulationRate
-        && SQUARED_PYTHAGOREAN(t->cumulativeDeltaY(), t->cumulativeDeltaX()) >
+        && SQUARED_PYTHAGOREAN(t->cumulativeDeltaYInMeters(),
+                               t->cumulativeDeltaXInMeters()) >
         SQUARED(GestureRecognizer::pointerEmulationDistance)) {
             rejectTouch(t);
             return;
@@ -125,8 +127,8 @@ void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
         gestureRecognizer->callListener();
     }
 
-    // qDebug() << "Updated";
-    // printStates();
+    qDebug() << "Updated";
+    printStates();
 }
 
 void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
@@ -160,8 +162,8 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
         gestureRecognizer->callListener();
     }
 
-    // qDebug() << "Ended";
-    // printStates();
+    qDebug() << "Ended";
+    printStates();
 
     m_touches.removeAll(touch);
     if (m_touches.size() == 0) {

@@ -2,14 +2,14 @@
 <gestemas>
   <samplingPeriod>85</samplingPeriod>
   <pointerEmulationRate>2</pointerEmulationRate>
-  <pointerEmulationDistance>10.0</pointerEmulationDistance>
+  <pointerEmulationDistance>0.0027</pointerEmulationDistance>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <recognitionThreshold>10.0</recognitionThreshold>
+        <recognitionThreshold>0.0027</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
@@ -19,7 +19,7 @@
       <Pan id="2">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
-        <recognitionThreshold>20.0</recognitionThreshold>
+        <recognitionThreshold>0.0054</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
           <id>3</id>
@@ -31,7 +31,7 @@
         </Scroll>
       </Pan>
       <TwoTouchPinch id="3">
-        <recognitionThreshold>20.0</recognitionThreshold>
+        <recognitionThreshold>0.0054</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
           <id>2</id>
@@ -42,6 +42,16 @@
           <minScale>1.001</minScale>
         </Zoom>
       </TwoTouchPinch>
+      <Pan id="4">
+        <maxNumTouchesRequired>3</maxNumTouchesRequired>
+        <minNumTouchesRequired>3</minNumTouchesRequired>
+        <recognitionThreshold>0.0054</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <Move>
+        </Move>
+      </Pan>
     </GestureRecognizers>
   </Target>
 </gestemas>

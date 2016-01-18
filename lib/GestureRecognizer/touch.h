@@ -33,6 +33,7 @@ public:
     Touch();
     Touch(uint32_t touchId, uint32_t targetId,
           float startX, float startY,
+          float resolutionX, float resolutionY,
           void *device, uint64_t timestamp);
 
     ~Touch() = default;
@@ -53,37 +54,65 @@ public:
     {m_startX = x;}
     float startX() const
     {return m_startX;}
+    float startXInMeter() const
+    {return m_startX / m_resolutionX;}
 
     void setStartY(float y)
     {m_startY = y;}
     float startY() const
     {return m_startY;}
+    float startYInMeter() const
+    {return m_startY / m_resolutionY;}
 
     void setPreviousX(float x)
     {m_previousX = x;}
     float previousX() const
     {return m_previousX;}
+    float previousXInMeters() const
+    {return m_previousX / m_resolutionX;}
 
     void setPreviousY(float y)
     {m_previousY = y;}
     float previousY() const
     {return m_previousY;}
+    float previousYInMeters() const
+    {return m_previousY / m_resolutionY;}
 
     void computeX(float deltaX)
     {m_cumulativeDeltaX += deltaX;}
     float computedX() const
     {return m_startX + m_cumulativeDeltaX;}
+    float computedXInMeters() const
+    {return computedX() / m_resolutionX;}
 
     void computeY(float deltaY)
     {m_cumulativeDeltaY += deltaY;}
     float computedY() const
     {return m_startY + m_cumulativeDeltaY;}
+    float computedYInMeters() const
+    {return computedY() / m_resolutionY;}
 
     float cumulativeDeltaX() const
     {return m_cumulativeDeltaX;}
 
     float cumulativeDeltaY() const
     {return m_cumulativeDeltaY;}
+
+    float cumulativeDeltaXInMeters() const
+    {return m_cumulativeDeltaX / m_resolutionX;}
+
+    float cumulativeDeltaYInMeters() const
+    {return m_cumulativeDeltaY / m_resolutionY;}
+
+    void setResolutionX(float x)
+    {m_resolutionX = x;}
+    float resolutionX() const
+    {return m_resolutionX;}
+
+    void setResolutionY(float y)
+    {m_resolutionY = y;}
+    float resolutionY() const
+    {return m_resolutionX;}
 
     void setDevice(void* device)
     {m_device = device;}
@@ -112,6 +141,8 @@ private:
     float m_previousY;
     float m_cumulativeDeltaX;
     float m_cumulativeDeltaY;
+    float m_resolutionX;
+    float m_resolutionY;
     void *m_device;
     uint64_t m_startTime;
     uint64_t m_timestamp;

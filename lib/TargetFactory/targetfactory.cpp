@@ -16,6 +16,7 @@
 #include "zoom.h"
 #include "drag.h"
 #include "scroll.h"
+#include "move.h"
 
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
@@ -309,6 +310,8 @@ void TargetFactory::processPan()
             processDrag(gr);
         } else if (m_configReader->name() == "Scroll") {
             processScroll(gr);
+        } else if (m_configReader->name() == "Move") {
+            processMove(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -457,6 +460,19 @@ void TargetFactory::processScroll(PanGestureRecognizer *gr)
             }
         }
     }
+    listener->setGestureRecognizer(gr);
+}
+
+void TargetFactory::processMove(PanGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "Move") {
+        return;
+    }
+
+    Move *listener = new Move;
+    bool ok = false;
+    while (m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 

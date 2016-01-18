@@ -51,7 +51,8 @@ private:
     void getAxisInfo(UFAxis axis, UFAxisType *type,
                     const char **name, float *min,
                        float *max, float *res);
-    void getDeviceResolution(UFDevice device, float *resx, float *resy);
+    void getDeviceResolution(UFDevice device, float *resx, float *resy,
+                             int *device_direct);
     void onDeviceAdded(UFEvent event);
     void onDeviceRemoved(UFEvent event);
     void onNewFrame(UFEvent event);

@@ -105,8 +105,10 @@ void TapGestureRecognizer::onTouchBegan(const Touch *touch)
 void TapGestureRecognizer::onTouchMoved(const Touch *touch)
 {
     const Touch *t = touch;
-    if ((SQUARED(t->cumulativeDeltaX()) + SQUARED(t->cumulativeDeltaY())) >
-        SQUARED(recognitionThreshold()) && state() == State::Possible) {
+    if ((SQUARED(t->cumulativeDeltaXInMeters()) +
+         SQUARED(t->cumulativeDeltaYInMeters())) >
+        SQUARED(recognitionThreshold())
+        && state() == State::Possible) {
         setState(State::Failed);
     }
 

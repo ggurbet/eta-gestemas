@@ -42,6 +42,7 @@ private:
     void processRightClick(LongPressGestureRecognizer *gr);
     void processDrag(PanGestureRecognizer *gr);
     void processScroll(PanGestureRecognizer *gr);
+    void processMove(PanGestureRecognizer *gr);
     void processLeftClick(TapGestureRecognizer *gr);
     void processZoom(TwoTouchPinchGestureRecognizer *gr);
 

@@ -39,6 +39,8 @@ protected:
     void injectMixed(KeySym ks, int btn, const char *modifiers[]);
     void injectLeftButtonPress();
     void injectLeftButtonRelease();
+    void injectKeyPress(KeySym ks);
+    void injectKeyRelease(KeySym ks);
 
     Display* m_display;
     bool m_shouldCloseDisplay;

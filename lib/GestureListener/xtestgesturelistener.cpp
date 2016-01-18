@@ -59,19 +59,8 @@ void XTestGestureListener::movePointer()
 {
     int targetX = static_cast<int>(m_recognizer->centralX() + 0.5f);
     int targetY = static_cast<int>(m_recognizer->centralY() + 0.5f);
-    Window rootWindow;
-    Window returnedWindow;
-    Window targetWindow = m_recognizer->targetId();
-    rootWindow = XDefaultRootWindow(m_display);
-    int rootX = 0;
-    int rootY = 0;
-    bool coordinatesTranslated =
-        XTranslateCoordinates(m_display,
-                              targetWindow, rootWindow, targetX, targetY,
-                              &rootX, &rootY, &returnedWindow);
-
-    Q_ASSERT(coordinatesTranslated);
-    XTestFakeMotionEvent(m_display, 0, rootX, rootY, CurrentTime);
+    XTestFakeMotionEvent(m_display, 0, targetX, targetY, CurrentTime);
+    XFlush(m_display);
 }
 
 void XTestGestureListener::injectKey(KeySym ks, const char *modifiers[])
@@ -152,5 +141,19 @@ void XTestGestureListener::injectLeftButtonPress()
 void XTestGestureListener::injectLeftButtonRelease()
 {
     XTestFakeButtonEvent(m_display, 1, False, CurrentTime);
+    XFlush(m_display);
+}
+
+void XTestGestureListener::injectKeyPress(KeySym ks)
+{
+    XTestFakeKeyEvent(m_display, XKeysymToKeycode(m_display, ks), True,
+                      CurrentTime);
+    XFlush(m_display);
+}
+
+void XTestGestureListener::injectKeyRelease(KeySym ks)
+{
+    XTestFakeKeyEvent(m_display, XKeysymToKeycode(m_display, ks), False,
+                      CurrentTime);
     XFlush(m_display);
 }
