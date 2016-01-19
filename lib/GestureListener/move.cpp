@@ -29,7 +29,6 @@ void Move::setGestureRecognizer(PanGestureRecognizer *recognizer)
 void Move::onBegan()
 {
     // qDebug() << "Move onBegan";
-    movePointer();
     injectKeyPress(XStringToKeysym("Alt_L"));
     injectLeftButtonPress();
 }
