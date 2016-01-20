@@ -60,13 +60,13 @@ bool SwipeGestureRecognizer::isEqual(const GestureRecognizer& other) const
 void SwipeGestureRecognizer::setMaxDuration(int maxDuration)
 {
     m_maxDuration = maxDuration;
-    m_minVelocity = 2.0 * m_minDisplacement / m_maxDuration;
+    m_minVelocity = m_minDisplacement / m_maxDuration;
 }
 
 void SwipeGestureRecognizer::setMinDisplacement(float minDisplacement)
 {
     m_minDisplacement = minDisplacement;
-    m_minVelocity = 2.0 * m_minDisplacement / m_maxDuration;
+    m_minVelocity = m_minDisplacement / m_maxDuration;
 }
 
 void SwipeGestureRecognizer::reset()
@@ -118,6 +118,8 @@ void SwipeGestureRecognizer::onTouchMoved(const Touch *touch)
     float thresholdSquared = SQUARED(recognitionThreshold());
     float minDisplacementSquared = SQUARED(minDisplacement());
     float minVelocitySquared = SQUARED(m_minVelocity);
+    qDebug() << m_minVelocity << " " << minDisplacement() << " " << maxDuration();
+    qDebug() << sqrtf(velocitySquared) << " " << sqrtf(deltaSquared) << " " << deltaTime;
 
     if (m_noDirection) {
         if (deltaSquared >= thresholdSquared

@@ -303,8 +303,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
                 x = positionX;
                 y = positionY;
             }
-            m_grm->onTouchBegan(touchId, x, y, resolutionX, resolutionY,
-                                window, device, timestamp);
+            m_grm->onTouchBegan(touchId, x, y, window, device, timestamp);
         }
         break;
     case UFTouchStateUpdate:

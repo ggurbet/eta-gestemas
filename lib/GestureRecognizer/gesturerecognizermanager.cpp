@@ -41,7 +41,6 @@ GestureRecognizerManager::~GestureRecognizerManager()
 }
 
 void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
-                                            float resolutionX, float resolutionY,
                             uint32_t targetId, void* device, uint64_t timestamp)
 {
     Touch *touch = nullptr;
@@ -49,8 +48,7 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
 
     touch = findTouch(touchId);
     Q_ASSERT(touch == nullptr);
-    touch = new Touch(touchId, targetId, x, y, resolutionX, resolutionY,
-                      device, timestamp);
+    touch = new Touch(touchId, targetId, x, y, device, timestamp);
 
     Q_CHECK_PTR(touch);
     m_touches.append(touch);
@@ -98,8 +96,8 @@ void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
         && timestamp - t->startTime() >
         GestureRecognizer::samplingPeriod *
         GestureRecognizer::pointerEmulationRate
-        && SQUARED_PYTHAGOREAN(t->cumulativeDeltaYInMeters(),
-                               t->cumulativeDeltaXInMeters()) >
+        && SQUARED_PYTHAGOREAN(t->cumulativeDeltaY(),
+                               t->cumulativeDeltaX()) >
         SQUARED(GestureRecognizer::pointerEmulationDistance)) {
             rejectTouch(t);
             return;

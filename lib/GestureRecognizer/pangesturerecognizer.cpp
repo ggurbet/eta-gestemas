@@ -70,11 +70,11 @@ void PanGestureRecognizer::onTouchMoved(const Touch *touch)
 
     if (state() == State::Possible) {
         // qDebug() << "Pan: "
-        //          << fabsf(t->cumulativeDeltaXInMeters()) << " "
-        //          << fabsf(t->cumulativeDeltaYInMeters()) << " "
+        //          << fabsf(t->cumulativeDeltaX()) << " "
+        //          << fabsf(t->cumulativeDeltaY()) << " "
         //          << threshold;
-        if (fabsf(t->cumulativeDeltaXInMeters()) > threshold
-            || fabsf(t->cumulativeDeltaYInMeters()) > threshold) {
+        if (fabsf(t->cumulativeDeltaX()) > threshold
+            || fabsf(t->cumulativeDeltaY()) > threshold) {
             setState(State::Began);
         }
     } else if (state() == State::Began || state() == State::Changed) {

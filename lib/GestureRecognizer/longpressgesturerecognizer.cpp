@@ -71,8 +71,8 @@ void LongPressGestureRecognizer::onTouchMoved(const Touch *touch)
 {
     const Touch *t = touch;
     float cumulativeDeltaSquared =
-        SQUARED_PYTHAGOREAN(t->cumulativeDeltaYInMeters(),
-                            t->cumulativeDeltaXInMeters());
+        SQUARED_PYTHAGOREAN(t->cumulativeDeltaY(),
+                            t->cumulativeDeltaX());
     float threshold = recognitionThreshold();
     if (state() == State::Possible
         && threshold > 0.0f
