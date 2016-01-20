@@ -4,6 +4,7 @@
 #include "pangesturerecognizer.h"
 #include "twotouchpinchgesturerecognizer.h"
 #include "tapgesturerecognizer.h"
+#include "swipegesturerecognizer.h"
 
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QtGlobal>
@@ -199,6 +200,8 @@ void TargetFactory::processGestureRecognizers()
             processPan();
         } else if (m_configReader->name() == "Tap") {
             processTap();
+        } else if (m_configReader->name() == "Swipe") {
+            processSwipe();
         } else {
             m_configReader->skipCurrentElement();
         }
@@ -401,6 +404,80 @@ void TargetFactory::processTap()
             }
         } else if (m_configReader->name() == "LeftClick") {
             processLeftClick(gr);
+        }
+    }
+    m_currentTarget->addGestureRecognizer(gr);
+}
+
+void TargetFactory::processSwipe()
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "Swipe"
+        || !m_configReader->attributes().hasAttribute("id")) {
+        return;
+    }
+
+    bool ok = false;
+    int id = 0;
+    SwipeGestureRecognizer *gr = new SwipeGestureRecognizer;
+    Q_CHECK_PTR(gr);
+    id = m_configReader->attributes().value("id").toInt(&ok, 10);
+    if (ok) {
+        if (id <= 0) {
+            return;
+        }
+        gr->setId(id);
+    }
+
+    while (m_configReader->readNextStartElement()) {
+        processGestureRecognizer(gr);
+        if (m_configReader->name() == "numTouchesRequired") {
+            int numTouchesRequired =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                gr->setNumTouchesRequired(numTouchesRequired);
+            }
+        } else if(m_configReader->name() == "maxDuration") {
+            int maxDuration =
+                m_configReader->readElementText().toInt(&ok, 10);
+            if (ok) {
+                gr->setMaxDuration(maxDuration);
+            }
+        } else if(m_configReader->name() == "minDisplacement") {
+            float minDisplacement =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                gr->setMinDisplacement(minDisplacement);
+            }
+        } else if(m_configReader->name() == "maxAngle") {
+            float maxAngle =
+                m_configReader->readElementText().toFloat(&ok);
+            if (ok) {
+                gr->setMaxAngle(maxAngle);
+            }
+        } else if (m_configReader->name() == "direction") {
+            SwipeGestureRecognizer::Direction direction
+                = SwipeGestureRecognizer::NoDirection;
+            QString directionName =
+                m_configReader->readElementText();
+            if (directionName == "NoDirection") {
+                direction = SwipeGestureRecognizer::NoDirection;
+            } else if (directionName == "Left") {
+                direction = SwipeGestureRecognizer::Left;
+            } else if (directionName == "Right") {
+                direction = SwipeGestureRecognizer::Right;
+            } else if (directionName == "Up") {
+                direction = SwipeGestureRecognizer::Up;
+            } else if (directionName == "Down") {
+                direction = SwipeGestureRecognizer::Down;
+            } else if (directionName == "Vertical") {
+                direction = SwipeGestureRecognizer::Vertical;
+            } else if (directionName == "Horizontal") {
+                direction = SwipeGestureRecognizer::Horizontal;
+            } else if (directionName == "Orthogonal") {
+                direction = SwipeGestureRecognizer::Orthogonal;
+            }
+            gr->setDirection(direction);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);

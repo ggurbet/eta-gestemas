@@ -19,6 +19,7 @@ set(libgestemas_SOURCES
   GestureRecognizer/pangesturerecognizer.cpp
   GestureRecognizer/twotouchpinchgesturerecognizer.cpp
   GestureRecognizer/tapgesturerecognizer.cpp
+  GestureRecognizer/swipegesturerecognizer.cpp
   TouchManager/touchmanager.cpp
   TouchManager/libframetouchmanager.cpp
   GestureListener/gesturelistener.cpp
@@ -48,6 +49,7 @@ set(libgestemas_HEADERS
   GestureRecognizer/pangesturerecognizer.h
   GestureRecognizer/twotouchpinchgesturerecognizer.h
   GestureRecognizer/tapgesturerecognizer.h
+  GestureRecognizer/swipegesturerecognizer.h
   TouchManager/touchmanager.h
   TouchManager/libframetouchmanager.h
   GestureListener/gesturelistener.h

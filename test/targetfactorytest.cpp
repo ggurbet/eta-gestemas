@@ -7,6 +7,7 @@
 #include "pangesturerecognizer.h"
 #include "twotouchpinchgesturerecognizer.h"
 #include "tapgesturerecognizer.h"
+#include "swipegesturerecognizer.h"
 #include "rightclick.h"
 #include "leftclick.h"
 #include "drag.h"
@@ -83,6 +84,15 @@ void TargetFactoryTester::initTestCase()
     listener5->setMinScale(1.2f);
     listener5->setGestureRecognizer(gr5);
     expectedTargetChromium.addGestureRecognizer(gr5);
+    SwipeGestureRecognizer *gr6 = new SwipeGestureRecognizer;
+    gr6->setRecognitionThreshold(1.0f);
+    gr6->setNumTouchesRequired(2);
+    gr6->setMaxDuration(400);
+    gr6->setMinDisplacement(0.002f);
+    gr6->setMaxAngle(40.0f);
+    gr6->setDirection(SwipeGestureRecognizer::NoDirection);
+    gr6->setAllowSimultaneousRecognition(false);
+    expectedTargetChromium.addGestureRecognizer(gr6);
 
     expectedTargetFirefox.setTargetId(201);
     expectedTargetFirefox.setTargetName("Firefox");
@@ -133,6 +143,15 @@ void TargetFactoryTester::initTestCase()
     listener5->setMinScale(1.2f);
     listener5->setGestureRecognizer(gr5);
     expectedTargetFirefox.addGestureRecognizer(gr5);
+    gr6 = new SwipeGestureRecognizer;
+    gr6->setRecognitionThreshold(1.0f);
+    gr6->setNumTouchesRequired(2);
+    gr6->setMaxDuration(400);
+    gr6->setMinDisplacement(0.002f);
+    gr6->setMaxAngle(40.0f);
+    gr6->setDirection(SwipeGestureRecognizer::NoDirection);
+    gr6->setAllowSimultaneousRecognition(false);
+    expectedTargetFirefox.addGestureRecognizer(gr6);
 
     expectedTargetOther.setTargetId(202);
     expectedTargetOther.setTargetName("Other");

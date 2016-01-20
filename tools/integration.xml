@@ -52,6 +52,17 @@
         <Move>
         </Move>
       </Pan>
+      <Swipe id="5">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>120</maxDuration>
+        <minDisplacement>600.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>NoDirection</direction>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+      </Swipe>
     </GestureRecognizers>
   </Target>
 </gestemas>

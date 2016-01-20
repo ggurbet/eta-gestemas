@@ -67,6 +67,17 @@
           <minScale>1.2</minScale>
         </Zoom>
       </TwoTouchPinch>
+      <Swipe id="6">
+        <numTouchesRequired>2</numTouchesRequired>
+        <maxDuration>400</maxDuration>
+        <minDisplacement>0.0020</minDisplacement>
+        <maxAngle>40</maxAngle>
+        <direction>NoDirection</direction>
+        <recognitionThreshold>1.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+      </Swipe>
     </GestureRecognizers>
   </Target>
   <Target>
@@ -100,6 +111,17 @@
           <minScale>1.2</minScale>
         </Zoom>
       </TwoTouchPinch>
+      <Swipe id="6">
+        <numTouchesRequired>2</numTouchesRequired>
+        <maxDuration>400</maxDuration>
+        <minDisplacement>0.0020</minDisplacement>
+        <maxAngle>40</maxAngle>
+        <direction>NoDirection</direction>
+        <recognitionThreshold>1.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+      </Swipe>
     </GestureRecognizers>
   </Target>
 </gestemas>

@@ -38,6 +38,7 @@ private:
     void processPan();
     void processTwoTouchPinch();
     void processTap();
+    void processSwipe();
 
     void processRightClick(LongPressGestureRecognizer *gr);
     void processDrag(PanGestureRecognizer *gr);
