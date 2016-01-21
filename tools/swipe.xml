@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
+  <samplingPeriod>85</samplingPeriod>
+  <pointerEmulationRate>2</pointerEmulationRate>
+  <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <Target>
     <name>root</name>
     <GestureRecognizers>
       <Swipe id="1">
         <numTouchesRequired>1</numTouchesRequired>
-        <maxDuration>120</maxDuration>
-        <minDisplacement>600.0</minDisplacement>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
         <maxAngle>40.0</maxAngle>
         <direction>NoDirection</direction>
-        <recognitionThreshold>10.0</recognitionThreshold>
+        <recognitionThreshold>40.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>

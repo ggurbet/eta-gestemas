@@ -30,6 +30,8 @@ SwipeGestureRecognizer::SwipeGestureRecognizer()
      m_minDisplacement(0.0020f),
      m_maxAngle(40.0f * DEGREE_TO_RADIAN),
      m_direction(NoDirection),
+     m_cumulativeDeltaX(0.0f),
+     m_cumulativeDeltaY(0.0f),
      m_minVelocity(0.0f),
      m_noDirection(true),
      m_startTime(0UL),
@@ -72,6 +74,8 @@ void SwipeGestureRecognizer::setMinDisplacement(float minDisplacement)
 void SwipeGestureRecognizer::reset()
 {
     GestureRecognizer::reset();
+    m_cumulativeDeltaX = 0.0f;
+    m_cumulativeDeltaY = 0.0f;
     if (m_timer->isActive()) {
         m_timer->stop();
     }
@@ -87,11 +91,15 @@ void SwipeGestureRecognizer::onTouchBegan(const Touch *touch)
         }
         return;
     }
-
     if (numTouches() == 1) {
-        m_noDirection = ((m_direction & Orthogonal) == 0);
         m_startTime = touch->timestamp();
         m_timer->start(maxDuration());
+    }
+    if (numTouches() == numTouchesRequired()) {
+        updateCentralPoint();
+        m_cumulativeDeltaX = 0.0f;
+        m_cumulativeDeltaY = 0.0f;
+        m_noDirection = ((m_direction & Orthogonal) == 0);
     }
 }
 
@@ -111,50 +119,53 @@ void SwipeGestureRecognizer::onTouchMoved(const Touch *touch)
     updateCentralPoint();
     float deltaX = centralX()  - prevCentralX;
     float deltaY = centralY()  - prevCentralY;
-    float velocityX = deltaX / deltaTime;
-    float velocityY = deltaY / deltaTime;
-    float deltaSquared = SQUARED_PYTHAGOREAN(deltaY, deltaX);
+    m_cumulativeDeltaX += deltaX;
+    m_cumulativeDeltaY += deltaY;
+    float velocityX = m_cumulativeDeltaX / deltaTime;
+    float velocityY = m_cumulativeDeltaY / deltaTime;
+    float cumulativeDeltaSquared = SQUARED_PYTHAGOREAN(m_cumulativeDeltaY, m_cumulativeDeltaX);
     float velocitySquared = SQUARED_PYTHAGOREAN(velocityY, velocityX);
     float thresholdSquared = SQUARED(recognitionThreshold());
     float minDisplacementSquared = SQUARED(minDisplacement());
     float minVelocitySquared = SQUARED(m_minVelocity);
     qDebug() << m_minVelocity << " " << minDisplacement() << " " << maxDuration();
-    qDebug() << sqrtf(velocitySquared) << " " << sqrtf(deltaSquared) << " " << deltaTime;
+    qDebug() << sqrtf(velocitySquared) << " " << sqrtf(cumulativeDeltaSquared) << " " << deltaTime;
 
     if (m_noDirection) {
-        if (deltaSquared >= thresholdSquared
+        if (cumulativeDeltaSquared >= thresholdSquared
             && velocitySquared >= minVelocitySquared
-            && deltaSquared >= minDisplacementSquared) {
+            && cumulativeDeltaSquared >= minDisplacementSquared) {
             setState(State::Recognized);
-        } else {
-            float absVelocityX  = fabsf(velocityX);
-            float absVelocityY  = fabsf(velocityY);
-            if (absVelocityX > absVelocityY) {
-                if (deltaX > recognitionThreshold()) {
-                    if ((deltaX < 0.0f && (m_direction & Left) == 0)
-                        || ((deltaX > 0.0f) && (m_direction & Right) == 0)
-                        || fabsf(atanf(deltaY / deltaX)) > m_maxAngle) {
-                        setState(State::Failed);
-                    } else if (absVelocityX >= m_minVelocity
-                               || deltaX >= minDisplacement()) {
-                        setState(State::Recognized);
-                    }
+        }
+    } else {
+        float absVelocityX  = fabsf(velocityX);
+        float absVelocityY  = fabsf(velocityY);
+        if (absVelocityX > absVelocityY) {
+            float absCumulativeDeltaX  = fabsf(m_cumulativeDeltaX);
+            if (absCumulativeDeltaX > recognitionThreshold()) {
+                if ((deltaX < 0.0f && (m_direction & Left) == 0)
+                    || ((deltaX > 0.0f) && (m_direction & Right) == 0)
+                    || fabsf(atanf(m_cumulativeDeltaY /m_cumulativeDeltaX)) >= m_maxAngle) {
+                    setState(State::Failed);
+                } else if (absVelocityX >= m_minVelocity
+                           && absCumulativeDeltaX >= minDisplacement()) {
+                    setState(State::Recognized);
                 }
             }
-            else if (absVelocityY > absVelocityX) {
-                if (deltaY > recognitionThreshold()) {
-                    if ((deltaY < 0.0f && (m_direction & Down) == 0)
-                        || ((deltaY > 0.0f) && (m_direction & Up) == 0)
-                        || fabsf(atanf(deltaX / deltaY)) > m_maxAngle) {
-                        setState(State::Failed);
-                    } else if (absVelocityY >= m_minVelocity
-                               || deltaY >= minDisplacement()) {
-                        setState(State::Recognized);
-                    }
+        } else if (absVelocityY > absVelocityX) {
+            float absCumulativeDeltaY  = fabsf(m_cumulativeDeltaY);
+            if (absCumulativeDeltaY > recognitionThreshold()) {
+                if ((deltaY < 0.0f && (m_direction & Down) == 0)
+                    || ((deltaY > 0.0f) && (m_direction & Up) == 0)
+                    || fabsf(atanf(m_cumulativeDeltaX / m_cumulativeDeltaY)) >= m_maxAngle) {
+                    setState(State::Failed);
+                } else if (absVelocityY >= m_minVelocity
+                           && absCumulativeDeltaY >= minDisplacement()) {
+                    setState(State::Recognized);
                 }
-            } else if (deltaSquared > thresholdSquared) {
-                setState(State::Failed);
             }
+        } else if (cumulativeDeltaSquared > thresholdSquared) {
+            setState(State::Failed);
         }
     }
 }

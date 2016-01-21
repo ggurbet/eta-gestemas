@@ -81,6 +81,8 @@ private:
     float m_maxAngle;
     Direction m_direction;
 
+    float m_cumulativeDeltaX;
+    float m_cumulativeDeltaY;
     float m_minVelocity;
     bool m_noDirection;
     uint64_t m_startTime;
