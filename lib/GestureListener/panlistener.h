@@ -16,29 +16,21 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DRAG_H
-#define DRAG_H
+#ifndef PANLISTENER_H
+#define PANLISTENER_H
 
-#include "xtestgesturelistener.h"
+#include "gesturelistener.h"
 
 class PanGestureRecognizer;
 
-class Drag : public XTestGestureListener
+class PanListener : public GestureListener
 {
 public:
-    Drag(Display* display = nullptr)
-        :XTestGestureListener(display){}
-
-    virtual ~Drag() = default;
-    virtual bool isEqual(const GestureListener& other) const;
-    virtual void onBegan();
-    virtual void onRecognized();
-    virtual void onChanged();
-    virtual void onCanceled();
-    virtual void onEnded();
-    virtual void onFailed();
-
+    PanListener() = default;
+    virtual ~PanListener() = default;
     void setGestureRecognizer(PanGestureRecognizer *recognizer);
+protected:
+    const PanGestureRecognizer *m_recognizer;
 };
 
-#endif /* DRAG_H */
+#endif /* PANLISTENER_H */

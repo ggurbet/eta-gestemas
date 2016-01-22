@@ -17,43 +17,39 @@
  */
 
 #include <QtCore/QtDebug>
-#include "leftclick.h"
-#include "tapgesturerecognizer.h"
+#include "xtest.h"
+#include "xtesttaprightclick.h"
+#include "longpressgesturerecognizer.h"
+#include "utilities.h"
 
-void LeftClick::setGestureRecognizer(TapGestureRecognizer *recognizer)
+void XTestTapRightClick::onBegan()
 {
-    GestureListener::setGestureRecognizer(recognizer);
 }
 
-void LeftClick::onBegan()
+void XTestTapRightClick::onRecognized()
 {
-    // qDebug() << "LeftClick onBegan";
-}
-void LeftClick::onRecognized()
-{
-    // qDebug() << "LeftClick onRecognized";
     const char *modifiers[] = {""};
-    injectButton(1, modifiers);
-}
-void LeftClick::onChanged()
-{
-    // qDebug() << "LeftClick onChanged";
-}
-void LeftClick::onCanceled()
-{
-    // qDebug() << "LeftClick onCanceled";
-}
-void LeftClick::onEnded()
-{
-    // qDebug() << "LeftClick onEnded";
-}
-void LeftClick::onFailed()
-{
-    // qDebug() << "LeftClick onFailed";
+    XTest::injectButton(3, modifiers);
+    // XTest::injectKey(XStringToKeysym("Menu"), modifiers);
 }
 
-bool LeftClick::isEqual(const GestureListener& other) const
+void XTestTapRightClick::onChanged()
 {
-    (void)other;
+}
+
+void XTestTapRightClick::onCanceled()
+{
+}
+
+void XTestTapRightClick::onEnded()
+{
+}
+
+void XTestTapRightClick::onFailed()
+{
+}
+
+bool XTestTapRightClick::isEqual(const GestureListener& other) const
+{
     return true;
 }

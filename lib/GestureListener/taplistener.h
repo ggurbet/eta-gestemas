@@ -16,22 +16,21 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GESTURELISTENER_H
-#define GESTURELISTENER_H
+#ifndef TAPLISTENER_H
+#define TAPLISTENER_H
 
-class GestureListener
+#include "gesturelistener.h"
+
+class TapGestureRecognizer;
+
+class TapListener : public GestureListener
 {
 public:
-    GestureListener() = default;
-    virtual ~GestureListener() = default;
-    virtual bool isEqual(const GestureListener& other) const = 0;
-    virtual void onBegan() = 0;
-    virtual void onRecognized() = 0;
-    virtual void onChanged()  = 0;
-    virtual void onCanceled() = 0;
-    virtual void onEnded()  = 0;
-    virtual void onFailed() = 0;
+    TapListener() = default;
+    virtual ~TapListener() = default;
+    void setGestureRecognizer(TapGestureRecognizer *recognizer);
+protected:
+    const TapGestureRecognizer *m_recognizer;
 };
 
-
-#endif /* GESTURELISTENER_H */
+#endif /* TAPLISTENER_H */

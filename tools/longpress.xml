@@ -9,8 +9,18 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <RightClick>
-        </RightClick>
+        <XTestLongPressRightClick>
+        </XTestLongPressRightClick>
+      </LongPress>
+      <LongPress id="2">
+        <numTouchesRequired>1</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>100.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestLongPressMove>
+        </XTestLongPressMove>
       </LongPress>
     </GestureRecognizers>
   </GlobalTarget>

@@ -17,47 +17,39 @@
  */
 
 #include <QtCore/QtDebug>
-#include "move.h"
-#include "pangesturerecognizer.h"
+#include "xtest.h"
+#include "xtestlongpressrightclick.h"
+#include "longpressgesturerecognizer.h"
 #include "utilities.h"
 
-void Move::setGestureRecognizer(PanGestureRecognizer *recognizer)
+void XTestLongPressRightClick::onBegan()
 {
-    GestureListener::setGestureRecognizer(recognizer);
+    const char *modifiers[] = {""};
+    XTest::injectButton(3, modifiers);
+    // XTest::injectKey(XStringToKeysym("Menu"), modifiers);
 }
 
-void Move::onBegan()
+void XTestLongPressRightClick::onRecognized()
 {
-    // qDebug() << "Move onBegan";
-    injectKeyPress(XStringToKeysym("Alt_L"));
-    injectLeftButtonPress();
 }
-void Move::onRecognized()
+
+void XTestLongPressRightClick::onChanged()
 {
-    // qDebug() << "Move onRecognized";
 }
-void Move::onChanged()
+
+void XTestLongPressRightClick::onCanceled()
 {
-    // qDebug() << "Move onChanged";
-    movePointer();
 }
-void Move::onCanceled()
+
+void XTestLongPressRightClick::onEnded()
 {
-    // qDebug() << "Move onCanceled";
-    injectLeftButtonRelease();
-    injectKeyRelease(XStringToKeysym("Alt_L"));
 }
-void Move::onEnded()
+
+void XTestLongPressRightClick::onFailed()
 {
-    // qDebug() << "Move onEnded";
-    injectLeftButtonRelease();
-    injectKeyRelease(XStringToKeysym("Alt_L"));
 }
-void Move::onFailed()
-{
-    // qDebug() << "Move onFailed";
-}
-bool Move::isEqual(const GestureListener& other) const
+
+bool XTestLongPressRightClick::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;

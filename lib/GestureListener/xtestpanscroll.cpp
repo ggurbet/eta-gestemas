@@ -17,37 +17,29 @@
  */
 
 #include <QtCore/QtDebug>
-#include "scroll.h"
+#include "xtestpanscroll.h"
 #include "pangesturerecognizer.h"
+#include "xtest.h"
 #include "utilities.h"
 
-void Scroll::setGestureRecognizer(PanGestureRecognizer *recognizer)
+void XTestPanScroll::onBegan()
 {
-    GestureListener::setGestureRecognizer(recognizer);
-}
-
-void Scroll::onBegan()
-{
-    // qDebug() << "Scroll onBegan";
     m_counter = m_accumulator;
     m_averageVelocityX = 0.0f;
     m_averageVelocityY = 0.0f;
 }
-void Scroll::onRecognized()
+void XTestPanScroll::onRecognized()
 {
-    // qDebug() << "Scroll onRecognized";
 }
-void Scroll::onChanged()
+void XTestPanScroll::onChanged()
 {
-    const PanGestureRecognizer *p =
-        static_cast<const PanGestureRecognizer*>(m_recognizer);
+    const PanGestureRecognizer *p = m_recognizer;
     if (m_counter != 0) {
         m_averageVelocityX += p->velocityX();
         m_averageVelocityY += p->velocityY();
         --m_counter;
         return;
     }
-    // qDebug() << "Scroll onChanged";
     m_averageVelocityX /= m_accumulator;
     m_averageVelocityY /= m_accumulator;
 
@@ -73,46 +65,45 @@ void Scroll::onChanged()
     m_averageVelocityY = 0.0f;
     m_counter = m_accumulator;
 }
-void Scroll::onCanceled()
+void XTestPanScroll::onCanceled()
 {
-    // qDebug() << "Scroll onCanceled";
-}
-void Scroll::onEnded()
-{
-    // qDebug() << "Scroll onEnded";
-}
-void Scroll::onFailed()
-{
-    // qDebug() << "Scroll onFailed";
 }
 
-void Scroll::scrollUp()
+void XTestPanScroll::onEnded()
+{
+}
+
+void XTestPanScroll::onFailed()
+{
+}
+
+void XTestPanScroll::scrollUp()
 {
     const char* modifiers[] = {""};
-    injectButton(4, modifiers);
+    XTest::injectButton(4, modifiers);
 }
 
-void Scroll::scrollDown()
+void XTestPanScroll::scrollDown()
 {
     const char* modifiers[] = {""};
-    injectButton(5, modifiers);
+    XTest::injectButton(5, modifiers);
 }
 
-void Scroll::scrollLeft()
+void XTestPanScroll::scrollLeft()
 {
     const char* modifiers[] = {"Control_L", ""};
-    injectKey(XStringToKeysym("Left"), modifiers);
+    XTest::injectKey(XStringToKeysym("Left"), modifiers);
 }
 
-void Scroll::scrollRight()
+void XTestPanScroll::scrollRight()
 {
     const char* modifiers[] = {"Control_L", ""};
-    injectKey(XStringToKeysym("Right"), modifiers);
+    XTest::injectKey(XStringToKeysym("Right"), modifiers);
 }
 
-bool Scroll::isEqual(const GestureListener& other) const
+bool XTestPanScroll::isEqual(const GestureListener& other) const
 {
-    const Scroll *p = static_cast<const Scroll*>(&other);
+    const XTestPanScroll *p = static_cast<const XTestPanScroll*>(&other);
     if (m_accumulator != p->m_accumulator) return false;
     if (m_maxVelocity != p->m_maxVelocity) return false;
     if (m_minVelocity != p->m_minVelocity) return false;

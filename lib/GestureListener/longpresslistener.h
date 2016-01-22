@@ -16,16 +16,21 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef LONGPRESSLISTENER_H
+#define LONGPRESSLISTENER_H
+
 #include "gesturelistener.h"
-#include "gesturerecognizer.h"
 
-void GestureListener::setGestureRecognizer(GestureRecognizer *recognizer)
-{
-    recognizer->setGestureListener(this);
-    m_recognizer = recognizer;
-}
+class LongPressGestureRecognizer;
 
-const GestureRecognizer* GestureListener::gestureRecognizer() const
+class LongPressListener : public GestureListener
 {
-    return m_recognizer;
-}
+public:
+    LongPressListener() = default;
+    virtual ~LongPressListener() = default;
+    void setGestureRecognizer(LongPressGestureRecognizer *recognizer);
+protected:
+    const LongPressGestureRecognizer *m_recognizer;
+};
+
+#endif /* LONGPRESSLISTENER_H */

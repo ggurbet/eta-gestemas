@@ -12,9 +12,32 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <RightClick>
-        </RightClick>
+          <XTestLongPressRightClick>
+          </XTestLongPressRightClick>
       </LongPress>
+      <LongPress id="10">
+        <numTouchesRequired>2</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+          <XTestLongPressMove>
+          </XTestLongPressMove>
+      </LongPress>
+      <Tap id="11">
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>400</maxTapDelay>
+        <maxTapDuration>900</maxTapDuration>
+        <maxTapDistance>100.0</maxTapDistance>
+        <recognitionThreshold>1.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestTapRightClick>
+        </XTestTapRightClick>
+      </Tap>
       <Pan id="2">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
@@ -23,11 +46,11 @@
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
           <id>4</id>
         </abortList>
-        <Scroll>
+        <XTestPanScroll>
           <accumulator>2</accumulator>
           <maxVelocity>25.0</maxVelocity>
           <minVelocity>0.042</minVelocity>
-        </Scroll>
+        </XTestPanScroll>
       </Pan>
       <Swipe id="3">
         <numTouchesRequired>1</numTouchesRequired>
@@ -51,11 +74,11 @@
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
           <id>2</id>
         </abortList>
-        <Zoom>
+        <XTestTwoTouchPinchZoom>
           <accumulator>1</accumulator>
           <maxScale>1.60</maxScale>
           <minScale>1.001</minScale>
-        </Zoom>
+        </XTestTwoTouchPinchZoom>
       </TwoTouchPinch>
     </GestureRecognizers>
   </PublicTarget>
@@ -72,8 +95,8 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <Move>
-        </Move>
+        <XTestPanMove>
+        </XTestPanMove>
       </Pan>
   </GestureRecognizers>
   </PrivateTarget>

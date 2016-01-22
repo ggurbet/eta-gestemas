@@ -1,3 +1,4 @@
+
 /* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
@@ -16,20 +17,16 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCROLL_H
-#define SCROLL_H
+#ifndef XTESTTAPRIGHTCLICK_H
+#define XTESTTAPRIGHTCLICK_H
 
-#include "xtestgesturelistener.h"
+#include "taplistener.h"
 
-class PanGestureRecognizer;
-
-class Scroll : public XTestGestureListener
+class XTestTapRightClick : public TapListener
 {
 public:
-    Scroll(Display* display = nullptr)
-        :XTestGestureListener(display){}
-
-    virtual ~Scroll() = default;
+    XTestTapRightClick() = default;
+    virtual ~XTestTapRightClick() = default;
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -37,35 +34,6 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
-
-    void setGestureRecognizer(PanGestureRecognizer *recognizer);
-
-    void setMaxVelocity(float maxVelocity)
-    {m_maxVelocity = maxVelocity;}
-    float maxVelocity() const
-    {return m_maxVelocity;}
-
-    void setMinVelocity(float minVelocity)
-    {m_minVelocity = minVelocity;}
-    float minVelocity() const
-    {return m_minVelocity;}
-
-    void setAccumulator(int accumulator)
-    {m_accumulator = accumulator;}
-    int accumulator() const
-    {return m_accumulator;}
-private:
-    void scrollUp();
-    void scrollDown();
-    void scrollLeft();
-    void scrollRight();
-
-    float m_maxVelocity;
-    float m_minVelocity;
-    int m_accumulator;
-    int m_counter;
-    float m_averageVelocityX;
-    float m_averageVelocityY;
 };
 
-#endif /* SCROLL_H */
+#endif /* XTESTTAPRIGHTCLICK_H */

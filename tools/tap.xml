@@ -13,8 +13,8 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <LeftClick>
-        </LeftClick>
+        <XTestTapRightClick>
+        </XTestTapRightClick>
       </Tap>
     </GestureRecognizers>
   </GlobalTarget>

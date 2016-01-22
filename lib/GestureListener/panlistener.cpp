@@ -16,29 +16,11 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LEFTCLICK_H
-#define LEFTCLICK_H
+#include "panlistener.h"
+#include "pangesturerecognizer.h"
 
-#include "xtestgesturelistener.h"
-
-class TapGestureRecognizer;
-
-class LeftClick : public XTestGestureListener
+void PanListener::setGestureRecognizer(PanGestureRecognizer *recognizer)
 {
-public:
-    LeftClick(Display* display = nullptr)
-        :XTestGestureListener(display){}
-
-    virtual ~LeftClick() = default;
-    virtual bool isEqual(const GestureListener& other) const;
-    virtual void onBegan();
-    virtual void onRecognized();
-    virtual void onChanged();
-    virtual void onCanceled();
-    virtual void onEnded();
-    virtual void onFailed();
-
-    void setGestureRecognizer(TapGestureRecognizer *recognizer);
-};
-
-#endif /* LEFTCLICK_H */
+    recognizer->setGestureListener(this);
+    m_recognizer = recognizer;
+}

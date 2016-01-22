@@ -17,45 +17,43 @@
  */
 
 #include <QtCore/QtDebug>
-#include "drag.h"
+#include "xtest.h"
+#include "xtestpanmove.h"
 #include "pangesturerecognizer.h"
+#include "utilities.h"
 
-void Drag::setGestureRecognizer(PanGestureRecognizer *recognizer)
+void XTestPanMove::onBegan()
 {
-    GestureListener::setGestureRecognizer(recognizer);
-}
-
-void Drag::onBegan()
-{
-    // qDebug() << "Drag onBegan";
-    movePointer();
-    injectLeftButtonPress();
-}
-void Drag::onRecognized()
-{
-    // qDebug() << "Drag onRecognized";
-}
-void Drag::onChanged()
-{
-    // qDebug() << "Drag onChanged";
-    movePointer();
-}
-void Drag::onCanceled()
-{
-    // qDebug() << "Drag onCanceled";
-    injectLeftButtonRelease();
-}
-void Drag::onEnded()
-{
-    // qDebug() << "Drag onEnded";
-    injectLeftButtonRelease();
-}
-void Drag::onFailed()
-{
-    // qDebug() << "Drag onFailed";
+    XTest::injectKeyPress(XStringToKeysym("Alt_L"));
+    XTest::injectLeftButtonPress();
 }
 
-bool Drag::isEqual(const GestureListener& other) const
+void XTestPanMove::onRecognized()
+{
+}
+
+void XTestPanMove::onChanged()
+{
+    XTest::movePointer(m_recognizer->centralX(), m_recognizer->centralY());
+}
+
+void XTestPanMove::onCanceled()
+{
+        XTest::injectLeftButtonRelease();
+        XTest::injectKeyRelease(XStringToKeysym("Alt_L"));
+}
+
+void XTestPanMove::onEnded()
+{
+        XTest::injectLeftButtonRelease();
+        XTest::injectKeyRelease(XStringToKeysym("Alt_L"));
+}
+
+void XTestPanMove::onFailed()
+{
+}
+
+bool XTestPanMove::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;

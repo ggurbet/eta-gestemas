@@ -16,34 +16,21 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTGESTURELISTENER_H
-#define XTESTGESTURELISTENER_H
+#ifndef SWIPELISTENER_H
+#define SWIPELISTENER_H
 
 #include "gesturelistener.h"
-#include <X11/X.h>
-#include <X11/extensions/XTest.h>
-#include <X11/keysym.h>
 
-class XTestGestureListener : public GestureListener
+class SwipeGestureRecognizer;
+
+class SwipeListener : public GestureListener
 {
 public:
-    XTestGestureListener(Display* display = nullptr);
-    virtual ~XTestGestureListener();
-
-    void setDisplay(Display* display = nullptr);
-    Display* display() const;
+    SwipeListener() = default;
+    virtual ~SwipeListener() = default;
+    void setGestureRecognizer(SwipeGestureRecognizer *recognizer);
 protected:
-    void movePointer();
-    void injectKey(KeySym ks, const char *modifiers[]);
-    void injectButton(int btn, const char *modifiers[]);
-    void injectMixed(KeySym ks, int btn, const char *modifiers[]);
-    void injectLeftButtonPress();
-    void injectLeftButtonRelease();
-    void injectKeyPress(KeySym ks);
-    void injectKeyRelease(KeySym ks);
-
-    Display* m_display;
-    bool m_shouldCloseDisplay;
+    const SwipeGestureRecognizer *m_recognizer;
 };
 
-#endif /* XTESTGESTURELISTENER_H */
+#endif /* SWIPELISTENER_H */

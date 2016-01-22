@@ -12,12 +12,13 @@
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
 
-#include "rightclick.h"
-#include "leftclick.h"
-#include "zoom.h"
-#include "drag.h"
-#include "scroll.h"
-#include "move.h"
+#include "xtest.h"
+#include "xtestlongpressmove.h"
+#include "xtestlongpressrightclick.h"
+#include "xtestpanmove.h"
+#include "xtestpanscroll.h"
+#include "xtesttaprightclick.h"
+#include "xtesttwotouchpinchzoom.h"
 
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
@@ -27,6 +28,7 @@ TargetFactory::TargetFactory()
 {
     m_configReader = new QXmlStreamReader;
     Q_CHECK_PTR(m_configReader);
+    XTest::open();
 }
 
 TargetFactory::TargetFactory(const QString& configFileName)
@@ -43,6 +45,7 @@ TargetFactory::~TargetFactory()
     delete m_configReader;
     m_configFile->deleteLater();
     m_configReader = nullptr;
+    XTest::close();
 }
 
 void TargetFactory::setConfigurationFileName(const QString& configFileName)
@@ -334,8 +337,10 @@ void TargetFactory::processLongPress()
             if (ok) {
                 gr->setMinPressDuration(minPressDuration);
             }
-        } else if (m_configReader->name() == "RightClick") {
-            processRightClick(gr);
+        } else if (m_configReader->name() == "XTestLongPressRightClick") {
+            processXTestLongPressRightClick(gr);
+        } else if (m_configReader->name() == "XTestLongPressMove") {
+            processXTestLongPressMove(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -375,12 +380,10 @@ void TargetFactory::processPan()
             if (ok) {
                 gr->setMinNumTouchesRequired(minNumTouchesRequired);
             }
-        } else if (m_configReader->name() == "Drag") {
-            processDrag(gr);
-        } else if (m_configReader->name() == "Scroll") {
-            processScroll(gr);
-        } else if (m_configReader->name() == "Move") {
-            processMove(gr);
+        } else if (m_configReader->name() == "XTestPanScroll") {
+            processXTestPanScroll(gr);
+        } else if (m_configReader->name() == "XTestPanMove") {
+            processXTestPanMove(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -409,8 +412,8 @@ void TargetFactory::processTwoTouchPinch()
 
     while (m_configReader->readNextStartElement()) {
         processGestureRecognizer(gr);
-        if (m_configReader->name() == "Zoom") {
-            processZoom(gr);
+        if (m_configReader->name() == "XTestTwoTouchPinchZoom") {
+            processXTestTwoTouchPinchZoom(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -468,8 +471,8 @@ void TargetFactory::processTap()
             if (ok) {
                 gr->setMaxTapDistance(maxTapDistance);
             }
-        } else if (m_configReader->name() == "LeftClick") {
-            processLeftClick(gr);
+        } else if (m_configReader->name() == "XTestTapRightClick") {
+            processXTestTapRightClick(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -549,38 +552,38 @@ void TargetFactory::processSwipe()
     m_currentTarget->addGestureRecognizer(gr);
 }
 
-void TargetFactory::processRightClick(LongPressGestureRecognizer *gr)
+void TargetFactory::processXTestLongPressRightClick(LongPressGestureRecognizer *gr)
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "RightClick") {
+        || m_configReader->name() != "XTestLongPressRightClick") {
         return;
     }
 
-    RightClick *listener = new RightClick;
+    XTestLongPressRightClick *listener = new XTestLongPressRightClick;
     while(m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 
-void TargetFactory::processDrag(PanGestureRecognizer *gr)
+void TargetFactory::processXTestTapRightClick(TapGestureRecognizer *gr)
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Drag") {
+        || m_configReader->name() != "XTestTapRightClick") {
         return;
     }
 
-    Drag *listener = new Drag;
+    XTestTapRightClick *listener = new XTestTapRightClick;
     while(m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 
-void TargetFactory::processScroll(PanGestureRecognizer *gr)
+void TargetFactory::processXTestPanScroll(PanGestureRecognizer *gr)
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Scroll") {
+        || m_configReader->name() != "XTestPanScroll") {
         return;
     }
 
-    Scroll *listener = new Scroll;
+    XTestPanScroll *listener = new XTestPanScroll;
     bool ok = false;
     while (m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "accumulator") {
@@ -606,39 +609,40 @@ void TargetFactory::processScroll(PanGestureRecognizer *gr)
     listener->setGestureRecognizer(gr);
 }
 
-void TargetFactory::processMove(PanGestureRecognizer *gr)
+void TargetFactory::processXTestPanMove(PanGestureRecognizer *gr)
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Move") {
+        || m_configReader->name() != "XTestPanMove") {
         return;
     }
 
-    Move *listener = new Move;
+    XTestPanMove *listener = new XTestPanMove;
     while (m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 
-void TargetFactory::processLeftClick(TapGestureRecognizer *gr)
+void TargetFactory::processXTestLongPressMove(LongPressGestureRecognizer *gr)
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "LeftClick") {
+        || m_configReader->name() != "XTestLongPressMove") {
         return;
     }
 
-    LeftClick *listener = new LeftClick;
-    while(m_configReader->readNextStartElement()) {}
+    XTestLongPressMove *listener = new XTestLongPressMove;
+    while (m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }
 
-void TargetFactory::processZoom(TwoTouchPinchGestureRecognizer *gr)
+void TargetFactory::processXTestTwoTouchPinchZoom(
+                            TwoTouchPinchGestureRecognizer *gr)
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Zoom") {
+        || m_configReader->name() != "XTestTwoTouchPinchZoom") {
         return;
     }
 
     bool ok = false;
-    Zoom *listener = new Zoom;
+    XTestTwoTouchPinchZoom *listener = new XTestTwoTouchPinchZoom;
     while (m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "accumulator") {
             int accumulator =

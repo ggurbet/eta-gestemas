@@ -22,14 +22,18 @@ set(libgestemas_SOURCES
   GestureRecognizer/swipegesturerecognizer.cpp
   TouchManager/touchmanager.cpp
   TouchManager/libframetouchmanager.cpp
-  GestureListener/gesturelistener.cpp
-  GestureListener/xtestgesturelistener.cpp
-  GestureListener/rightclick.cpp
-  GestureListener/leftclick.cpp
-  GestureListener/zoom.cpp
-  GestureListener/drag.cpp
-  GestureListener/scroll.cpp
-  GestureListener/move.cpp
+  GestureListener/longpresslistener.cpp
+  GestureListener/twotouchpinchlistener.cpp
+  GestureListener/panlistener.cpp
+  GestureListener/taplistener.cpp
+  GestureListener/swipelistener.cpp
+  GestureListener/xtest.cpp
+  GestureListener/xtestlongpressrightclick.cpp
+  GestureListener/xtestlongpressmove.cpp
+  GestureListener/xtesttwotouchpinchzoom.cpp
+  GestureListener/xtestpanscroll.cpp
+  GestureListener/xtestpanmove.cpp
+  GestureListener/xtesttaprightclick.cpp
 )
 
 set(libgestemas_HEADERS
@@ -53,13 +57,18 @@ set(libgestemas_HEADERS
   TouchManager/touchmanager.h
   TouchManager/libframetouchmanager.h
   GestureListener/gesturelistener.h
-  GestureListener/xtestgesturelistener.h
-  GestureListener/rightclick.h
-  GestureListener/leftclick.h
-  GestureListener/zoom.h
-  GestureListener/drag.h
-  GestureListener/scroll.h
-  GestureListener/move.h
+  GestureListener/longpresslistener.h
+  GestureListener/twotouchpinchlistener.h
+  GestureListener/panlistener.h
+  GestureListener/taplistener.h
+  GestureListener/swipelistener.h
+  GestureListener/xtest.h
+  GestureListener/xtestlongpressrightclick.h
+  GestureListener/xtestlongpressmove.h
+  GestureListener/xtesttwotouchpinchzoom.h
+  GestureListener/xtestpanscroll.h
+  GestureListener/xtestpanmove.h
+  GestureListener/xtesttaprightclick.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})

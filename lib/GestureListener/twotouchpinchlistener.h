@@ -16,29 +16,21 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RIGHTCLICK_H
-#define RIGHTCLICK_H
+#ifndef TWOTOUCHPINCHLISTENER_H
+#define TWOTOUCHPINCHLISTENER_H
 
-#include "xtestgesturelistener.h"
+#include "gesturelistener.h"
 
-class LongPressGestureRecognizer;
+class TwoTouchPinchGestureRecognizer;
 
-class RightClick : public XTestGestureListener
+class TwoTouchPinchListener : public GestureListener
 {
 public:
-    RightClick(Display* display = nullptr)
-        :XTestGestureListener(display){}
-
-    virtual ~RightClick() = default;
-    virtual bool isEqual(const GestureListener& other) const;
-    virtual void onBegan();
-    virtual void onRecognized();
-    virtual void onChanged();
-    virtual void onCanceled();
-    virtual void onEnded();
-    virtual void onFailed();
-
-    void setGestureRecognizer(LongPressGestureRecognizer *recognizer);
+    TwoTouchPinchListener() = default;
+    virtual ~TwoTouchPinchListener() = default;
+    void setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer);
+protected:
+    const TwoTouchPinchGestureRecognizer *m_recognizer;
 };
 
-#endif /* RIGHTCLICK_H */
+#endif /* TWOTOUCHPINCHLISTENER_H */

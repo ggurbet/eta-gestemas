@@ -16,22 +16,23 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GESTURELISTENER_H
-#define GESTURELISTENER_H
+#ifndef XTESTLONGPRESSRIGHTCLICK_H
+#define XTESTLONGPRESSRIGHTCLICK_H
 
-class GestureListener
+#include "longpresslistener.h"
+
+class XTestLongPressRightClick : public LongPressListener
 {
 public:
-    GestureListener() = default;
-    virtual ~GestureListener() = default;
-    virtual bool isEqual(const GestureListener& other) const = 0;
-    virtual void onBegan() = 0;
-    virtual void onRecognized() = 0;
-    virtual void onChanged()  = 0;
-    virtual void onCanceled() = 0;
-    virtual void onEnded()  = 0;
-    virtual void onFailed() = 0;
+    XTestLongPressRightClick() = default;
+    virtual ~XTestLongPressRightClick() = default;
+    virtual bool isEqual(const GestureListener& other) const;
+    virtual void onBegan();
+    virtual void onRecognized();
+    virtual void onChanged();
+    virtual void onCanceled();
+    virtual void onEnded();
+    virtual void onFailed();
 };
 
-
-#endif /* GESTURELISTENER_H */
+#endif /* XTESTLONGPRESSRIGHTCLICK_H */

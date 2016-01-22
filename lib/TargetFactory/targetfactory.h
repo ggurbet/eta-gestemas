@@ -48,12 +48,12 @@ private:
     void processTap();
     void processSwipe();
 
-    void processRightClick(LongPressGestureRecognizer *gr);
-    void processDrag(PanGestureRecognizer *gr);
-    void processScroll(PanGestureRecognizer *gr);
-    void processMove(PanGestureRecognizer *gr);
-    void processLeftClick(TapGestureRecognizer *gr);
-    void processZoom(TwoTouchPinchGestureRecognizer *gr);
+    void processXTestLongPressRightClick(LongPressGestureRecognizer *gr);
+    void processXTestTapRightClick(TapGestureRecognizer *gr);
+    void processXTestPanScroll(PanGestureRecognizer *gr);
+    void processXTestPanMove(PanGestureRecognizer *gr);
+    void processXTestLongPressMove(LongPressGestureRecognizer *gr);
+    void processXTestTwoTouchPinchZoom(TwoTouchPinchGestureRecognizer *gr);
 
     QXmlStreamReader *m_configReader;
     QFile *m_configFile;

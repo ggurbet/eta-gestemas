@@ -16,29 +16,31 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MOVE_H
-#define MOVE_H
+#ifndef XTEST_H
+#define XTEST_H
 
-#include "xtestgesturelistener.h"
+#include <X11/X.h>
+#include <X11/extensions/XTest.h>
+#include <X11/keysym.h>
 
-class PanGestureRecognizer;
-
-class Move : public XTestGestureListener
+class XTest
 {
 public:
-    Move(Display* display = nullptr)
-        :XTestGestureListener(display){}
+    static void open(Display* display = nullptr);
+    static void close();
+    static Display* display();
+    static void movePointer(float x, float y);
+    static void injectKey(KeySym ks, const char *modifiers[]);
+    static void injectButton(int btn, const char *modifiers[]);
+    static void injectMixed(KeySym ks, int btn, const char *modifiers[]);
+    static void injectLeftButtonPress();
+    static void injectLeftButtonRelease();
+    static void injectKeyPress(KeySym ks);
+    static void injectKeyRelease(KeySym ks);
 
-    virtual ~Move() = default;
-    virtual bool isEqual(const GestureListener& other) const;
-    virtual void onBegan();
-    virtual void onRecognized();
-    virtual void onChanged();
-    virtual void onCanceled();
-    virtual void onEnded();
-    virtual void onFailed();
-
-    void setGestureRecognizer(PanGestureRecognizer *recognizer);
+private:
+    static Display* disp;
+    static bool shouldCloseDisplay;
 };
 
-#endif /* MOVE_H */
+#endif /* XTEST_H */

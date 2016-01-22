@@ -4,14 +4,14 @@
     <name>root</name>
     <GestureRecognizers>
       <Pan id ="2">
-        <maxNumTouchesRequired>1</maxNumTouchesRequired>
-        <minNumTouchesRequired>1</minNumTouchesRequired>
+        <maxNumTouchesRequired>3</maxNumTouchesRequired>
+        <minNumTouchesRequired>3</minNumTouchesRequired>
         <recognitionThreshold>1.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
         </abortList>
-        <Drag>
-        </Drag>
+        <XTestPanMove>
+        </XTestPanMove>
       </Pan>
       <Pan id="4">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
@@ -21,11 +21,11 @@
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
           <id>2</id>
         </abortList>
-        <Scroll>
+        <XTestPanScroll>
           <accumulator>8</accumulator>
           <maxVelocity>20.0</maxVelocity>
           <minVelocity>0.0001</minVelocity>
-        </Scroll>
+        </XTestPanScroll>
       </Pan>
     </GestureRecognizers>
   </GlobalTarget>

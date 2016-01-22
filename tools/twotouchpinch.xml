@@ -8,11 +8,11 @@
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
         </abortList>
-        <Zoom>
+        <XTestTwoTouchPinchZoom>
           <accumulator>8</accumulator>
           <maxScale>1.60</maxScale>
           <minScale>1.0001</minScale>
-        </Zoom>
+        </XTestTwoTouchPinchZoom>
       </TwoTouchPinch>
     </GestureRecognizers>
   </GlobalTarget>
