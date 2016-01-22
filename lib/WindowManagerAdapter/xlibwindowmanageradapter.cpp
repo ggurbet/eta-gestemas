@@ -177,7 +177,7 @@ bool XLibWindowManagerAdapterPrivate::getClients(Window **clients,
 
 void XLibWindowManagerAdapterPrivate::handleCreatedWindow(Window window)
 {
-    QString targetName = "root";
+    QString targetName;
     if (window != XDefaultRootWindow(m_display)) {
         XClassHint *classHint = XAllocClassHint();
         XGetClassHint(m_display, window, classHint);

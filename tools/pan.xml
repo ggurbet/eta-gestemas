@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <Target>
+  <GlobalTarget>
     <name>root</name>
     <GestureRecognizers>
       <Pan id ="2">
@@ -28,5 +28,5 @@
         </Scroll>
       </Pan>
     </GestureRecognizers>
-  </Target>
+  </GlobalTarget>
 </gestemas>

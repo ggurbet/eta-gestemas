@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <Target>
+  <GlobalTarget>
     <name>root</name>
     <GestureRecognizers>
       <TwoTouchPinch id="5">
@@ -15,5 +15,5 @@
         </Zoom>
       </TwoTouchPinch>
     </GestureRecognizers>
-  </Target>
+  </GlobalTarget>
 </gestemas>

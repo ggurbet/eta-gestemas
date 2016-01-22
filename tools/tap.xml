@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <Target>
+  <GlobalTarget>
     <name>root</name>
     <GestureRecognizers>
       <Tap id="3">
@@ -17,5 +17,5 @@
         </LeftClick>
       </Tap>
     </GestureRecognizers>
-  </Target>
+  </GlobalTarget>
 </gestemas>

@@ -3,7 +3,7 @@
   <samplingPeriod>85</samplingPeriod>
   <pointerEmulationRate>2</pointerEmulationRate>
   <pointerEmulationDistance>10.0</pointerEmulationDistance>
-  <Target>
+  <GlobalTarget>
     <name>root</name>
     <GestureRecognizers>
       <Swipe id="1">
@@ -18,5 +18,5 @@
         </abortList>
       </Swipe>
     </GestureRecognizers>
-  </Target>
+  </GlobalTarget>
 </gestemas>

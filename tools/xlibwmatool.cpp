@@ -39,6 +39,7 @@ public:
 
     virtual void onTouchEvent(void *data)
     {
+        (void)data;
         qDebug() << "Touch Event";
     }
 };

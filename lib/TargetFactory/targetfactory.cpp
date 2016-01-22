@@ -22,7 +22,8 @@
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
       m_configFile(nullptr),
-      m_currentTarget(nullptr)
+      m_currentTarget(nullptr),
+      m_parsedTarget(UndefinedTarget)
 {
     m_configReader = new QXmlStreamReader;
     Q_CHECK_PTR(m_configReader);
@@ -64,10 +65,10 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
     Q_CHECK_PTR(m_configFile);
 
     m_currentTarget = nullptr;
+    m_parsedTarget = UndefinedTarget;
 
-    // Each root gesture should be added to each non-root window
-    // instead  of grabbing touches on root window
-    if (targetName == "root") {
+    if (targetName.isEmpty()) {
+        // This could also be the root
         return nullptr;
     }
 
@@ -93,7 +94,10 @@ Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
         m_currentTarget->setTargetName(targetName);
         QList<GestureRecognizer*> gestureRecognizers =
             m_currentTarget->gestureRecognizers();
-        if (gestureRecognizers.size() > 1) {
+        if (gestureRecognizers.size() == 0) {
+            delete m_currentTarget;
+            m_currentTarget = nullptr;
+        } else if (gestureRecognizers.size() > 1) {
             QList<GestureRecognizer*> abortList;
             GestureRecognizer *gestureRecognizer = nullptr;
             int i = 0;
@@ -131,8 +135,20 @@ void TargetFactory::processAll(const QString& targetName)
     }
     bool ok = false;
     while (m_configReader->readNextStartElement()) {
-        if (m_configReader->name() == "Target") {
-            processTarget(targetName);
+        if (m_configReader->name() == "GlobalTarget") {
+            if (m_parsedTarget != PrivateTarget) {
+                processGlobalTarget();
+            } else {
+                m_configReader->skipCurrentElement();
+            }
+        } else if (m_configReader->name() == "PublicTarget") {
+            if (m_parsedTarget != PrivateTarget) {
+                processPublicTarget(targetName);
+            } else {
+                m_configReader->skipCurrentElement();
+            }
+        } else if (m_configReader->name() == "PrivateTarget") {
+            processPrivateTarget(targetName);
         } else if (m_configReader->name() == "samplingPeriod") {
             uint64_t samplingPeriod =
                 m_configReader->readElementText().toULongLong(&ok, 10);
@@ -157,10 +173,31 @@ void TargetFactory::processAll(const QString& targetName)
     }
 }
 
-void TargetFactory::processTarget(const QString& targetName)
+void TargetFactory::processGlobalTarget()
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "Target") {
+        || m_configReader->name() != "GlobalTarget") {
+        return;
+    }
+
+    m_parsedTarget = GlobalTarget;
+    while (m_configReader->readNextStartElement()) {
+        if (!m_currentTarget) {
+            m_currentTarget = new Target;
+            Q_CHECK_PTR(m_currentTarget);
+        }
+        if (m_configReader->name() == "GestureRecognizers") {
+            processGestureRecognizers();
+        } else {
+            m_configReader->skipCurrentElement();
+        }
+    }
+}
+
+void TargetFactory::processPublicTarget(const QString& targetName)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "PublicTarget") {
         return;
     }
 
@@ -169,11 +206,40 @@ void TargetFactory::processTarget(const QString& targetName)
     while (m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "name") {
             name = m_configReader->readElementText();
-            if (name == targetName || name == "root") {
+            if (name == targetName) {
+                m_parsedTarget = PublicTarget;
                 if (!m_currentTarget) {
                     m_currentTarget = new Target;
                     Q_CHECK_PTR(m_currentTarget);
                 }
+                match = true;
+            }
+        } else if (match && m_configReader->name() == "GestureRecognizers") {
+            processGestureRecognizers();
+        } else {
+            m_configReader->skipCurrentElement();
+        }
+    }
+}
+
+void TargetFactory::processPrivateTarget(const QString& targetName)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "PrivateTarget") {
+        return;
+    }
+
+    QString name;
+    bool match = false;
+    while (m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "name") {
+            name = m_configReader->readElementText();
+            if (name == targetName) {
+                m_parsedTarget = PrivateTarget;
+                delete m_currentTarget;
+                m_currentTarget = nullptr;
+                m_currentTarget = new Target;
+                Q_CHECK_PTR(m_currentTarget);
                 match = true;
             }
         } else if (match && m_configReader->name() == "GestureRecognizers") {
@@ -548,7 +614,6 @@ void TargetFactory::processMove(PanGestureRecognizer *gr)
     }
 
     Move *listener = new Move;
-    bool ok = false;
     while (m_configReader->readNextStartElement()) {}
     listener->setGestureRecognizer(gr);
 }

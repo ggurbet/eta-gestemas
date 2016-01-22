@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <Target>
-    <name>root</name>
+  <GlobalTarget>
     <GestureRecognizers>
       <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
@@ -14,5 +13,5 @@
         </RightClick>
       </LongPress>
     </GestureRecognizers>
-  </Target>
+  </GlobalTarget>
 </gestemas>

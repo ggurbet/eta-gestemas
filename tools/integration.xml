@@ -3,8 +3,7 @@
   <samplingPeriod>85</samplingPeriod>
   <pointerEmulationRate>2</pointerEmulationRate>
   <pointerEmulationDistance>10.0</pointerEmulationDistance>
-  <Target>
-    <name>root</name>
+  <GlobalTarget>
     <GestureRecognizers>
       <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
@@ -22,7 +21,7 @@
         <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-          <id>3</id>
+          <id>4</id>
         </abortList>
         <Scroll>
           <accumulator>2</accumulator>
@@ -30,29 +29,7 @@
           <minVelocity>0.042</minVelocity>
         </Scroll>
       </Pan>
-      <TwoTouchPinch id="3">
-        <recognitionThreshold>20.0</recognitionThreshold>
-        <abortList>
-          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-          <id>2</id>
-        </abortList>
-        <Zoom>
-          <accumulator>1</accumulator>
-          <maxScale>1.60</maxScale>
-          <minScale>1.001</minScale>
-        </Zoom>
-      </TwoTouchPinch>
-      <Pan id="4">
-        <maxNumTouchesRequired>3</maxNumTouchesRequired>
-        <minNumTouchesRequired>3</minNumTouchesRequired>
-        <recognitionThreshold>20.0</recognitionThreshold>
-        <abortList>
-          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        </abortList>
-        <Move>
-        </Move>
-      </Pan>
-      <Swipe id="5">
+      <Swipe id="3">
         <numTouchesRequired>1</numTouchesRequired>
         <maxDuration>150</maxDuration>
         <minDisplacement>60.0</minDisplacement>
@@ -64,5 +41,40 @@
         </abortList>
       </Swipe>
     </GestureRecognizers>
-  </Target>
+  </GlobalTarget>
+  <PublicTarget>
+    <name>Firefox</name>
+    <GestureRecognizers>
+      <TwoTouchPinch id="4">
+        <recognitionThreshold>20.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+          <id>2</id>
+        </abortList>
+        <Zoom>
+          <accumulator>1</accumulator>
+          <maxScale>1.60</maxScale>
+          <minScale>1.001</minScale>
+        </Zoom>
+      </TwoTouchPinch>
+    </GestureRecognizers>
+  </PublicTarget>
+  <PrivateTarget>
+    <name>Konsole</name>
+  </PrivateTarget>
+  <PrivateTarget>
+    <name>Okular</name>
+    <GestureRecognizers>
+      <Pan id="1">
+        <maxNumTouchesRequired>3</maxNumTouchesRequired>
+        <minNumTouchesRequired>3</minNumTouchesRequired>
+        <recognitionThreshold>20.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <Move>
+        </Move>
+      </Pan>
+  </GestureRecognizers>
+  </PrivateTarget>
 </gestemas>
