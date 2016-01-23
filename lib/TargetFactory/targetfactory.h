@@ -14,6 +14,7 @@ class PanGestureRecognizer;
 class TwoTouchPinchGestureRecognizer;
 class TapGestureRecognizer;
 class Target;
+class XTestShortcut;
 
 class TargetFactory
 {
@@ -54,6 +55,8 @@ private:
     void processXTestPanMove(PanGestureRecognizer *gr);
     void processXTestLongPressMove(LongPressGestureRecognizer *gr);
     void processXTestTwoTouchPinchZoom(TwoTouchPinchGestureRecognizer *gr);
+
+    XTestShortcut* parseXTestShortcut();
 
     QXmlStreamReader *m_configReader;
     QFile *m_configFile;

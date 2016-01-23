@@ -21,11 +21,13 @@
 
 #include "panlistener.h"
 
+class XTestShortcut;
+
 class XTestPanMove : public PanListener
 {
 public:
-    XTestPanMove() = default;
-    virtual ~XTestPanMove() = default;
+    XTestPanMove();
+    virtual ~XTestPanMove();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -33,6 +35,9 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+    void setMoveShortcut(const XTestShortcut *shortcut);
+private:
+    const XTestShortcut *m_shortcut;
 };
 
 #endif /* XTESTPANMOVE_H */

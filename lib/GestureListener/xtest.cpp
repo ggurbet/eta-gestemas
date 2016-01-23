@@ -18,13 +18,14 @@
  */
 
 /*
- * Mostly copied from ginn.
+ * Mostly adopted from ginn.
  * original author : Mohamed-Ikbel Boulabiar <boulabiar@gmail.com>
  */
 
 #include "gesturerecognizer.h"
+#include <QtCore/QStringList>
+#include <QtCore/QtDebug>
 #include "xtest.h"
-#include <cstring>
 
 Display* XTest::disp = nullptr;
 bool XTest::shouldCloseDisplay = false;
@@ -61,97 +62,90 @@ void XTest::movePointer(float x, float y)
     XFlush(disp);
 }
 
-void XTest::injectKey(KeySym ks, const char *modifiers[])
+void XTest::injectButtonPress(int btn, const QStringList& modifiers)
 {
-    int i;
-
-    for (i = 0; i < 4 && 0 != strcmp(modifiers[i], ""); i++)
+    char *modifier = nullptr;
+    for (int i = 0; i < modifiers.size(); ++i) {
+        modifier = modifiers.at(i).toLatin1().data();
         XTestFakeKeyEvent(disp,
-                          XKeysymToKeycode(disp,
-                                           XStringToKeysym(modifiers
-                                                           [i])), True,
-                          CurrentTime);
-    XTestFakeKeyEvent(disp, XKeysymToKeycode(disp, ks), True, CurrentTime);
-    XTestFakeKeyEvent(disp, XKeysymToKeycode(disp, ks), False,
-                      CurrentTime);
-    for (i = 0; i < 4 && 0 != strcmp(modifiers[i], ""); i++)
-        XTestFakeKeyEvent(disp,
-                          XKeysymToKeycode(disp,
-                                           XStringToKeysym(modifiers
-                                                           [i])), False,
-                          CurrentTime);
-
+                          XKeysymToKeycode(disp, XStringToKeysym(modifier)),
+                          True, CurrentTime);
+    }
+    XTestFakeButtonEvent(disp, btn, True, CurrentTime);
     XFlush(disp);
 }
 
-void XTest::injectButton(int btn, const char *modifiers[])
+void XTest::injectButtonRelease(int btn, const QStringList& modifiers)
 {
-    int i;
-
-    for (i = 0; i < 4 && 0 != strcmp(modifiers[i], ""); i++)
-        XTestFakeKeyEvent(disp,
-                          XKeysymToKeycode(disp,
-                                           XStringToKeysym(modifiers
-                                                           [i])), True,
-                          CurrentTime);
-    XTestFakeButtonEvent(disp, btn, True, CurrentTime);
+    char *modifier = nullptr;
     XTestFakeButtonEvent(disp, btn, False, CurrentTime);
-    for (i = 0; i < 4 && 0 != strcmp(modifiers[i], ""); i++)
+    for (int i = 0; i < modifiers.size(); ++i) {
+        modifier = modifiers.at(i).toLatin1().data();
         XTestFakeKeyEvent(disp,
-                          XKeysymToKeycode(disp,
-                                           XStringToKeysym(modifiers
-                                                           [i])), False,
-                                CurrentTime);
-
+                          XKeysymToKeycode(disp, XStringToKeysym(modifier)),
+                          False, CurrentTime);
+    }
     XFlush(disp);
 }
 
-void XTest::injectMixed(KeySym ks, int btn, const char *modifiers[])
+void XTest::injectButtonPress(int btn)
 {
-    int i;
-
     XTestFakeButtonEvent(disp, btn, True, CurrentTime);
-    for (i = 0; i < 4 && 0 != strcmp(modifiers[i], ""); i++)
-        XTestFakeKeyEvent(disp,
-                          XKeysymToKeycode(disp,
-                                           XStringToKeysym(modifiers
-                                                           [i])), True,
-                          CurrentTime);
-    XTestFakeKeyEvent(disp, XKeysymToKeycode(disp, ks), True, CurrentTime);
-    XTestFakeKeyEvent(disp, XKeysymToKeycode(disp, ks), False,
-                      CurrentTime);
-    for (i = 0; i < 4 && 0 != strcmp(modifiers[i], ""); i++)
-        XTestFakeKeyEvent(disp,
-                          XKeysymToKeycode(disp,
-                                           XStringToKeysym(modifiers
-                                                           [i])), False,
-                          CurrentTime);
+    XFlush(disp);
+}
+
+void XTest::injectButtonRelease(int btn)
+{
     XTestFakeButtonEvent(disp, btn, False, CurrentTime);
     XFlush(disp);
 }
 
-void XTest::injectLeftButtonPress()
+void XTest::injectKeyPress(const QString& key, const QStringList& modifiers)
 {
-    XTestFakeButtonEvent(disp, 1, True, CurrentTime);
+    char *modifier = nullptr;
+    for (int i = 0; i < modifiers.size(); ++i) {
+        modifier = modifiers.at(i).toLatin1().data();
+        XTestFakeKeyEvent(disp,
+                          XKeysymToKeycode(disp, XStringToKeysym(modifier)),
+                          True, CurrentTime);
+    }
+    char *kstr = key.toLatin1().data();
+    XTestFakeKeyEvent(disp,
+                      XKeysymToKeycode(disp, XStringToKeysym(kstr)),
+                      True, CurrentTime);
     XFlush(disp);
 }
 
-void XTest::injectLeftButtonRelease()
+void XTest::injectKeyRelease(const QString& key, const QStringList& modifiers)
 {
-    XTestFakeButtonEvent(disp, 1, False, CurrentTime);
+    char *modifier = nullptr;
+    char *kstr = key.toLatin1().data();
+    XTestFakeKeyEvent(disp,
+                      XKeysymToKeycode(disp, XStringToKeysym(kstr)),
+                      False, CurrentTime);
+    for (int i = 0; i < modifiers.size(); ++i) {
+        modifier = modifiers.at(i).toLatin1().data();
+        XTestFakeKeyEvent(disp,
+                          XKeysymToKeycode(disp, XStringToKeysym(modifier)),
+                          False, CurrentTime);
+    }
     XFlush(disp);
 }
 
-void XTest::injectKeyPress(KeySym ks)
+void XTest::injectKeyPress(const QString& key)
 {
-    XTestFakeKeyEvent(disp, XKeysymToKeycode(disp, ks), True,
-                      CurrentTime);
+    char *kstr = key.toLatin1().data();
+    XTestFakeKeyEvent(disp,
+                      XKeysymToKeycode(disp, XStringToKeysym(kstr)),
+                      True, CurrentTime);
     XFlush(disp);
 }
 
-void XTest::injectKeyRelease(KeySym ks)
+void XTest::injectKeyRelease(const QString& key)
 {
-    XTestFakeKeyEvent(disp, XKeysymToKeycode(disp, ks), False,
-                      CurrentTime);
+    char *kstr = key.toLatin1().data();
+    XTestFakeKeyEvent(disp,
+                      XKeysymToKeycode(disp, XStringToKeysym(kstr)),
+                      False, CurrentTime);
     XFlush(disp);
 }

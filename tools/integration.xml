@@ -13,6 +13,9 @@
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
           <XTestLongPressRightClick>
+            <RightClickShortcut>
+              <button>3</button>
+            </RightClickShortcut>
           </XTestLongPressRightClick>
       </LongPress>
       <LongPress id="10">
@@ -23,6 +26,9 @@
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
           <XTestLongPressMove>
+            <MoveShortcut>
+              <button modifier1="Alt_L">1</button>
+            </MoveShortcut>
           </XTestLongPressMove>
       </LongPress>
       <Tap id="11">
@@ -36,6 +42,9 @@
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
         <XTestTapRightClick>
+          <RightClickShortcut>
+            <key>Menu</key>
+          </RightClickShortcut>
         </XTestTapRightClick>
       </Tap>
       <Pan id="2">
@@ -50,6 +59,18 @@
           <accumulator>2</accumulator>
           <maxVelocity>25.0</maxVelocity>
           <minVelocity>0.042</minVelocity>
+          <ScrollLeftShortcut>
+            <key modifier1="Control_L">Left</key>
+          </ScrollLeftShortcut>
+          <ScrollRightShortcut>
+            <key modifier1="Control_L">Right</key>
+          </ScrollRightShortcut>
+          <ScrollUpShortcut>
+            <button>4</button>
+          </ScrollUpShortcut>
+          <ScrollDownShortcut>
+            <button>5</button>
+          </ScrollDownShortcut>
         </XTestPanScroll>
       </Pan>
       <Swipe id="3">
@@ -78,6 +99,12 @@
           <accumulator>1</accumulator>
           <maxScale>1.60</maxScale>
           <minScale>1.001</minScale>
+          <ZoomInShortcut>
+            <button modifier1="Control_L">5</button>
+          </ZoomInShortcut>
+          <ZoomOutShortcut>
+            <button modifier1="Control_L">4</button>
+          </ZoomOutShortcut>
         </XTestTwoTouchPinchZoom>
       </TwoTouchPinch>
     </GestureRecognizers>
@@ -96,6 +123,9 @@
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
         <XTestPanMove>
+          <MoveShortcut>
+            <button modifier1="Alt_L">1</button>
+          </MoveShortcut>
         </XTestPanMove>
       </Pan>
   </GestureRecognizers>

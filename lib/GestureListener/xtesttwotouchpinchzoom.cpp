@@ -1,9 +1,35 @@
 
-#include <QtCore/QtDebug>
 #include "xtesttwotouchpinchzoom.h"
 #include "twotouchpinchgesturerecognizer.h"
-#include "xtest.h"
+#include "xtestshortcut.h"
 #include "utilities.h"
+#include <QtCore/QtDebug>
+
+XTestTwoTouchPinchZoom::XTestTwoTouchPinchZoom()
+    :m_zoomInShortcut(nullptr),
+     m_zoomOutShortcut(nullptr)
+{
+}
+
+ XTestTwoTouchPinchZoom::~XTestTwoTouchPinchZoom()
+{
+    delete m_zoomInShortcut;
+    delete m_zoomOutShortcut;
+    m_zoomInShortcut = nullptr;
+    m_zoomOutShortcut = nullptr;
+}
+
+void XTestTwoTouchPinchZoom::setZoomInShortcut(
+                            const XTestShortcut *zoomInShortcut)
+{
+    m_zoomInShortcut = zoomInShortcut;
+}
+
+void XTestTwoTouchPinchZoom::setZoomOutShortcut(
+                            const XTestShortcut *zoomOutShortcut)
+{
+    m_zoomOutShortcut = zoomOutShortcut;
+}
 
 void XTestTwoTouchPinchZoom::onBegan()
 {
@@ -51,14 +77,14 @@ void XTestTwoTouchPinchZoom::onFailed()
 
 void XTestTwoTouchPinchZoom::zoomIn()
 {
-    const char* modifiers[] = {"Control_L", ""};
-    XTest::injectButton(5, modifiers);
+    m_zoomInShortcut->press();
+    m_zoomInShortcut->release();
 }
 
 void XTestTwoTouchPinchZoom::zoomOut()
 {
-    const char* modifiers[] = {"Control_L", ""};
-    XTest::injectButton(4, modifiers);
+    m_zoomOutShortcut->press();
+    m_zoomOutShortcut->release();
 }
 
 bool XTestTwoTouchPinchZoom::isEqual(const GestureListener& other) const

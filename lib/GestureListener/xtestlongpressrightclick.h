@@ -21,11 +21,13 @@
 
 #include "longpresslistener.h"
 
+class XTestShortcut;
+
 class XTestLongPressRightClick : public LongPressListener
 {
 public:
-    XTestLongPressRightClick() = default;
-    virtual ~XTestLongPressRightClick() = default;
+    XTestLongPressRightClick();
+    virtual ~XTestLongPressRightClick();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -33,6 +35,9 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+    void setRightClickShortcut(const XTestShortcut *shortcut);
+private:
+    const XTestShortcut *m_shortcut;
 };
 
 #endif /* XTESTLONGPRESSRIGHTCLICK_H */

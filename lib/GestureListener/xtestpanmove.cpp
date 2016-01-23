@@ -16,16 +16,31 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtDebug>
-#include "xtest.h"
 #include "xtestpanmove.h"
 #include "pangesturerecognizer.h"
+#include "xtestshortcut.h"
 #include "utilities.h"
+#include <QtCore/QtDebug>
+
+XTestPanMove::XTestPanMove()
+    :m_shortcut(nullptr)
+{
+}
+
+XTestPanMove::~XTestPanMove()
+{
+    delete m_shortcut;
+    m_shortcut = nullptr;
+}
+
+void XTestPanMove::setMoveShortcut(const XTestShortcut *shortcut)
+{
+    m_shortcut = shortcut;
+}
 
 void XTestPanMove::onBegan()
 {
-    XTest::injectKeyPress(XStringToKeysym("Alt_L"));
-    XTest::injectLeftButtonPress();
+    m_shortcut->press();
 }
 
 void XTestPanMove::onRecognized()
@@ -34,19 +49,18 @@ void XTestPanMove::onRecognized()
 
 void XTestPanMove::onChanged()
 {
-    XTest::movePointer(m_recognizer->centralX(), m_recognizer->centralY());
+    m_shortcut->movePointer(m_recognizer->centralX(),
+                            m_recognizer->centralY());
 }
 
 void XTestPanMove::onCanceled()
 {
-        XTest::injectLeftButtonRelease();
-        XTest::injectKeyRelease(XStringToKeysym("Alt_L"));
+    m_shortcut->release();
 }
 
 void XTestPanMove::onEnded()
 {
-        XTest::injectLeftButtonRelease();
-        XTest::injectKeyRelease(XStringToKeysym("Alt_L"));
+        m_shortcut->release();
 }
 
 void XTestPanMove::onFailed()

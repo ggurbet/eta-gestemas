@@ -13,6 +13,7 @@
 #include <QtCore/QtDebug>
 
 #include "xtest.h"
+#include "xtestshortcut.h"
 #include "xtestlongpressmove.h"
 #include "xtestlongpressrightclick.h"
 #include "xtestpanmove.h"
@@ -560,7 +561,11 @@ void TargetFactory::processXTestLongPressRightClick(LongPressGestureRecognizer *
     }
 
     XTestLongPressRightClick *listener = new XTestLongPressRightClick;
-    while(m_configReader->readNextStartElement()) {}
+    while(m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "RightClickShortcut") {
+            listener->setRightClickShortcut(parseXTestShortcut());
+        }
+    }
     listener->setGestureRecognizer(gr);
 }
 
@@ -572,7 +577,11 @@ void TargetFactory::processXTestTapRightClick(TapGestureRecognizer *gr)
     }
 
     XTestTapRightClick *listener = new XTestTapRightClick;
-    while(m_configReader->readNextStartElement()) {}
+    while(m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "RightClickShortcut") {
+            listener->setRightClickShortcut(parseXTestShortcut());
+        }
+    }
     listener->setGestureRecognizer(gr);
 }
 
@@ -604,6 +613,14 @@ void TargetFactory::processXTestPanScroll(PanGestureRecognizer *gr)
             if (ok) {
                 listener->setMinVelocity(minVelocity);
             }
+        } else if (m_configReader->name() == "ScrollLeftShortcut") {
+            listener->setScrollLeftShortcut(parseXTestShortcut());
+        } else if (m_configReader->name() == "ScrollRightShortcut") {
+            listener->setScrollRightShortcut(parseXTestShortcut());
+        } else if (m_configReader->name() == "ScrollUpShortcut") {
+            listener->setScrollUpShortcut(parseXTestShortcut());
+        } else if (m_configReader->name() == "ScrollDownShortcut") {
+            listener->setScrollDownShortcut(parseXTestShortcut());
         }
     }
     listener->setGestureRecognizer(gr);
@@ -617,7 +634,11 @@ void TargetFactory::processXTestPanMove(PanGestureRecognizer *gr)
     }
 
     XTestPanMove *listener = new XTestPanMove;
-    while (m_configReader->readNextStartElement()) {}
+    while (m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "MoveShortcut") {
+            listener->setMoveShortcut(parseXTestShortcut());
+        }
+    }
     listener->setGestureRecognizer(gr);
 }
 
@@ -629,7 +650,11 @@ void TargetFactory::processXTestLongPressMove(LongPressGestureRecognizer *gr)
     }
 
     XTestLongPressMove *listener = new XTestLongPressMove;
-    while (m_configReader->readNextStartElement()) {}
+    while (m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "MoveShortcut") {
+            listener->setMoveShortcut(parseXTestShortcut());
+        }
+    }
     listener->setGestureRecognizer(gr);
 }
 
@@ -662,7 +687,40 @@ void TargetFactory::processXTestTwoTouchPinchZoom(
             if (ok) {
                 listener->setMinScale(minScale);
             }
+        } else if (m_configReader->name() == "ZoomInShortcut") {
+            listener->setZoomInShortcut(parseXTestShortcut());
+        } else if (m_configReader->name() == "ZoomOutShortcut") {
+            listener->setZoomOutShortcut(parseXTestShortcut());
         }
     }
     listener->setGestureRecognizer(gr);
+}
+
+XTestShortcut* TargetFactory::parseXTestShortcut()
+{
+    if (!m_configReader->isStartElement()) {
+        return nullptr;
+    }
+
+    XTestShortcut *shortcut = new XTestShortcut;
+    QString value;
+    QString modifier;
+    while (m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "button") {
+            for (int i = 0; i < m_configReader->attributes().size(); ++i) {
+                modifier = m_configReader->attributes().at(i).value().toString();
+                shortcut->addModifier(modifier);
+            }
+            value = m_configReader->readElementText();
+            shortcut->setValue(value, XTestShortcut::Button);
+        } else if (m_configReader->name() == "key") {
+            for (int i = 0; i < m_configReader->attributes().size(); ++i) {
+                modifier = m_configReader->attributes().at(i).value().toString();
+                shortcut->addModifier(modifier);
+            }
+            value = m_configReader->readElementText();
+            shortcut->setValue(value, XTestShortcut::Key);
+        }
+    }
+    return shortcut;
 }

@@ -21,11 +21,13 @@
 
 #include "twotouchpinchlistener.h"
 
+class XTestShortcut;
+
 class XTestTwoTouchPinchZoom : public TwoTouchPinchListener
 {
 public:
-    XTestTwoTouchPinchZoom() = default;
-    virtual ~XTestTwoTouchPinchZoom() = default;
+    XTestTwoTouchPinchZoom();
+    virtual ~XTestTwoTouchPinchZoom();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -48,6 +50,9 @@ public:
     {m_accumulator = accumulator;}
     int accumulator() const
     {return m_accumulator;}
+
+    void setZoomInShortcut(const XTestShortcut *zoomInShortcut);
+    void setZoomOutShortcut(const XTestShortcut *zoomOutShortcut);
 private:
     void zoomIn();
     void zoomOut();
@@ -57,6 +62,9 @@ private:
     int m_accumulator;
     int m_counter;
     float m_averageScale;
+
+    const XTestShortcut *m_zoomInShortcut;
+    const XTestShortcut *m_zoomOutShortcut;
 };
 
 #endif /* XTESTTWOTOUCHPINCHZOOM_H */

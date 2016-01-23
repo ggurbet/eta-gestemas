@@ -1,4 +1,3 @@
-
 /* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
@@ -22,11 +21,13 @@
 
 #include "taplistener.h"
 
+class XTestShortcut;
+
 class XTestTapRightClick : public TapListener
 {
 public:
-    XTestTapRightClick() = default;
-    virtual ~XTestTapRightClick() = default;
+    XTestTapRightClick();
+    virtual ~XTestTapRightClick();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -34,6 +35,9 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
+    void setRightClickShortcut(const XTestShortcut *shortcut);
+private:
+    const XTestShortcut *m_shortcut;
 };
 
 #endif /* XTESTTAPRIGHTCLICK_H */

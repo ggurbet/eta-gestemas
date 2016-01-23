@@ -21,11 +21,13 @@
 
 #include "panlistener.h"
 
+class XTestShortcut;
+
 class XTestPanScroll : public PanListener
 {
 public:
-    XTestPanScroll() = default;
-    virtual ~XTestPanScroll() = default;
+    XTestPanScroll();
+    virtual ~XTestPanScroll();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -48,6 +50,11 @@ public:
     {m_accumulator = accumulator;}
     int accumulator() const
     {return m_accumulator;}
+
+    void setScrollUpShortcut(const XTestShortcut *upShortcut);
+    void setScrollDownShortcut(const XTestShortcut *downShortcut);
+    void setScrollLeftShortcut(const XTestShortcut *leftShortcut);
+    void setScrollRightShortcut(const XTestShortcut *rightShortcut);
 private:
     void scrollUp();
     void scrollDown();
@@ -60,6 +67,11 @@ private:
     int m_counter;
     float m_averageVelocityX;
     float m_averageVelocityY;
+
+    const XTestShortcut *m_upShortcut;
+    const XTestShortcut *m_downShortcut;
+    const XTestShortcut *m_leftShortcut;
+    const XTestShortcut *m_rightShortcut;
 };
 
 #endif /* SCROLL_H */

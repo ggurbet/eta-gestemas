@@ -16,28 +16,34 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTLONGPRESSMOVE_H
-#define XTESTLONGPRESSMOVE_H
+#ifndef XTESTSHORTCUT_H
+#define XTESTSHORTCUT_H
 
-#include "longpresslistener.h"
+#include <QtCore/QStringList>
+#include <QtCore/QString>
 
-class XTestShortcut;
-
-class XTestLongPressMove : public LongPressListener
+class XTestShortcut
 {
 public:
-    XTestLongPressMove();
-    virtual ~XTestLongPressMove();
-    virtual bool isEqual(const GestureListener& other) const;
-    virtual void onBegan();
-    virtual void onRecognized();
-    virtual void onChanged();
-    virtual void onCanceled();
-    virtual void onEnded();
-    virtual void onFailed();
-    void setMoveShortcut(const XTestShortcut *shortcut);
+    enum Type
+    {
+        Undefined,
+        Button,
+        Key
+    };
+
+    XTestShortcut() : m_type(Undefined) {}
+    ~XTestShortcut() = default;
+    void setValue(const QString& value, Type type);
+    void addModifier(const QString& modifier);
+    void press() const;
+    void release() const;
+    void movePointer(float x, float y) const;
 private:
-    const XTestShortcut *m_shortcut;
+    QStringList m_modifiers;
+    Type m_type;
+    QString m_keyValue;
+    int m_buttonValue;
 };
 
-#endif /* XTESTLONGPRESSMOVE_H */
+#endif /* XTESTSHORTCUT_H */

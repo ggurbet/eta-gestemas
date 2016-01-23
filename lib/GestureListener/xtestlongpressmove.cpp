@@ -16,16 +16,31 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtDebug>
-#include "xtest.h"
 #include "xtestlongpressmove.h"
 #include "longpressgesturerecognizer.h"
+#include "xtestshortcut.h"
 #include "utilities.h"
+#include <QtCore/QtDebug>
+
+XTestLongPressMove::XTestLongPressMove()
+    :m_shortcut(nullptr)
+{
+}
+
+XTestLongPressMove::~XTestLongPressMove()
+{
+    delete m_shortcut;
+    m_shortcut = nullptr;
+}
+
+void XTestLongPressMove::setMoveShortcut(const XTestShortcut *shortcut)
+{
+    m_shortcut = shortcut;
+}
 
 void XTestLongPressMove::onBegan()
 {
-    XTest::injectKeyPress(XStringToKeysym("Alt_L"));
-    XTest::injectLeftButtonPress();
+    m_shortcut->press();
 }
 
 void XTestLongPressMove::onRecognized()
@@ -34,19 +49,18 @@ void XTestLongPressMove::onRecognized()
 
 void XTestLongPressMove::onChanged()
 {
-    XTest::movePointer(m_recognizer->centralX(), m_recognizer->centralY());
+    m_shortcut->movePointer(m_recognizer->centralX(),
+                            m_recognizer->centralY());
 }
 
 void XTestLongPressMove::onCanceled()
 {
-        XTest::injectLeftButtonRelease();
-        XTest::injectKeyRelease(XStringToKeysym("Alt_L"));
+    m_shortcut->release();
 }
 
 void XTestLongPressMove::onEnded()
 {
-        XTest::injectLeftButtonRelease();
-        XTest::injectKeyRelease(XStringToKeysym("Alt_L"));
+        m_shortcut->release();
 }
 
 void XTestLongPressMove::onFailed()

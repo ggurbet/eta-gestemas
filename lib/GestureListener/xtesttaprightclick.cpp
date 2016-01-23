@@ -16,11 +16,27 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtDebug>
-#include "xtest.h"
 #include "xtesttaprightclick.h"
 #include "longpressgesturerecognizer.h"
+#include "xtestshortcut.h"
 #include "utilities.h"
+#include <QtCore/QtDebug>
+
+XTestTapRightClick::XTestTapRightClick()
+    :m_shortcut(nullptr)
+{
+}
+
+XTestTapRightClick::~XTestTapRightClick()
+{
+    delete m_shortcut;
+    m_shortcut = nullptr;
+}
+
+void XTestTapRightClick::setRightClickShortcut(const XTestShortcut *shortcut)
+{
+    m_shortcut = shortcut;
+}
 
 void XTestTapRightClick::onBegan()
 {
@@ -28,9 +44,8 @@ void XTestTapRightClick::onBegan()
 
 void XTestTapRightClick::onRecognized()
 {
-    const char *modifiers[] = {""};
-    XTest::injectButton(3, modifiers);
-    // XTest::injectKey(XStringToKeysym("Menu"), modifiers);
+    m_shortcut->press();
+    m_shortcut->release();
 }
 
 void XTestTapRightClick::onChanged()

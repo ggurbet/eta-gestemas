@@ -16,11 +16,51 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtDebug>
 #include "xtestpanscroll.h"
 #include "pangesturerecognizer.h"
-#include "xtest.h"
+#include "xtestshortcut.h"
 #include "utilities.h"
+#include <QtCore/QtDebug>
+
+XTestPanScroll::XTestPanScroll()
+    :m_upShortcut(nullptr),
+     m_downShortcut(nullptr),
+     m_leftShortcut(nullptr),
+     m_rightShortcut(nullptr)
+{
+}
+
+XTestPanScroll::~XTestPanScroll()
+{
+    delete m_upShortcut;
+    delete m_downShortcut;
+    delete m_leftShortcut;
+    delete m_rightShortcut;
+    m_upShortcut = nullptr;
+    m_downShortcut = nullptr;
+    m_leftShortcut = nullptr;
+    m_rightShortcut = nullptr;
+}
+
+void XTestPanScroll::setScrollUpShortcut(const XTestShortcut *upShortcut)
+{
+    m_upShortcut = upShortcut;
+}
+
+void XTestPanScroll::setScrollDownShortcut(const XTestShortcut *downShortcut)
+{
+    m_downShortcut = downShortcut;
+}
+
+void XTestPanScroll::setScrollLeftShortcut(const XTestShortcut *leftShortcut)
+{
+    m_leftShortcut = leftShortcut;
+}
+
+void XTestPanScroll::setScrollRightShortcut(const XTestShortcut *rightShortcut)
+{
+    m_rightShortcut = rightShortcut;
+}
 
 void XTestPanScroll::onBegan()
 {
@@ -79,26 +119,26 @@ void XTestPanScroll::onFailed()
 
 void XTestPanScroll::scrollUp()
 {
-    const char* modifiers[] = {""};
-    XTest::injectButton(4, modifiers);
+    m_upShortcut->press();
+    m_upShortcut->release();
 }
 
 void XTestPanScroll::scrollDown()
 {
-    const char* modifiers[] = {""};
-    XTest::injectButton(5, modifiers);
+    m_downShortcut->press();
+    m_downShortcut->release();
 }
 
 void XTestPanScroll::scrollLeft()
 {
-    const char* modifiers[] = {"Control_L", ""};
-    XTest::injectKey(XStringToKeysym("Left"), modifiers);
+    m_leftShortcut->press();
+    m_leftShortcut->release();
 }
 
 void XTestPanScroll::scrollRight()
 {
-    const char* modifiers[] = {"Control_L", ""};
-    XTest::injectKey(XStringToKeysym("Right"), modifiers);
+    m_rightShortcut->press();
+    m_rightShortcut->release();
 }
 
 bool XTestPanScroll::isEqual(const GestureListener& other) const

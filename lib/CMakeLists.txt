@@ -28,6 +28,7 @@ set(libgestemas_SOURCES
   GestureListener/taplistener.cpp
   GestureListener/swipelistener.cpp
   GestureListener/xtest.cpp
+  GestureListener/xtestshortcut.cpp
   GestureListener/xtestlongpressrightclick.cpp
   GestureListener/xtestlongpressmove.cpp
   GestureListener/xtesttwotouchpinchzoom.cpp
@@ -63,6 +64,7 @@ set(libgestemas_HEADERS
   GestureListener/taplistener.h
   GestureListener/swipelistener.h
   GestureListener/xtest.h
+  GestureListener/xtestshortcut.h
   GestureListener/xtestlongpressrightclick.h
   GestureListener/xtestlongpressmove.h
   GestureListener/xtesttwotouchpinchzoom.h

@@ -23,20 +23,28 @@
 #include <X11/extensions/XTest.h>
 #include <X11/keysym.h>
 
+class QStringList;
+class QString;
+
 class XTest
 {
 public:
     static void open(Display* display = nullptr);
     static void close();
+
     static Display* display();
+
     static void movePointer(float x, float y);
-    static void injectKey(KeySym ks, const char *modifiers[]);
-    static void injectButton(int btn, const char *modifiers[]);
-    static void injectMixed(KeySym ks, int btn, const char *modifiers[]);
-    static void injectLeftButtonPress();
-    static void injectLeftButtonRelease();
-    static void injectKeyPress(KeySym ks);
-    static void injectKeyRelease(KeySym ks);
+
+    static void injectButtonPress(int btn, const QStringList& modifiers);
+    static void injectButtonRelease(int btn, const QStringList& modifiers);
+    static void injectButtonPress(int btn);
+    static void injectButtonRelease(int btn);
+
+    static void injectKeyPress(const QString& key, const QStringList& modifiers);
+    static void injectKeyRelease(const QString& key, const QStringList& modifiers);
+    static void injectKeyPress(const QString& key);
+    static void injectKeyRelease(const QString& key);
 
 private:
     static Display* disp;
