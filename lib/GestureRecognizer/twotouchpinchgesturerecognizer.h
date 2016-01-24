@@ -47,7 +47,7 @@ private:
     const Touch *m_touch2;
     float m_distance;
     float m_cumulativeDeltaDistance;
-
+    uint32_t m_timestamp;
 };
 
 #endif /* TWOTOUCHGESTURERECOGNIZER_H */

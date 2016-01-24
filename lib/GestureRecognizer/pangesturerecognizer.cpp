@@ -28,7 +28,8 @@ PanGestureRecognizer::PanGestureRecognizer()
      m_velocityX(0.0f),
      m_velocityY(0.0f),
      m_translationX(0.0f),
-     m_translationY(0.0f)
+     m_translationY(0.0f),
+     m_timestamp(0UL)
 {
 }
 
@@ -75,27 +76,29 @@ void PanGestureRecognizer::onTouchMoved(const Touch *touch)
         //          << threshold;
         if (fabsf(t->cumulativeDeltaX()) > threshold
             || fabsf(t->cumulativeDeltaY()) > threshold) {
+            m_timestamp = t->timestamp();
             setState(State::Began);
         }
     } else if (state() == State::Began || state() == State::Changed) {
-        float delta = 0.0f;
-        uint64_t deltaTime = 0;
+        uint64_t deltaTime = t-> timestamp() - m_timestamp;
+        m_timestamp = t->timestamp();
 
-        m_prevCentralX = centralX();
-        m_prevCentralY = centralY();
-        updateCentralPoint();
+        if (deltaTime > 0) {
+            float delta = 0.0f;
+            float prevCentralX = centralX();
+            float prevCentralY = centralY();
+            updateCentralPoint();
 
-        deltaTime = GestureRecognizer::samplingPeriod;
+            delta = centralX() - prevCentralX;
+            m_velocityX =  delta / deltaTime;
+            m_translationX += delta;
 
-        delta = centralX() - m_prevCentralX;
-        m_velocityX = (deltaTime == 0.0f) ? 0 : delta / deltaTime;
-        m_translationX += delta;
-
-        delta = centralY() - m_prevCentralY;
-        m_velocityY = (deltaTime == 0.0f) ? 0 : delta / deltaTime;
-        m_translationY += delta;
-
-        setState(State::Changed);
+            delta = centralY() - prevCentralY;
+            m_velocityY =  delta / deltaTime;
+            m_translationY += delta;
+            qDebug() << "velx: " << m_velocityX << " vely: " << m_velocityY;
+            setState(State::Changed);
+        }
     }
 }
 
@@ -118,6 +121,7 @@ void PanGestureRecognizer::reset()
     GestureRecognizer::reset();
     m_translationX = m_translationY = 0.0f;
     m_velocityX = m_velocityY = 0.0f;
+    m_timestamp = 0UL;
 }
 
 float PanGestureRecognizer::velocity() const

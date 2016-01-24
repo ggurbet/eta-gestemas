@@ -28,7 +28,8 @@ TwoTouchPinchGestureRecognizer::TwoTouchPinchGestureRecognizer()
       m_touch1(nullptr),
       m_touch2(nullptr),
       m_distance(1.0f),
-      m_cumulativeDeltaDistance(0.0f)
+      m_cumulativeDeltaDistance(0.0f),
+      m_timestamp(0UL)
 {
 }
 
@@ -80,14 +81,18 @@ void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *touch)
         //          << fabs(m_cumulativeDeltaDistance) << " "
         //          << recognitionThreshold();
         if (fabs(m_cumulativeDeltaDistance) > recognitionThreshold()) {
+            m_timestamp = touch->timestamp();
             setState(State::Began);
         }
     } else if (state() == State::Began || state() == State::Changed) {
-        uint64_t deltaTime = GestureRecognizer::samplingPeriod;
-        m_distance = (m_distance == 0.0f) ? currentDistance : m_distance;
-        m_scale = currentDistance / m_distance;
-        m_velocity = m_scale / deltaTime;
-        setState(State::Changed);
+        uint64_t deltaTime = touch->timestamp() - m_timestamp;
+        m_timestamp = touch->timestamp();
+        if (deltaTime > 0) {
+            m_distance = (m_distance == 0.0f) ? currentDistance : m_distance;
+            m_scale = currentDistance / m_distance;
+            m_velocity = m_scale / deltaTime;
+            setState(State::Changed);
+        }
     }
     m_distance = currentDistance;
 }
@@ -120,4 +125,5 @@ void TwoTouchPinchGestureRecognizer::reset()
     m_scale = 1.0f;
     m_distance = 0.0f;
     m_cumulativeDeltaDistance = 0.0f;
+    m_timestamp = 0UL;
 }

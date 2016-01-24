@@ -121,25 +121,25 @@ void SwipeGestureRecognizer::onTouchMoved(const Touch *touch)
     float deltaY = centralY()  - prevCentralY;
     m_cumulativeDeltaX += deltaX;
     m_cumulativeDeltaY += deltaY;
-    float velocityX = m_cumulativeDeltaX / deltaTime;
-    float velocityY = m_cumulativeDeltaY / deltaTime;
+    float avrgVelocityX = m_cumulativeDeltaX / deltaTime;
+    float avrgVelocityY = m_cumulativeDeltaY / deltaTime;
     float cumulativeDeltaSquared = SQUARED_PYTHAGOREAN(m_cumulativeDeltaY, m_cumulativeDeltaX);
-    float velocitySquared = SQUARED_PYTHAGOREAN(velocityY, velocityX);
+    float avrgVelocitySquared = SQUARED_PYTHAGOREAN(avrgVelocityY, avrgVelocityX);
     float thresholdSquared = SQUARED(recognitionThreshold());
     float minDisplacementSquared = SQUARED(minDisplacement());
     float minVelocitySquared = SQUARED(m_minVelocity);
-    qDebug() << m_minVelocity << " " << minDisplacement() << " " << maxDuration();
-    qDebug() << sqrtf(velocitySquared) << " " << sqrtf(cumulativeDeltaSquared) << " " << deltaTime;
+    // qDebug() << m_minVelocity << " " << minDisplacement() << " " << maxDuration();
+    // qDebug() << sqrtf(avrgVelocitySquared) << " " << sqrtf(cumulativeDeltaSquared) << " " << deltaTime;
 
     if (m_noDirection) {
         if (cumulativeDeltaSquared >= thresholdSquared
-            && velocitySquared >= minVelocitySquared
+            && avrgVelocitySquared >= minVelocitySquared
             && cumulativeDeltaSquared >= minDisplacementSquared) {
             setState(State::Recognized);
         }
     } else {
-        float absVelocityX  = fabsf(velocityX);
-        float absVelocityY  = fabsf(velocityY);
+        float absVelocityX  = fabsf(avrgVelocityX);
+        float absVelocityY  = fabsf(avrgVelocityY);
         if (absVelocityX > absVelocityY) {
             float absCumulativeDeltaX  = fabsf(m_cumulativeDeltaX);
             if (absCumulativeDeltaX > recognitionThreshold()) {

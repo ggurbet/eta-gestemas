@@ -57,9 +57,7 @@ private:
     float m_velocityY;
     float m_translationX;
     float m_translationY;
-
-    float m_prevCentralX;
-    float m_prevCentralY;
+    uint64_t m_timestamp;
 };
 
 #endif /* PANGESTURERECOGNIZER_H */

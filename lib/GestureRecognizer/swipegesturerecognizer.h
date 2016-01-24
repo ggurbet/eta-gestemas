@@ -66,6 +66,11 @@ public:
     Direction direction() const
     {return m_direction;}
 
+    float cumulativeDeltaX() const
+    {return m_cumulativeDeltaX;}
+    float cumulativeDeltaY() const
+    {return m_cumulativeDeltaY;}
+
 protected:
     virtual void onTouchBegan(const Touch *touch);
     virtual void onTouchMoved(const Touch *touch);
