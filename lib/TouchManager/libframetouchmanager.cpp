@@ -316,7 +316,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
         if (window == root) {
             if (m_rootTouchHash[touchId] == 0) {
                 m_grm->onTouchUpdated(touchId, x, y, timestamp);
-            } else if (++m_rootTouchHash[touchId] > TARGET_BOUND) {
+            } else if (++m_rootTouchHash[touchId] == TARGET_BOUND) {
                 reject_touch(touchId, window, device);
             }
         }
@@ -325,7 +325,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
         if (window == root) {
             if (m_rootTouchHash[touchId] == 0) {
                 m_grm->onTouchEnded(touchId, x, y, timestamp);
-            } else if (m_rootTouchHash[touchId] <= TARGET_BOUND) {
+            } else if (m_rootTouchHash[touchId] < TARGET_BOUND) {
                 reject_touch(touchId, window, device);
             }
             m_rootTouchHash.remove(touchId);

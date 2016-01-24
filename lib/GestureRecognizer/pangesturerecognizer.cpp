@@ -105,7 +105,7 @@ void PanGestureRecognizer::onTouchMoved(const Touch *touch)
             delta = centralY() - prevCentralY;
             m_velocityY =  delta / deltaTime;
             m_translationY += delta;
-            qDebug() << "velx: " << m_velocityX << " vely: " << m_velocityY;
+            // qDebug() << "velx: " << m_velocityX << " vely: " << m_velocityY;
             setState(State::Changed);
         }
     }

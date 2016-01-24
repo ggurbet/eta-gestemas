@@ -77,8 +77,8 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
         gestureRecognizer->callListener();
     }
 
-    // qDebug() << "Began";
-    // printStates();
+    qDebug() << "Began";
+    printStates();
 }
 
 void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
@@ -127,8 +127,8 @@ void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
         gestureRecognizer->callListener();
     }
 
-    // qDebug() << "Updated";
-    // printStates();
+    qDebug() << "Updated";
+    printStates();
 }
 
 void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
@@ -162,8 +162,8 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
         gestureRecognizer->callListener();
     }
 
-    // qDebug() << "Ended";
-    // printStates();
+    qDebug() << "Ended";
+    printStates();
 
     m_touches.removeAll(touch);
     if (m_touches.size() == 0) {

@@ -69,7 +69,7 @@ private:
     QSocketNotifier* m_socketNotifier;
     bool m_shouldCloseDisplay;
     QHash <uint32_t, int> m_rootTouchHash;
-    static const int TARGET_BOUND = 3;
+    static const int TARGET_BOUND = 4;
 };
 
 #endif /* LIBFRAMETOUCHMANAGER_H */
