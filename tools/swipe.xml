@@ -7,11 +7,15 @@
     <name>root</name>
     <GestureRecognizers>
       <Swipe id="1">
-        <numTouchesRequired>1</numTouchesRequired>
+        <numTouchesRequired>2</numTouchesRequired>
         <maxDuration>150</maxDuration>
         <minDisplacement>60.0</minDisplacement>
         <maxAngle>40.0</maxAngle>
         <direction>NoDirection</direction>
+        <topMargin>300.0</topMargin>
+        <bottomMargin>300.0</bottomMargin>
+        <leftMargin>300.0</leftMargin>
+        <rightMargin>300.0</rightMargin>
         <recognitionThreshold>40.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>

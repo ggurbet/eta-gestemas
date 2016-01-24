@@ -264,11 +264,16 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
     int device_direct = 0;
     float resolutionX = 0.0f;
     float resolutionY = 0.0f;
+    float minX = 0.0f;
+    float minY = 0.0f;
+    float maxX = 0.0f;
+    float maxY = 0.0f;
     uint64_t timestamp = 0ULL;
     Window root = XDefaultRootWindow(m_display);
 
     touchId = frame_x11_get_touch_id(frame_touch_get_id(touch));
-    getDeviceResolution(device, &resolutionX, &resolutionY, &device_direct);
+    getDeviceLimits(device, &minX, &minY, &maxX, &maxY,
+                    &resolutionX, &resolutionY, &device_direct);
     if (device_direct) {
         x = frame_touch_get_window_x(touch);
         y = frame_touch_get_window_y(touch);
@@ -303,7 +308,8 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
                 x = positionX;
                 y = positionY;
             }
-            m_grm->onTouchBegan(touchId, x, y, window, device, timestamp);
+            m_grm->onTouchBegan(touchId, x, y, minX, minY,
+                                maxX, maxY, window, device, timestamp);
         }
         break;
     case UFTouchStateUpdate:
@@ -392,7 +398,8 @@ void LibFrameTouchManager::getAxisInfo(UFAxis axis, UFAxisType *type,
     *res = frame_axis_get_resolution(axis);
 }
 
-void LibFrameTouchManager::getDeviceResolution(UFDevice device,
+void LibFrameTouchManager::getDeviceLimits(UFDevice device,
+                                           float *minX, float *minY, float *maxX, float *maxY,
                                                float *resx, float *resy, int *device_direct)
 {
     UFStatus status = frame_device_get_property(device, UFDevicePropertyDirect,
@@ -405,6 +412,10 @@ void LibFrameTouchManager::getDeviceResolution(UFDevice device,
     if (*device_direct) {
         *resx = frame_device_get_window_resolution_x(device);
         *resy = frame_device_get_window_resolution_y(device);
+        *minX = 0.0f;
+        *minY = 0.0f;
+        *maxX = DisplayWidth(m_display, DefaultScreen(m_display));
+        *maxY = DisplayHeight(m_display, DefaultScreen(m_display));
 
         /* If resolution is not available, assume 96 dpi and convert to meters */
         if (*resx <= 0)
@@ -419,13 +430,19 @@ void LibFrameTouchManager::getDeviceResolution(UFDevice device,
         status = frame_device_get_axis_by_type(device, UFAxisTypeX, &axis);
         if (status != UFStatusSuccess)
             qFatal("Failed to get X axis from device");
-        else if (frame_axis_get_resolution(axis) > 0)
+        else if (frame_axis_get_resolution(axis) > 0) {
             *resx = frame_axis_get_resolution(axis);
+            *minX = frame_axis_get_minimum(axis);
+            *maxX = frame_axis_get_maximum(axis);
+        }
 
         status = frame_device_get_axis_by_type(device, UFAxisTypeY, &axis);
         if (status != UFStatusSuccess)
             qFatal("Failed to get Y axis from device");
-        else if (frame_axis_get_resolution(axis) > 0)
+        else if (frame_axis_get_resolution(axis) > 0) {
             *resy = frame_axis_get_resolution(axis);
+            *minY = frame_axis_get_minimum(axis);
+            *maxY = frame_axis_get_maximum(axis);
+        }
     }
 }

@@ -41,6 +41,7 @@ GestureRecognizerManager::~GestureRecognizerManager()
 }
 
 void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
+                            float minX, float minY, float maxX, float maxY,
                             uint32_t targetId, void* device, uint64_t timestamp)
 {
     Touch *touch = nullptr;
@@ -48,7 +49,8 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
 
     touch = findTouch(touchId);
     Q_ASSERT(touch == nullptr);
-    touch = new Touch(touchId, targetId, x, y, device, timestamp);
+    touch = new Touch(touchId, targetId, x, y, minX, minY,
+                      maxX, maxY, device, timestamp);
 
     Q_CHECK_PTR(touch);
     m_touches.append(touch);
@@ -75,8 +77,8 @@ void GestureRecognizerManager::onTouchBegan(uint32_t touchId, float x, float y,
         gestureRecognizer->callListener();
     }
 
-    qDebug() << "Began";
-    printStates();
+    // qDebug() << "Began";
+    // printStates();
 }
 
 void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
@@ -125,8 +127,8 @@ void GestureRecognizerManager::onTouchUpdated(uint32_t touchId,
         gestureRecognizer->callListener();
     }
 
-    qDebug() << "Updated";
-    printStates();
+    // qDebug() << "Updated";
+    // printStates();
 }
 
 void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
@@ -160,8 +162,8 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
         gestureRecognizer->callListener();
     }
 
-    qDebug() << "Ended";
-    printStates();
+    // qDebug() << "Ended";
+    // printStates();
 
     m_touches.removeAll(touch);
     if (m_touches.size() == 0) {

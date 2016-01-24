@@ -25,19 +25,24 @@ Touch::Touch()
      m_previousX(0.0f), m_previousY(0.0f),
      m_cumulativeDeltaX(0.0f), m_cumulativeDeltaY(0.0f),
      m_device(nullptr), m_startTime(0ULL),
-     m_timestamp(0ULL), m_ownershipState(Deferred)
+     m_timestamp(0ULL), m_ownershipState(Deferred),
+     m_minX(0.0f), m_minY(0.0f), m_maxX(0.0f), m_maxY(0.0f)
 {
 }
 
 Touch::Touch(uint32_t touchId, uint32_t targetId,
              float startX, float startY,
+             float minX, float minY,
+             float maxX, float maxY,
              void *device, uint64_t timestamp)
     :m_touchId(touchId), m_targetId(targetId),
      m_startX(startX), m_startY(startY),
      m_previousX(startX), m_previousY(startY),
      m_cumulativeDeltaX(0.0f), m_cumulativeDeltaY(0.0f),
      m_device(device), m_startTime(timestamp),
-     m_timestamp(timestamp), m_ownershipState(Deferred)
+     m_timestamp(timestamp), m_ownershipState(Deferred),
+     m_minX(minX), m_minY(minY), m_maxX(maxX), m_maxY(maxY)
+
 {
 }
 

@@ -35,6 +35,7 @@ public:
     ~GestureRecognizerManager();
 
     void onTouchBegan(uint32_t touchId, float x, float y,
+                      float minX, float minY, float maxX, float maxY,
                     uint32_t targetId, void* device, uint64_t timestamp);
     void onTouchUpdated(uint32_t touchId, float x, float y, uint64_t timestamp);
     void onTouchEnded(uint32_t touchId, float x, float y, uint64_t timestamp);

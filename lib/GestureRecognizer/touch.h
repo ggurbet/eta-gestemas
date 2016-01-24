@@ -33,6 +33,8 @@ public:
     Touch();
     Touch(uint32_t touchId, uint32_t targetId,
           float startX, float startY,
+          float minX, float minY,
+          float maxX, float maxY,
           void *device, uint64_t timestamp);
 
     ~Touch() = default;
@@ -103,6 +105,15 @@ public:
     void setOwnershipState(OwnershipState ownershipState);
     OwnershipState ownershipState() const
     {return m_ownershipState;}
+
+    float minimumX() const
+    {return m_minX;}
+    float maximumX() const
+    {return m_maxX;}
+    float minimumY() const
+    {return m_minY;}
+    float maximumY() const
+    {return m_maxY;}
 private:
     uint32_t m_touchId;
     uint32_t m_targetId;
@@ -116,6 +127,10 @@ private:
     uint64_t m_startTime;
     uint64_t m_timestamp;
     OwnershipState m_ownershipState;
+    float m_minX;
+    float m_minY;
+    float m_maxX;
+    float m_maxY;
 };
 
 #endif /* TOUCH_H */

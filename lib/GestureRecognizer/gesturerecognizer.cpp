@@ -20,16 +20,21 @@
 #include "gesturelistener.h"
 #include "gesturerecognizermanager.h"
 #include "touch.h"
+#include "utilities.h"
 
 #include <QtCore/QtGlobal>
 #include <QtCore/QtDebug>
+#include <cfloat>
 
 uint64_t GestureRecognizer::samplingPeriod = 80;
 uint32_t GestureRecognizer::pointerEmulationRate = 10;
 float GestureRecognizer::pointerEmulationDistance = 10.0f;
 
 GestureRecognizer::GestureRecognizer(QObject *parent)
-    :QObject(parent), m_manager(nullptr), m_centralX(0.0f), m_centralY(0.0f),
+    :QObject(parent), m_manager(nullptr),
+     m_topMargin(FLT_MAX), m_bottomMargin(0.0f),
+     m_leftMargin(FLT_MAX), m_rightMargin(0.0f),
+     m_centralX(0.0f), m_centralY(0.0f),
      m_recognitionThreshold(1.0f), m_allowSimultaneousRecognition(false),
      m_listener(nullptr), m_id(0)
 {
@@ -80,6 +85,24 @@ void GestureRecognizer::touchBeganHandler(const Touch *touch)
     t = touch;
     m_touches.append(t);
     m_targetId = t->targetId();
+    float x = t->computedX();
+    float y = t->computedY();
+    float minX = t->minimumX();
+    float minY = t->minimumY();
+    float maxX = t->maximumX();
+    float maxY = t->maximumY();
+    // qDebug() << x << " " << m_leftMargin-minX << " " << maxX-m_rightMargin << "|"
+    //          << y << " " << m_topMargin-minY << " " << maxY - m_bottomMargin;
+    if (CHECK_RANGE(x, m_leftMargin - minX, maxX - m_rightMargin)
+        && CHECK_RANGE(y, m_topMargin - minY, maxY - m_bottomMargin)) {
+        if (state() == State::Possible) {
+            setState(State::Failed);
+        } else if (state() == State::Began
+                   || state() == State::Changed) {
+            setState(State::Canceled);
+        }
+        return;
+    }
     onTouchBegan(t);
 }
 

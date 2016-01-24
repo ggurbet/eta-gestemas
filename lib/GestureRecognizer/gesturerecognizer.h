@@ -64,6 +64,18 @@ public:
     int numTouches() const
     {return m_touches.size();}
 
+    void setTopMargin(float margin)
+    {m_topMargin = margin;}
+
+    void setBottomMargin(float margin)
+    {m_bottomMargin = margin;}
+
+    void setLeftMargin(float margin)
+    {m_leftMargin = margin;}
+
+    void setRightMargin(float margin)
+    {m_rightMargin = margin;}
+
     void setCentralX(float x)
     {m_centralX = x;}
     float centralX() const
@@ -104,6 +116,10 @@ protected:
     void ignoreTouch(const Touch* touch);
 
     GestureRecognizerManager *m_manager;
+    float m_topMargin;
+    float m_bottomMargin;
+    float m_leftMargin;
+    float m_rightMargin;
     float m_centralX;
     float m_centralY;
     float m_recognitionThreshold;

@@ -301,6 +301,26 @@ void TargetFactory::processGestureRecognizer(GestureRecognizer *gr)
                 }
             }
         }
+    } else if (m_configReader->name() == "topMargin") {
+        float topMargin = m_configReader->readElementText().toFloat(&ok);
+        if (ok) {
+            gr->setTopMargin(topMargin);
+        }
+    } else if (m_configReader->name() == "bottomMargin") {
+        float bottomMargin = m_configReader->readElementText().toFloat(&ok);
+        if (ok) {
+            gr->setBottomMargin(bottomMargin);
+        }
+    } else if (m_configReader->name() == "leftMargin") {
+        float leftMargin = m_configReader->readElementText().toFloat(&ok);
+        if (ok) {
+            gr->setLeftMargin(leftMargin);
+        }
+    } else if (m_configReader->name() == "rightMargin") {
+        float rightMargin = m_configReader->readElementText().toFloat(&ok);
+        if (ok) {
+            gr->setRightMargin(rightMargin);
+        }
     }
 }
 
