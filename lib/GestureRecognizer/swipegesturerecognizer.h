@@ -29,14 +29,14 @@ class SwipeGestureRecognizer : public GestureRecognizer
 {
 public:
     enum Direction {
-        NoDirection = 0,
-        Left        = 1 << 0,
-        Right       = 1 << 1,
-        Up          = 1 << 2,
-        Down        = 1 << 3,
-        Horizontal  = Left | Right,
-        Vertical    = Up | Down,
-        Orthogonal  = Horizontal | Vertical
+        AnyDirection = 0,
+        Left         = 1 << 0,
+        Right        = 1 << 1,
+        Up           = 1 << 2,
+        Down         = 1 << 3,
+        Horizontal   = Left | Right,
+        Vertical     = Up | Down,
+        Orthogonal   = Horizontal | Vertical
     };
 
     SwipeGestureRecognizer();

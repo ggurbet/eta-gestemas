@@ -14,6 +14,7 @@
         </XTestPanMove>
       </Pan>
       <Pan id="4">
+        <direction>Vertical</direction>
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThreshold>1.0</recognitionThreshold>

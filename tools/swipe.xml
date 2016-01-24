@@ -11,7 +11,7 @@
         <maxDuration>150</maxDuration>
         <minDisplacement>60.0</minDisplacement>
         <maxAngle>40.0</maxAngle>
-        <direction>NoDirection</direction>
+        <direction>AnyDirection</direction>
         <topMargin>300.0</topMargin>
         <bottomMargin>300.0</bottomMargin>
         <leftMargin>300.0</leftMargin>

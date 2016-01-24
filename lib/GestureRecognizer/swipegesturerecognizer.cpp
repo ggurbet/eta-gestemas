@@ -29,7 +29,7 @@ SwipeGestureRecognizer::SwipeGestureRecognizer()
      m_maxDuration(500),
      m_minDisplacement(0.0020f),
      m_maxAngle(40.0f * DEGREE_TO_RADIAN),
-     m_direction(NoDirection),
+     m_direction(AnyDirection),
      m_cumulativeDeltaX(0.0f),
      m_cumulativeDeltaY(0.0f),
      m_minVelocity(0.0f),

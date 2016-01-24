@@ -401,6 +401,15 @@ void TargetFactory::processPan()
             if (ok) {
                 gr->setMinNumTouchesRequired(minNumTouchesRequired);
             }
+        } else if (m_configReader->name() == "direction") {
+            QString direction = m_configReader->readElementText();
+            if (direction == "AnyDirection") {
+                gr->setDirection(PanGestureRecognizer::AnyDirection);
+            } else if (direction == "Horizontal") {
+                gr->setDirection(PanGestureRecognizer::Horizontal);
+            } else if (direction == "Vertical") {
+                gr->setDirection(PanGestureRecognizer::Vertical);
+            }
         } else if (m_configReader->name() == "XTestPanScroll") {
             processXTestPanScroll(gr);
         } else if (m_configReader->name() == "XTestPanMove") {
@@ -547,11 +556,11 @@ void TargetFactory::processSwipe()
             }
         } else if (m_configReader->name() == "direction") {
             SwipeGestureRecognizer::Direction direction
-                = SwipeGestureRecognizer::NoDirection;
+                = SwipeGestureRecognizer::AnyDirection;
             QString directionName =
                 m_configReader->readElementText();
-            if (directionName == "NoDirection") {
-                direction = SwipeGestureRecognizer::NoDirection;
+            if (directionName == "AnyDirection") {
+                direction = SwipeGestureRecognizer::AnyDirection;
             } else if (directionName == "Left") {
                 direction = SwipeGestureRecognizer::Left;
             } else if (directionName == "Right") {

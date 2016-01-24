@@ -24,6 +24,12 @@
 class PanGestureRecognizer : public GestureRecognizer
 {
 public:
+    enum Direction
+    {
+        AnyDirection,
+        Horizontal,
+        Vertical
+    };
     PanGestureRecognizer();
     virtual bool isEqual(const GestureRecognizer& other) const;
     virtual void reset();
@@ -45,6 +51,11 @@ public:
     float velocityY() const
     {return m_velocityY;}
 
+    void setDirection(Direction direction)
+    {m_direction = direction;}
+    Direction direction() const
+    {return m_direction;}
+
 protected:
     virtual void onTouchBegan(const Touch *touch);
     virtual void onTouchMoved(const Touch *touch);
@@ -58,6 +69,7 @@ private:
     float m_translationX;
     float m_translationY;
     uint64_t m_timestamp;
+    Direction m_direction;
 };
 
 #endif /* PANGESTURERECOGNIZER_H */

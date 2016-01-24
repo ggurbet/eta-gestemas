@@ -55,7 +55,7 @@
         <maxDuration>400</maxDuration>
         <minDisplacement>0.0020</minDisplacement>
         <maxAngle>40</maxAngle>
-        <direction>NoDirection</direction>
+        <direction>AnyDirection</direction>
         <recognitionThreshold>1.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
@@ -89,7 +89,7 @@
         <maxDuration>400</maxDuration>
         <minDisplacement>0.0020</minDisplacement>
         <maxAngle>40</maxAngle>
-        <direction>NoDirection</direction>
+        <direction>AnyDirection</direction>
         <recognitionThreshold>1.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>

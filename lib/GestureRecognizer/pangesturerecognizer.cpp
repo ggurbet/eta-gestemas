@@ -29,7 +29,8 @@ PanGestureRecognizer::PanGestureRecognizer()
      m_velocityY(0.0f),
      m_translationX(0.0f),
      m_translationY(0.0f),
-     m_timestamp(0UL)
+     m_timestamp(0UL),
+     m_direction(AnyDirection)
 {
 }
 
@@ -68,14 +69,22 @@ void PanGestureRecognizer::onTouchMoved(const Touch *touch)
 
     const Touch *t = touch;
     float threshold = recognitionThreshold();
+    float cumulativeDeltaX = t->cumulativeDeltaX();
+    float cumulativeDeltaY = t->cumulativeDeltaY();
+
+    if (m_direction == Horizontal) {
+        cumulativeDeltaY = 0.0f;
+    } else if (m_direction == Vertical) {
+        cumulativeDeltaX = 0.0f;
+    }
 
     if (state() == State::Possible) {
         // qDebug() << "Pan: "
         //          << fabsf(t->cumulativeDeltaX()) << " "
         //          << fabsf(t->cumulativeDeltaY()) << " "
         //          << threshold;
-        if (fabsf(t->cumulativeDeltaX()) > threshold
-            || fabsf(t->cumulativeDeltaY()) > threshold) {
+        if (fabsf(cumulativeDeltaX) > threshold
+            || fabsf(cumulativeDeltaY) > threshold) {
             m_timestamp = t->timestamp();
             setState(State::Began);
         }

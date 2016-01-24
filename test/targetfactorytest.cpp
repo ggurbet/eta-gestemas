@@ -72,7 +72,7 @@ void TargetFactoryTester::initTestCase()
     gr6->setMaxDuration(400);
     gr6->setMinDisplacement(0.002f);
     gr6->setMaxAngle(40.0f);
-    gr6->setDirection(SwipeGestureRecognizer::NoDirection);
+    gr6->setDirection(SwipeGestureRecognizer::AnyDirection);
     gr6->setAllowSimultaneousRecognition(false);
     expectedTargetChromium.addGestureRecognizer(gr6);
 
@@ -115,7 +115,7 @@ void TargetFactoryTester::initTestCase()
     gr6->setMaxDuration(400);
     gr6->setMinDisplacement(0.002f);
     gr6->setMaxAngle(40.0f);
-    gr6->setDirection(SwipeGestureRecognizer::NoDirection);
+    gr6->setDirection(SwipeGestureRecognizer::AnyDirection);
     gr6->setAllowSimultaneousRecognition(false);
     expectedTargetFirefox.addGestureRecognizer(gr6);
 
