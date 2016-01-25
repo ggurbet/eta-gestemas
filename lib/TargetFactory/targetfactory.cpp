@@ -20,6 +20,8 @@
 #include "xtestpanscroll.h"
 #include "xtesttaprightclick.h"
 #include "xtesttwotouchpinchzoom.h"
+#include "xtestswipeswitch.h"
+#include "dbusswipekeyboard.h"
 
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
@@ -577,9 +579,49 @@ void TargetFactory::processSwipe()
                 direction = SwipeGestureRecognizer::Orthogonal;
             }
             gr->setDirection(direction);
+        } else if (m_configReader->name() == "XTestSwipeSwitch") {
+            processXTestSwipeSwitch(gr);
+        } else if (m_configReader->name() == "DBusSwipeKeyboard") {
+            processDBusSwipeKeyboard(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
+}
+
+void TargetFactory::processXTestSwipeSwitch(SwipeGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "XTestSwipeSwitch") {
+        return;
+    }
+
+    XTestSwipeSwitch *listener = new XTestSwipeSwitch;
+    while(m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "SwitchRightShortcut") {
+            listener->setSwitchRightShortcut(parseXTestShortcut());
+        } else if (m_configReader->name() == "SwitchLeftShortcut") {
+            listener->setSwitchLeftShortcut(parseXTestShortcut());
+        }
+    }
+    listener->setGestureRecognizer(gr);
+}
+
+void TargetFactory::processDBusSwipeKeyboard(SwipeGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "DBusSwipeKeyboard") {
+        return;
+    }
+
+    DBusSwipeKeyboard *listener = new DBusSwipeKeyboard;
+    while(m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "showCommand") {
+            listener->setShowCommand(m_configReader->readElementText());
+        } else if (m_configReader->name() == "hideCommand") {
+            listener->setHideCommand(m_configReader->readElementText());
+        }
+    }
+    listener->setGestureRecognizer(gr);
 }
 
 void TargetFactory::processXTestLongPressRightClick(LongPressGestureRecognizer *gr)

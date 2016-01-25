@@ -1,7 +1,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 COMPONENTS Core)
+find_package(Qt5 COMPONENTS Core DBus)
 find_package(X11)
 
 set(xlibwmatool_SOURCES
@@ -13,7 +13,8 @@ add_executable(xlibwmatool xlibwmatool.cpp)
 add_dependencies(xlibwmatool gestemas)
 
 target_link_libraries(xlibwmatool
-    Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
+  Qt5::Core Qt5::DBus
+  ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
 target_include_directories(xlibwmatool PRIVATE
@@ -24,7 +25,8 @@ add_executable(longpresstool longpresstool.cpp)
 add_dependencies(longpresstool gestemas)
 
 target_link_libraries(longpresstool
-  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  Qt5::Core Qt5::DBus
+  ${X11_X11_LIB} ${X11_Xi_LIB}
   ${X11_XTest_LIB} ${FRAME_LIB}
   ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
@@ -43,7 +45,8 @@ add_executable(twotouchpinchtool twotouchpinchtool.cpp)
 add_dependencies(twotouchpinchtool gestemas)
 
 target_link_libraries(twotouchpinchtool
-  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  Qt5::Core Qt5::DBus
+  ${X11_X11_LIB} ${X11_Xi_LIB}
   ${X11_XTest_LIB} ${FRAME_LIB}
   ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
@@ -62,7 +65,8 @@ add_executable(taptool taptool.cpp)
 add_dependencies(taptool gestemas)
 
 target_link_libraries(taptool
-  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  Qt5::Core Qt5::DBus
+  ${X11_X11_LIB} ${X11_Xi_LIB}
   ${X11_XTest_LIB} ${FRAME_LIB}
   ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
@@ -81,7 +85,8 @@ add_executable(pantool pantool.cpp)
 add_dependencies(pantool gestemas)
 
 target_link_libraries(pantool
-  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  Qt5::Core Qt5::DBus
+  ${X11_X11_LIB} ${X11_Xi_LIB}
   ${X11_XTest_LIB} ${FRAME_LIB}
   ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
@@ -100,7 +105,8 @@ add_executable(swipetool swipetool.cpp)
 add_dependencies(swipetool gestemas)
 
 target_link_libraries(swipetool
-  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  Qt5::Core Qt5::DBus
+  ${X11_X11_LIB} ${X11_Xi_LIB}
   ${X11_XTest_LIB} ${FRAME_LIB}
   ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
@@ -119,7 +125,8 @@ add_executable(integrationtool integrationtool.cpp)
 add_dependencies(integrationtool gestemas)
 
 target_link_libraries(integrationtool
-  Qt5::Core ${X11_X11_LIB} ${X11_Xi_LIB}
+  Qt5::Core Qt5::DBus
+  ${X11_X11_LIB} ${X11_Xi_LIB}
   ${X11_XTest_LIB} ${FRAME_LIB}
   ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 

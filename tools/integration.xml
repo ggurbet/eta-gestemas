@@ -79,10 +79,15 @@
         <minDisplacement>60.0</minDisplacement>
         <maxAngle>40.0</maxAngle>
         <direction>Vertical</direction>
+        <bottomMargin>300.0</bottomMargin>
         <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
+        <DBusSwipeKeyboard>
+          <showCommand>showFromBottom</showCommand>
+          <hideCommand>hide</hideCommand>
+        </DBusSwipeKeyboard>
       </Swipe>
     </GestureRecognizers>
   </GlobalTarget>
@@ -130,4 +135,28 @@
       </Pan>
   </GestureRecognizers>
   </PrivateTarget>
+  <PublicTarget>
+    <name>Plasma</name>
+    <GestureRecognizers>
+      <Swipe id="8">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Horizontal</direction>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSwipeSwitch>
+          <SwitchRightShortcut>
+            <button>4</button>
+          </SwitchRightShortcut>
+          <SwitchLeftShortcut>
+            <button>5</button>
+          </SwitchLeftShortcut>
+        </XTestSwipeSwitch>
+      </Swipe>
+    </GestureRecognizers>
+  </PublicTarget>
 </gestemas>

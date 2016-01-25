@@ -13,6 +13,7 @@ class LongPressGestureRecognizer;
 class PanGestureRecognizer;
 class TwoTouchPinchGestureRecognizer;
 class TapGestureRecognizer;
+class SwipeGestureRecognizer;
 class Target;
 class XTestShortcut;
 
@@ -55,6 +56,8 @@ private:
     void processXTestPanMove(PanGestureRecognizer *gr);
     void processXTestLongPressMove(LongPressGestureRecognizer *gr);
     void processXTestTwoTouchPinchZoom(TwoTouchPinchGestureRecognizer *gr);
+    void processXTestSwipeSwitch(SwipeGestureRecognizer *gr);
+    void processDBusSwipeKeyboard(SwipeGestureRecognizer *gr);
 
     XTestShortcut* parseXTestShortcut();
 

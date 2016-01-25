@@ -114,6 +114,10 @@ void SwipeGestureRecognizer::onTouchMoved(const Touch *touch)
         return;
     }
 
+    if (state() != State::Possible) {
+        return;
+    }
+
     float prevCentralX = centralX();
     float prevCentralY = centralY();
     updateCentralPoint();
@@ -173,7 +177,8 @@ void SwipeGestureRecognizer::onTouchMoved(const Touch *touch)
 void SwipeGestureRecognizer::onTouchEnded(const Touch *touch)
 {
     (void)touch;
-    if (numTouches() < numTouchesRequired()) {
+    if (numTouches() < numTouchesRequired()
+        && state() == State::Possible) {
             setState(State::Failed);
     }
 }

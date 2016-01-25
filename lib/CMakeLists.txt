@@ -1,7 +1,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 COMPONENTS Core)
+find_package(Qt5 COMPONENTS Core DBus)
 find_package(X11)
 find_package(Frame)
 
@@ -35,6 +35,8 @@ set(libgestemas_SOURCES
   GestureListener/xtestpanscroll.cpp
   GestureListener/xtestpanmove.cpp
   GestureListener/xtesttaprightclick.cpp
+  GestureListener/xtestswipeswitch.cpp
+  GestureListener/dbusswipekeyboard.cpp
 )
 
 set(libgestemas_HEADERS
@@ -71,11 +73,13 @@ set(libgestemas_HEADERS
   GestureListener/xtestpanscroll.h
   GestureListener/xtestpanmove.h
   GestureListener/xtesttaprightclick.h
+  GestureListener/xtestswipeswitch.h
+  GestureListener/dbusswipekeyboard.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})
 
-target_link_libraries(gestemas Qt5::Core
+target_link_libraries(gestemas Qt5::Core Qt5::DBus
   ${X11_X11_LIB} ${X11_Xi_LIB} ${X11_XTest_LIB} ${FRAME_LIB})
 
 target_include_directories(gestemas PRIVATE

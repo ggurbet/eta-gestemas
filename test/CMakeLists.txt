@@ -3,7 +3,7 @@ set(CMAKE_AUTOMOC ON)
 
 enable_testing()
 
-find_package(Qt5 COMPONENTS Core Widgets Test)
+find_package(Qt5 COMPONENTS Core Widgets Test DBus)
 find_package(X11)
 
 # xlibwmatest
@@ -12,7 +12,7 @@ add_dependencies(xlibwmatest gestemas)
 add_test(xlibwmatest xlibwmatest)
 
 target_link_libraries(xlibwmatest
-    Qt5::Core Qt5::Widgets Qt5::Test
+    Qt5::Core Qt5::Widgets Qt5::Test Qt5::DBus
     ${X11_X11_LIB} ${X11_Xi_LIB} ${FRAME_LIB}
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
@@ -25,7 +25,7 @@ add_dependencies(targetfactorytest gestemas)
 add_test(targetfactorytest targetfactorytest)
 
 target_link_libraries(targetfactorytest
-    Qt5::Core Qt5::Test
+    Qt5::Core Qt5::Test Qt5::DBus
     ${X11_X11_LIB} ${X11_Xi_LIB} ${X11_XTest_LIB} ${FRAME_LIB}
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
@@ -45,7 +45,7 @@ add_dependencies(statetest gestemas)
 add_test(statetest statetest)
 
 target_link_libraries(statetest
-    Qt5::Core Qt5::Test
+    Qt5::Core Qt5::Test Qt5::DBus
     ${CMAKE_BINARY_DIR}/lib/libgestemas.a)
 
 target_include_directories(statetest PRIVATE
