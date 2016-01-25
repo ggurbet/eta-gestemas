@@ -139,7 +139,7 @@
     <name>Plasma</name>
     <GestureRecognizers>
       <Swipe id="8">
-        <numTouchesRequired>1</numTouchesRequired>
+        <numTouchesRequired>2</numTouchesRequired>
         <maxDuration>150</maxDuration>
         <minDisplacement>60.0</minDisplacement>
         <maxAngle>40.0</maxAngle>

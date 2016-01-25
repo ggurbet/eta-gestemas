@@ -32,8 +32,8 @@ float GestureRecognizer::pointerEmulationDistance = 10.0f;
 
 GestureRecognizer::GestureRecognizer(QObject *parent)
     :QObject(parent), m_manager(nullptr),
-     m_topMargin(FLT_MAX), m_bottomMargin(0.0f),
-     m_leftMargin(FLT_MAX), m_rightMargin(0.0f),
+     m_topMargin(FLT_MAX), m_bottomMargin(FLT_MAX),
+     m_leftMargin(FLT_MAX), m_rightMargin(FLT_MAX),
      m_centralX(0.0f), m_centralY(0.0f),
      m_recognitionThreshold(1.0f), m_allowSimultaneousRecognition(false),
      m_listener(nullptr), m_id(0)
@@ -91,19 +91,19 @@ void GestureRecognizer::touchBeganHandler(const Touch *touch)
     float minY = t->minimumY();
     float maxX = t->maximumX();
     float maxY = t->maximumY();
-    // qDebug() << x << " " << m_leftMargin-minX << " " << maxX-m_rightMargin << "|"
-    //          << y << " " << m_topMargin-minY << " " << maxY - m_bottomMargin;
-    if (CHECK_RANGE(x, m_leftMargin - minX, maxX - m_rightMargin)
-        && CHECK_RANGE(y, m_topMargin - minY, maxY - m_bottomMargin)) {
+    if (CHECK_RANGE(x, minX, m_leftMargin + minX)
+        && CHECK_RANGE(x, maxX - m_rightMargin, maxX)
+        && CHECK_RANGE(y, minY, m_topMargin + minY)
+        && CHECK_RANGE(y, maxY - m_bottomMargin, maxY)) {
+        onTouchBegan(t);
+    } else {
         if (state() == State::Possible) {
             setState(State::Failed);
         } else if (state() == State::Began
                    || state() == State::Changed) {
             setState(State::Canceled);
         }
-        return;
     }
-    onTouchBegan(t);
 }
 
 void GestureRecognizer::touchMovedHandler(const Touch *touch)
@@ -160,7 +160,7 @@ void GestureRecognizer::setManager(GestureRecognizerManager* manager)
 
 void GestureRecognizer::setState(const State& newState)
 {
-    qDebug() << m_state.toString() << "->" << newState.toString();
+    // qDebug() << m_state.toString() << "->" << newState.toString();
     Q_ASSERT(m_state.canTransitionTo(newState));
     m_state = newState;
     m_states.append(m_state);
