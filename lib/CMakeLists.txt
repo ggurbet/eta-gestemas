@@ -37,6 +37,7 @@ set(libgestemas_SOURCES
   GestureListener/xtesttaprightclick.cpp
   GestureListener/xtestswipeswitch.cpp
   GestureListener/dbusswipekeyboard.cpp
+  GestureListener/dbustapkeyboard.cpp
 )
 
 set(libgestemas_HEADERS
@@ -75,6 +76,7 @@ set(libgestemas_HEADERS
   GestureListener/xtesttaprightclick.h
   GestureListener/xtestswipeswitch.h
   GestureListener/dbusswipekeyboard.h
+  GestureListener/dbustapkeyboard.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})

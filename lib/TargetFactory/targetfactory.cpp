@@ -22,6 +22,7 @@
 #include "xtesttwotouchpinchzoom.h"
 #include "xtestswipeswitch.h"
 #include "dbusswipekeyboard.h"
+#include "dbustapkeyboard.h"
 
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
@@ -505,6 +506,8 @@ void TargetFactory::processTap()
             }
         } else if (m_configReader->name() == "XTestTapRightClick") {
             processXTestTapRightClick(gr);
+        } else if (m_configReader->name() == "DBusTapKeyboard") {
+            processDBusTapKeyboard(gr);
         }
     }
     m_currentTarget->addGestureRecognizer(gr);
@@ -651,6 +654,22 @@ void TargetFactory::processXTestTapRightClick(TapGestureRecognizer *gr)
     while(m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "RightClickShortcut") {
             listener->setRightClickShortcut(parseXTestShortcut());
+        }
+    }
+    listener->setGestureRecognizer(gr);
+}
+
+void TargetFactory::processDBusTapKeyboard(TapGestureRecognizer *gr)
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "DBusTapKeyboard") {
+        return;
+    }
+
+    DBusTapKeyboard *listener = new DBusTapKeyboard;
+    while(m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "toggleCommand") {
+            listener->setToggleCommand(m_configReader->readElementText());
         }
     }
     listener->setGestureRecognizer(gr);

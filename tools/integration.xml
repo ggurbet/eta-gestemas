@@ -34,18 +34,17 @@
       <Tap id="11">
         <numTouchesRequired>2</numTouchesRequired>
         <numTapsRequired>1</numTapsRequired>
-        <maxTapDelay>400</maxTapDelay>
-        <maxTapDuration>900</maxTapDuration>
-        <maxTapDistance>100.0</maxTapDistance>
-        <recognitionThreshold>1.0</recognitionThreshold>
+        <maxTapDelay>1500</maxTapDelay>
+        <maxTapDuration>1500</maxTapDuration>
+        <maxTapDistance>1500.0</maxTapDistance>
+        <bottomMargin>300.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestTapRightClick>
-          <RightClickShortcut>
-            <key>Menu</key>
-          </RightClickShortcut>
-        </XTestTapRightClick>
+        <DBusTapKeyboard>
+          <toggleCommand>toggle</toggleCommand>
+        </DBusTapKeyboard>
       </Tap>
       <Pan id="2">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
@@ -73,22 +72,22 @@
           </ScrollDownShortcut>
         </XTestPanScroll>
       </Pan>
-      <Swipe id="3">
-        <numTouchesRequired>1</numTouchesRequired>
-        <maxDuration>150</maxDuration>
-        <minDisplacement>60.0</minDisplacement>
-        <maxAngle>40.0</maxAngle>
-        <direction>Vertical</direction>
-        <bottomMargin>300.0</bottomMargin>
-        <recognitionThreshold>10.0</recognitionThreshold>
-        <abortList>
-          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        </abortList>
-        <DBusSwipeKeyboard>
-          <showCommand>showFromBottom</showCommand>
-          <hideCommand>hide</hideCommand>
-        </DBusSwipeKeyboard>
-      </Swipe>
+      <!-- <Swipe id="3"> -->
+      <!--   <numTouchesRequired>1</numTouchesRequired> -->
+      <!--   <maxDuration>150</maxDuration> -->
+      <!--   <minDisplacement>60.0</minDisplacement> -->
+      <!--   <maxAngle>40.0</maxAngle> -->
+      <!--   <direction>Vertical</direction> -->
+      <!--   <bottomMargin>300.0</bottomMargin> -->
+      <!--   <recognitionThreshold>10.0</recognitionThreshold> -->
+      <!--   <abortList> -->
+      <!--     <allowSimultaneousRecognition>false</allowSimultaneousRecognition> -->
+      <!--   </abortList> -->
+      <!--   <DBusSwipeKeyboard> -->
+      <!--     <showCommand>showFromBottom</showCommand> -->
+      <!--     <hideCommand>hide</hideCommand> -->
+      <!--   </DBusSwipeKeyboard> -->
+      <!-- </Swipe> -->
     </GestureRecognizers>
   </GlobalTarget>
   <PublicTarget>
@@ -135,28 +134,4 @@
       </Pan>
   </GestureRecognizers>
   </PrivateTarget>
-  <PublicTarget>
-    <name>Plasma</name>
-    <GestureRecognizers>
-      <Swipe id="8">
-        <numTouchesRequired>2</numTouchesRequired>
-        <maxDuration>150</maxDuration>
-        <minDisplacement>60.0</minDisplacement>
-        <maxAngle>40.0</maxAngle>
-        <direction>Horizontal</direction>
-        <recognitionThreshold>10.0</recognitionThreshold>
-        <abortList>
-          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        </abortList>
-        <XTestSwipeSwitch>
-          <SwitchRightShortcut>
-            <button>4</button>
-          </SwitchRightShortcut>
-          <SwitchLeftShortcut>
-            <button>5</button>
-          </SwitchLeftShortcut>
-        </XTestSwipeSwitch>
-      </Swipe>
-    </GestureRecognizers>
-  </PublicTarget>
 </gestemas>

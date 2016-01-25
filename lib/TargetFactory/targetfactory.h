@@ -58,6 +58,7 @@ private:
     void processXTestTwoTouchPinchZoom(TwoTouchPinchGestureRecognizer *gr);
     void processXTestSwipeSwitch(SwipeGestureRecognizer *gr);
     void processDBusSwipeKeyboard(SwipeGestureRecognizer *gr);
+    void processDBusTapKeyboard(TapGestureRecognizer *gr);
 
     XTestShortcut* parseXTestShortcut();
 
