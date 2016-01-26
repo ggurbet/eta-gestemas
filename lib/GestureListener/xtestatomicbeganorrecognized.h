@@ -16,18 +16,18 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTTWOTOUCHPINCHZOOM_H
-#define XTESTTWOTOUCHPINCHZOOM_H
+#ifndef XTESTATOMICBEGANORRECOGNIZED_H
+#define XTESTATOMICBEGANORRECOGNIZED_H
 
-#include "twotouchpinchlistener.h"
+#include "simplegesturelistener.h"
 
 class XTestShortcut;
 
-class XTestTwoTouchPinchZoom : public TwoTouchPinchListener
+class XTestAtomicBeganOrRecognized : public SimpleGestureListener
 {
 public:
-    XTestTwoTouchPinchZoom();
-    virtual ~XTestTwoTouchPinchZoom();
+    XTestAtomicBeganOrRecognized();
+    virtual ~XTestAtomicBeganOrRecognized();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -35,36 +35,9 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
-
-    void setMaxScale(float maxScale)
-    {m_maxScale = maxScale;}
-    float maxScale() const
-    {return m_maxScale;}
-
-    void setMinScale(float minScale)
-    {m_minScale = minScale;}
-    float minScale() const
-    {return m_minScale;}
-
-    void setAccumulator(int accumulator)
-    {m_accumulator = accumulator;}
-    int accumulator() const
-    {return m_accumulator;}
-
-    void setZoomInShortcut(const XTestShortcut *zoomInShortcut);
-    void setZoomOutShortcut(const XTestShortcut *zoomOutShortcut);
+    void setAtomicBeganOrRecognizedShortcut(const XTestShortcut *shortcut);
 private:
-    void zoomIn();
-    void zoomOut();
-
-    float m_maxScale;
-    float m_minScale;
-    int m_accumulator;
-    int m_counter;
-    float m_averageScale;
-
-    const XTestShortcut *m_zoomInShortcut;
-    const XTestShortcut *m_zoomOutShortcut;
+    const XTestShortcut *m_shortcut;
 };
 
-#endif /* XTESTTWOTOUCHPINCHZOOM_H */
+#endif /* XTESTATOMICBEGANORRECOGNIZED_H */

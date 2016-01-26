@@ -23,8 +23,9 @@
 #include <QtCore/QtDebug>
 
 TwoTouchPinchGestureRecognizer::TwoTouchPinchGestureRecognizer()
-     :GestureRecognizer(),
+     :PinchGestureRecognizer(),
       m_scale(1.0f),
+      m_velocity(0.0f),
       m_touch1(nullptr),
       m_touch2(nullptr),
       m_distance(1.0f),
@@ -88,9 +89,13 @@ void TwoTouchPinchGestureRecognizer::onTouchMoved(const Touch *touch)
         uint64_t deltaTime = touch->timestamp() - m_timestamp;
         m_timestamp = touch->timestamp();
         if (deltaTime > 0) {
+            float deltaScale = 1.0f;
+            float oldScale = m_scale;
             m_distance = (m_distance == 0.0f) ? currentDistance : m_distance;
-            m_scale = currentDistance / m_distance;
-            m_velocity = m_scale / deltaTime;
+            deltaScale = currentDistance / m_distance;
+            m_scale *= deltaScale;
+            // scale / second
+            m_velocity = 1000 * (m_scale - oldScale) / deltaTime;
             setState(State::Changed);
         }
     }

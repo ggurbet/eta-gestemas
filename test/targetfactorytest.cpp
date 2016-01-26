@@ -9,6 +9,12 @@
 #include "tapgesturerecognizer.h"
 #include "swipegesturerecognizer.h"
 
+#include "xtestatomicbeganorrecognized.h"
+#include "xtestscroll.h"
+#include "xtestzoom.h"
+#include "xtestmove.h"
+#include "dbusvirtualkeyboard.h"
+
 class TargetFactoryTester : public QObject
 {
     Q_OBJECT
@@ -40,12 +46,19 @@ void TargetFactoryTester::initTestCase()
     gr1->setMinPressDuration(950);
     gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
+    XTestAtomicBeganOrRecognized *l1 = new XTestAtomicBeganOrRecognized;
+    l1->setGestureRecognizer(gr1);
+    gr1->setGestureListener(l1);
     expectedTargetChromium.addGestureRecognizer(gr1);
     PanGestureRecognizer *gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(1);
     gr2->setMinNumTouchesRequired(1);
     gr2->setRecognitionThreshold(1.0f);
     gr2->setAllowSimultaneousRecognition(false);
+    XTestScroll *l2 = new XTestScroll;
+    l2->setMinEffectiveVelocity(2.0f);
+    l2->setGestureRecognizer(gr2);
+    gr2->setGestureListener(l2);
     expectedTargetChromium.addGestureRecognizer(gr2);
     TapGestureRecognizer *gr3 = new TapGestureRecognizer;
     gr3->setNumTouchesRequired(1);
@@ -61,10 +74,17 @@ void TargetFactoryTester::initTestCase()
     gr4->setMinNumTouchesRequired(2);
     gr4->setRecognitionThreshold(1.0f);
     gr4->setAllowSimultaneousRecognition(false);
+    XTestScroll *l4 = new XTestScroll;
+    l4->setMinEffectiveVelocity(2.0f);
+    l4->setGestureRecognizer(gr4);
+    gr4->setGestureListener(l4);
     expectedTargetChromium.addGestureRecognizer(gr4);
     TwoTouchPinchGestureRecognizer *gr5 = new TwoTouchPinchGestureRecognizer;
     gr5->setRecognitionThreshold(1.0f);
     gr5->setAllowSimultaneousRecognition(false);
+    XTestZoom *l5 = new XTestZoom;
+    l5->setGestureRecognizer(gr5);
+    gr5->setGestureListener(l5);
     expectedTargetChromium.addGestureRecognizer(gr5);
     SwipeGestureRecognizer *gr6 = new SwipeGestureRecognizer;
     gr6->setRecognitionThreshold(1.0f);
@@ -83,12 +103,19 @@ void TargetFactoryTester::initTestCase()
     gr1->setMinPressDuration(950);
     gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
+    l1 = new XTestAtomicBeganOrRecognized;
+    l1->setGestureRecognizer(gr1);
+    gr1->setGestureListener(l1);
     expectedTargetFirefox.addGestureRecognizer(gr1);
     gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(1);
     gr2->setMinNumTouchesRequired(1);
     gr2->setRecognitionThreshold(1.0f);
     gr2->setAllowSimultaneousRecognition(false);
+    l2 = new XTestScroll;
+    l2->setMinEffectiveVelocity(2.0f);
+    l2->setGestureRecognizer(gr2);
+    gr2->setGestureListener(l2);
     expectedTargetFirefox.addGestureRecognizer(gr2);
     gr3 = new TapGestureRecognizer;
     gr3->setNumTouchesRequired(1);
@@ -104,10 +131,17 @@ void TargetFactoryTester::initTestCase()
     gr4->setMinNumTouchesRequired(2);
     gr4->setRecognitionThreshold(1.0f);
     gr4->setAllowSimultaneousRecognition(true);
+    l4 = new XTestScroll;
+    l4->setMinEffectiveVelocity(2.0f);
+    l4->setGestureRecognizer(gr4);
+    gr4->setGestureListener(l4);
     expectedTargetFirefox.addGestureRecognizer(gr4);
     gr5 = new TwoTouchPinchGestureRecognizer;
     gr5->setRecognitionThreshold(1.0f);
     gr5->setAllowSimultaneousRecognition(true);
+    l5 = new XTestZoom;
+    l5->setGestureRecognizer(gr5);
+    gr5->setGestureListener(l5);
     expectedTargetFirefox.addGestureRecognizer(gr5);
     gr6 = new SwipeGestureRecognizer;
     gr6->setRecognitionThreshold(1.0f);
@@ -126,12 +160,19 @@ void TargetFactoryTester::initTestCase()
     gr1->setMinPressDuration(950);
     gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
+    l1 = new XTestAtomicBeganOrRecognized;
+    l1->setGestureRecognizer(gr1);
+    gr1->setGestureListener(l1);
     expectedTargetOther.addGestureRecognizer(gr1);
     gr2 = new PanGestureRecognizer;
     gr2->setMaxNumTouchesRequired(1);
     gr2->setMinNumTouchesRequired(1);
     gr2->setRecognitionThreshold(1.0f);
     gr2->setAllowSimultaneousRecognition(false);
+    l2 = new XTestScroll;
+    l2->setMinEffectiveVelocity(2.0f);
+    l2->setGestureRecognizer(gr2);
+    gr2->setGestureListener(l2);
     expectedTargetOther.addGestureRecognizer(gr2);
     gr3 = new TapGestureRecognizer;
     gr3->setNumTouchesRequired(1);

@@ -16,55 +16,59 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xtesttaprightclick.h"
-#include "longpressgesturerecognizer.h"
+#include "xtestatomicendedorrecognized.h"
+#include "gesturerecognizer.h"
 #include "xtestshortcut.h"
 #include "utilities.h"
 #include <QtCore/QtDebug>
 
-XTestTapRightClick::XTestTapRightClick()
+XTestAtomicEndedOrRecognized::XTestAtomicEndedOrRecognized()
     :m_shortcut(nullptr)
 {
 }
-
-XTestTapRightClick::~XTestTapRightClick()
+XTestAtomicEndedOrRecognized::~XTestAtomicEndedOrRecognized()
 {
     delete m_shortcut;
     m_shortcut = nullptr;
 }
-
-void XTestTapRightClick::setRightClickShortcut(const XTestShortcut *shortcut)
+void XTestAtomicEndedOrRecognized::setAtomicEndedOrRecognizedShortcut(
+                                        const XTestShortcut *shortcut)
 {
     m_shortcut = shortcut;
 }
 
-void XTestTapRightClick::onBegan()
+void XTestAtomicEndedOrRecognized::onBegan()
 {
 }
 
-void XTestTapRightClick::onRecognized()
+void XTestAtomicEndedOrRecognized::onRecognized()
 {
+    // Could be a discrete gesture recognizer
     m_shortcut->press();
     m_shortcut->release();
 }
 
-void XTestTapRightClick::onChanged()
+void XTestAtomicEndedOrRecognized::onChanged()
 {
 }
 
-void XTestTapRightClick::onCanceled()
+void XTestAtomicEndedOrRecognized::onCanceled()
 {
 }
 
-void XTestTapRightClick::onEnded()
+void XTestAtomicEndedOrRecognized::onEnded()
+{
+    // Could be a continues gesture recognizer
+    m_shortcut->press();
+    m_shortcut->release();
+}
+
+void XTestAtomicEndedOrRecognized::onFailed()
 {
 }
 
-void XTestTapRightClick::onFailed()
+bool XTestAtomicEndedOrRecognized::isEqual(const GestureListener& other) const
 {
-}
-
-bool XTestTapRightClick::isEqual(const GestureListener& other) const
-{
+    (void)other;
     return true;
 }

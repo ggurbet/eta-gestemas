@@ -16,58 +16,58 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xtestpanmove.h"
-#include "pangesturerecognizer.h"
+#include "xtestatomicbeganorrecognized.h"
+#include "gesturerecognizer.h"
 #include "xtestshortcut.h"
 #include "utilities.h"
 #include <QtCore/QtDebug>
 
-XTestPanMove::XTestPanMove()
+XTestAtomicBeganOrRecognized::XTestAtomicBeganOrRecognized()
     :m_shortcut(nullptr)
 {
 }
-
-XTestPanMove::~XTestPanMove()
+XTestAtomicBeganOrRecognized::~XTestAtomicBeganOrRecognized()
 {
     delete m_shortcut;
     m_shortcut = nullptr;
 }
-
-void XTestPanMove::setMoveShortcut(const XTestShortcut *shortcut)
+void XTestAtomicBeganOrRecognized::setAtomicBeganOrRecognizedShortcut(
+                                        const XTestShortcut *shortcut)
 {
     m_shortcut = shortcut;
 }
 
-void XTestPanMove::onBegan()
+void XTestAtomicBeganOrRecognized::onBegan()
 {
+    // Could be a continues gesture recognizer
     m_shortcut->press();
-}
-
-void XTestPanMove::onRecognized()
-{
-}
-
-void XTestPanMove::onChanged()
-{
-    m_shortcut->movePointer(m_recognizer->centralX(),
-                            m_recognizer->centralY());
-}
-
-void XTestPanMove::onCanceled()
-{
     m_shortcut->release();
 }
 
-void XTestPanMove::onEnded()
+void XTestAtomicBeganOrRecognized::onRecognized()
 {
-        m_shortcut->release();
+    // Could be a discrete gesture recognizer
+    m_shortcut->press();
+    m_shortcut->release();
 }
 
-void XTestPanMove::onFailed()
+void XTestAtomicBeganOrRecognized::onChanged()
 {
 }
 
-bool XTestPanMove::isEqual(const GestureListener& other) const
+void XTestAtomicBeganOrRecognized::onCanceled()
+{
+}
+
+void XTestAtomicBeganOrRecognized::onEnded()
+{
+}
+
+void XTestAtomicBeganOrRecognized::onFailed()
+{
+}
+
+bool XTestAtomicBeganOrRecognized::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;

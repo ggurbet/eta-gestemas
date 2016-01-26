@@ -16,11 +16,28 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "panlistener.h"
-#include "pangesturerecognizer.h"
+#ifndef XTESTMOVE_H
+#define XTESTMOVE_H
 
-void PanListener::setGestureRecognizer(PanGestureRecognizer *recognizer)
+#include "simplegesturelistener.h"
+
+class XTestShortcut;
+
+class XTestMove : public SimpleGestureListener
 {
-    recognizer->setGestureListener(this);
-    m_recognizer = recognizer;
-}
+public:
+    XTestMove();
+    virtual ~XTestMove();
+    virtual bool isEqual(const GestureListener& other) const;
+    virtual void onBegan();
+    virtual void onRecognized();
+    virtual void onChanged();
+    virtual void onCanceled();
+    virtual void onEnded();
+    virtual void onFailed();
+    void setMoveShortcut(const XTestShortcut *shortcut);
+private:
+    const XTestShortcut *m_shortcut;
+};
+
+#endif /* XTESTMOVE_H */

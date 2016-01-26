@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
+  <samplingPeriod>120</samplingPeriod>
+  <pointerEmulationRate>2</pointerEmulationRate>
+  <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <GlobalTarget>
-    <name>root</name>
     <GestureRecognizers>
-      <TwoTouchPinch id="5">
-        <recognitionThreshold>1.0</recognitionThreshold>
+      <TwoTouchPinch id="7">
+        <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
-          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestTwoTouchPinchZoom>
-          <accumulator>8</accumulator>
-          <maxScale>1.60</maxScale>
-          <minScale>1.0001</minScale>
-        </XTestTwoTouchPinchZoom>
+        <XTestZoom>
+          <minEffectiveVelocity>0.5</minEffectiveVelocity>
+          <ZoomInShortcut>
+            <button modifier1="Control_L">5</button>
+          </ZoomInShortcut>
+          <ZoomOutShortcut>
+            <button modifier1="Control_L">4</button>
+          </ZoomOutShortcut>
+        </XTestZoom>
       </TwoTouchPinch>
     </GestureRecognizers>
   </GlobalTarget>

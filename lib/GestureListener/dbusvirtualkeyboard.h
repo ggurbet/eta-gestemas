@@ -16,21 +16,31 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LONGPRESSLISTENER_H
-#define LONGPRESSLISTENER_H
+#ifndef DBUSVIRTUALSKEYBOARD_H
+#define DBUSVIRTUALSKEYBOARD_H
 
-#include "gesturelistener.h"
+#include "simplegesturelistener.h"
+#include <QtCore/QString>
 
-class LongPressGestureRecognizer;
+class QDBusInterface;
 
-class LongPressListener : public GestureListener
+class DBusVirtualKeyboard : public SimpleGestureListener
 {
 public:
-    LongPressListener() = default;
-    virtual ~LongPressListener() = default;
-    void setGestureRecognizer(LongPressGestureRecognizer *recognizer);
-protected:
-    const LongPressGestureRecognizer *m_recognizer;
+    DBusVirtualKeyboard();
+    virtual ~DBusVirtualKeyboard();
+    virtual bool isEqual(const GestureListener& other) const;
+    virtual void onBegan();
+    virtual void onRecognized();
+    virtual void onChanged();
+    virtual void onCanceled();
+    virtual void onEnded();
+    virtual void onFailed();
+    void setCommand(const QString& cmd)
+    {m_command = cmd;}
+private:
+    QString m_command;
+    QDBusInterface *m_interface;
 };
 
-#endif /* LONGPRESSLISTENER_H */
+#endif /* DBUSVIRTUALSKEYBOARD_H */

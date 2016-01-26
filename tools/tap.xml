@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
+  <samplingPeriod>120</samplingPeriod>
+  <pointerEmulationRate>2</pointerEmulationRate>
+  <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <GlobalTarget>
-    <name>root</name>
     <GestureRecognizers>
       <Tap id="3">
-        <numTouchesRequired>1</numTouchesRequired>
+        <numTouchesRequired>2</numTouchesRequired>
         <numTapsRequired>1</numTapsRequired>
-        <maxTapDelay>400</maxTapDelay>
-        <maxTapDuration>900</maxTapDuration>
-        <maxTapDistance>100.0</maxTapDistance>
-        <recognitionThreshold>1.0</recognitionThreshold>
+        <maxTapDelay>1500</maxTapDelay>
+        <maxTapDuration>1500</maxTapDuration>
+        <maxTapDistance>1500.0</maxTapDistance>
+        <bottomMargin>300.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestTapRightClick>
-        </XTestTapRightClick>
+        <DBusVirtualKeyboard>
+          <command>toggle</command>
+        </DBusVirtualKeyboard>
       </Tap>
     </GestureRecognizers>
   </GlobalTarget>

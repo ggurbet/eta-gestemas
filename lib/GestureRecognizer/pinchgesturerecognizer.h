@@ -16,28 +16,20 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTLONGPRESSMOVE_H
-#define XTESTLONGPRESSMOVE_H
+#ifndef PINCHGESTURERECOGNIZER_H
+#define PINCHGESTURERECOGNIZER_H
 
-#include "longpresslistener.h"
+#include "gesturerecognizer.h"
 
-class XTestShortcut;
+class Touch;
 
-class XTestLongPressMove : public LongPressListener
+class PinchGestureRecognizer : public GestureRecognizer
 {
 public:
-    XTestLongPressMove();
-    virtual ~XTestLongPressMove();
-    virtual bool isEqual(const GestureListener& other) const;
-    virtual void onBegan();
-    virtual void onRecognized();
-    virtual void onChanged();
-    virtual void onCanceled();
-    virtual void onEnded();
-    virtual void onFailed();
-    void setMoveShortcut(const XTestShortcut *shortcut);
-private:
-    const XTestShortcut *m_shortcut;
+    PinchGestureRecognizer() = default;
+    virtual ~PinchGestureRecognizer() = default;
+    virtual float scale() const = 0;
+    virtual float velocity() const = 0;
 };
 
-#endif /* XTESTLONGPRESSMOVE_H */
+#endif /* PINCHGESTURERECOGNIZER_H */

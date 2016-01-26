@@ -16,18 +16,19 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTSWIPESWITCH_H
-#define XTESTSWIPESWITCH_H
+#ifndef XTESTZOOM_H
+#define XTESTZOOM_H
 
-#include "swipelistener.h"
+#include "gesturelistener.h"
 
 class XTestShortcut;
+class PinchGestureRecognizer;
 
-class XTestSwipeSwitch : public SwipeListener
+class XTestZoom : public GestureListener
 {
 public:
-    XTestSwipeSwitch();
-    virtual ~XTestSwipeSwitch();
+    XTestZoom();
+    virtual ~XTestZoom();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -35,11 +36,24 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
-    void setSwitchRightShortcut(const XTestShortcut *shortcut);
-    void setSwitchLeftShortcut(const XTestShortcut *shortcut);
+
+    void setMinEffectiveVelocity(float velocity)
+    {m_minEffectiveVelocity = (velocity > 0.0f) ? velocity : MIN_EFFECTIVE_VELOCITY;}
+
+    void setGestureRecognizer(const PinchGestureRecognizer *recognizer);
+
+    void setZoomInShortcut(const XTestShortcut *zoomInShortcut);
+    void setZoomOutShortcut(const XTestShortcut *zoomOutShortcut);
 private:
-    const XTestShortcut *m_switchRightShortcut;
-    const XTestShortcut *m_switchLeftShortcut;
+    void zoomIn();
+    void zoomOut();
+
+    float m_minEffectiveVelocity; // (oldScale - newScale / second)
+    const PinchGestureRecognizer *m_recognizer;
+    const XTestShortcut *m_zoomInShortcut;
+    const XTestShortcut *m_zoomOutShortcut;
+
+    static constexpr float MIN_EFFECTIVE_VELOCITY = 0.5f;
 };
 
-#endif /* XTESTSWIPESWITCH_H */
+#endif /* XTESTZOOM_H */

@@ -16,19 +16,18 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DBUSTAPSKEYBOARD_H
-#define DBUSTAPSKEYBOARD_H
+#ifndef XTESTATOMICENDEDORRECOGNIZED_H
+#define XTESTATOMICENDEDORRECOGNIZED_H
 
-#include "taplistener.h"
-#include <QtCore/QString>
+#include "simplegesturelistener.h"
 
-class QDBusInterface;
+class XTestShortcut;
 
-class DBusTapKeyboard : public TapListener
+class XTestAtomicEndedOrRecognized : public SimpleGestureListener
 {
 public:
-    DBusTapKeyboard();
-    virtual ~DBusTapKeyboard();
+    XTestAtomicEndedOrRecognized();
+    virtual ~XTestAtomicEndedOrRecognized();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -36,11 +35,9 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
-    void setToggleCommand(const QString& cmd)
-    {m_toggleCommand = cmd;}
+    void setAtomicEndedOrRecognizedShortcut(const XTestShortcut *shortcut);
 private:
-    QString m_toggleCommand;
-    QDBusInterface *m_interface;
+    const XTestShortcut *m_shortcut;
 };
 
-#endif /* DBUSTAPSKEYBOARD_H */
+#endif /* XTESTATOMICENDEDORRECOGNIZED_H */

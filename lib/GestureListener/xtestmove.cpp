@@ -16,55 +16,58 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dbustapkeyboard.h"
-#include "swipegesturerecognizer.h"
+#include "xtestmove.h"
+#include "gesturerecognizer.h"
+#include "xtestshortcut.h"
 #include "utilities.h"
 #include <QtCore/QtDebug>
 
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusInterface>
-
-DBusTapKeyboard::DBusTapKeyboard()
-{
-    QDBusConnection conn = QDBusConnection::sessionBus();
-    m_interface = new QDBusInterface("org.eta.etakeyboard",
-                                     "/EtaKeyboard",
-                                     "org.eta.etakeyboard", conn);
-    m_toggleCommand = "toggle";
-
-}
-
-DBusTapKeyboard::~DBusTapKeyboard()
-{
-    m_interface->deleteLater();
-}
-
-void DBusTapKeyboard::onBegan()
+XTestMove::XTestMove()
+    :m_shortcut(nullptr)
 {
 }
 
-void DBusTapKeyboard::onRecognized()
+XTestMove::~XTestMove()
 {
-    m_interface->call(m_toggleCommand);
+    delete m_shortcut;
+    m_shortcut = nullptr;
 }
 
-void DBusTapKeyboard::onChanged()
+void XTestMove::setMoveShortcut(const XTestShortcut *shortcut)
+{
+    m_shortcut = shortcut;
+}
+
+void XTestMove::onBegan()
+{
+    m_shortcut->press();
+}
+
+void XTestMove::onRecognized()
 {
 }
 
-void DBusTapKeyboard::onCanceled()
+void XTestMove::onChanged()
+{
+    m_shortcut->movePointer(m_recognizer->centralX(),
+                            m_recognizer->centralY());
+}
+
+void XTestMove::onCanceled()
+{
+    m_shortcut->release();
+}
+
+void XTestMove::onEnded()
+{
+        m_shortcut->release();
+}
+
+void XTestMove::onFailed()
 {
 }
 
-void DBusTapKeyboard::onEnded()
-{
-}
-
-void DBusTapKeyboard::onFailed()
-{
-}
-
-bool DBusTapKeyboard::isEqual(const GestureListener& other) const
+bool XTestMove::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;

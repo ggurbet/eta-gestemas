@@ -16,28 +16,17 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTLONGPRESSRIGHTCLICK_H
-#define XTESTLONGPRESSRIGHTCLICK_H
+#ifndef RIGHTCLICKINVOKER_H
+#define RIGHTCLICKINVOKER_H
 
-#include "longpresslistener.h"
+#include "gesturerecognizer.h"
 
-class XTestShortcut;
-
-class XTestLongPressRightClick : public LongPressListener
+class PressReleaseInvoker
 {
 public:
-    XTestLongPressRightClick();
-    virtual ~XTestLongPressRightClick();
-    virtual bool isEqual(const GestureListener& other) const;
-    virtual void onBegan();
-    virtual void onRecognized();
-    virtual void onChanged();
-    virtual void onCanceled();
-    virtual void onEnded();
-    virtual void onFailed();
-    void setRightClickShortcut(const XTestShortcut *shortcut);
-private:
-    const XTestShortcut *m_shortcut;
+    virtual ~PressReleaseInvoker() = default;
+protected:
+    PressReleaseInvoker() = default;
 };
 
-#endif /* XTESTLONGPRESSRIGHTCLICK_H */
+#endif /* RIGHTCLICKINVOKER_H */

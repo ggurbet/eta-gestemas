@@ -22,22 +22,15 @@ set(libgestemas_SOURCES
   GestureRecognizer/swipegesturerecognizer.cpp
   TouchManager/touchmanager.cpp
   TouchManager/libframetouchmanager.cpp
-  GestureListener/longpresslistener.cpp
-  GestureListener/twotouchpinchlistener.cpp
-  GestureListener/panlistener.cpp
-  GestureListener/taplistener.cpp
-  GestureListener/swipelistener.cpp
+  GestureListener/simplegesturelistener.cpp
   GestureListener/xtest.cpp
   GestureListener/xtestshortcut.cpp
-  GestureListener/xtestlongpressrightclick.cpp
-  GestureListener/xtestlongpressmove.cpp
-  GestureListener/xtesttwotouchpinchzoom.cpp
-  GestureListener/xtestpanscroll.cpp
-  GestureListener/xtestpanmove.cpp
-  GestureListener/xtesttaprightclick.cpp
-  GestureListener/xtestswipeswitch.cpp
-  GestureListener/dbusswipekeyboard.cpp
-  GestureListener/dbustapkeyboard.cpp
+  GestureListener/xtestatomicbeganorrecognized.cpp
+  GestureListener/xtestatomicendedorrecognized.cpp
+  GestureListener/xtestmove.cpp
+  GestureListener/xtestzoom.cpp
+  GestureListener/xtestscroll.cpp
+  GestureListener/dbusvirtualkeyboard.cpp
 )
 
 set(libgestemas_HEADERS
@@ -55,28 +48,22 @@ set(libgestemas_HEADERS
   GestureRecognizer/gesturerecognizer.h
   GestureRecognizer/longpressgesturerecognizer.h
   GestureRecognizer/pangesturerecognizer.h
+  GestureRecognizer/pinchgesturerecognizer.h
   GestureRecognizer/twotouchpinchgesturerecognizer.h
   GestureRecognizer/tapgesturerecognizer.h
   GestureRecognizer/swipegesturerecognizer.h
   TouchManager/touchmanager.h
   TouchManager/libframetouchmanager.h
   GestureListener/gesturelistener.h
-  GestureListener/longpresslistener.h
-  GestureListener/twotouchpinchlistener.h
-  GestureListener/panlistener.h
-  GestureListener/taplistener.h
-  GestureListener/swipelistener.h
+  GestureListener/simplegesturelistener.h
   GestureListener/xtest.h
   GestureListener/xtestshortcut.h
-  GestureListener/xtestlongpressrightclick.h
-  GestureListener/xtestlongpressmove.h
-  GestureListener/xtesttwotouchpinchzoom.h
-  GestureListener/xtestpanscroll.h
-  GestureListener/xtestpanmove.h
-  GestureListener/xtesttaprightclick.h
-  GestureListener/xtestswipeswitch.h
-  GestureListener/dbusswipekeyboard.h
-  GestureListener/dbustapkeyboard.h
+  GestureListener/xtestatomicbeganorrecognized.h
+  GestureListener/xtestatomicendedorrecognized.h
+  GestureListener/xtestmove.h
+  GestureListener/xtestzoom.h
+  GestureListener/xtestscroll.h
+  GestureListener/dbusvirtualkeyboard.h
 )
 
 add_library(gestemas STATIC ${libgestemas_SOURCES} ${libgesmetas_HEADERS})

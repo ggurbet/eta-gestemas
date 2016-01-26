@@ -16,21 +16,22 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TWOTOUCHPINCHLISTENER_H
-#define TWOTOUCHPINCHLISTENER_H
+#ifndef SIMPLEGESTURELISTENER_H
+#define SIMPLEGESTURELISTENER_H
 
 #include "gesturelistener.h"
 
-class TwoTouchPinchGestureRecognizer;
+class GestureRecognizer;
 
-class TwoTouchPinchListener : public GestureListener
+class SimpleGestureListener : public GestureListener
 {
 public:
-    TwoTouchPinchListener() = default;
-    virtual ~TwoTouchPinchListener() = default;
-    void setGestureRecognizer(TwoTouchPinchGestureRecognizer *recognizer);
+    SimpleGestureListener() = default;
+    virtual ~SimpleGestureListener() = default;
+    void setGestureRecognizer(const GestureRecognizer *recognizer);
 protected:
-    const TwoTouchPinchGestureRecognizer *m_recognizer;
+    const GestureRecognizer *m_recognizer;
 };
 
-#endif /* TWOTOUCHPINCHLISTENER_H */
+
+#endif /* SIMPLEGESTURELISTENER_H */

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <samplingPeriod>85</samplingPeriod>
+  <samplingPeriod>120</samplingPeriod>
   <pointerEmulationRate>2</pointerEmulationRate>
   <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <GlobalTarget>
@@ -12,26 +12,26 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-          <XTestLongPressRightClick>
-            <RightClickShortcut>
-              <button>3</button>
-            </RightClickShortcut>
-          </XTestLongPressRightClick>
+        <XTestAtomicBeganOrRecognized>
+          <PressReleaseShortcut>
+            <button>3</button>
+          </PressReleaseShortcut>
+        </XTestAtomicBeganOrRecognized>
       </LongPress>
-      <LongPress id="10">
+      <LongPress id="2">
         <numTouchesRequired>2</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
         <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-          <XTestLongPressMove>
-            <MoveShortcut>
-              <button modifier1="Alt_L">1</button>
-            </MoveShortcut>
-          </XTestLongPressMove>
+        <XTestMove>
+          <MoveShortcut>
+            <button modifier1="Alt_L">1</button>
+          </MoveShortcut>
+        </XTestMove>
       </LongPress>
-      <Tap id="11">
+      <Tap id="3">
         <numTouchesRequired>2</numTouchesRequired>
         <numTapsRequired>1</numTapsRequired>
         <maxTapDelay>1500</maxTapDelay>
@@ -42,22 +42,20 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <DBusTapKeyboard>
-          <toggleCommand>toggle</toggleCommand>
-        </DBusTapKeyboard>
+        <DBusVirtualKeyboard>
+          <command>toggle</command>
+        </DBusVirtualKeyboard>
       </Tap>
-      <Pan id="2">
+      <Pan id="4">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-          <id>4</id>
+          <id>7</id>
         </abortList>
-        <XTestPanScroll>
-          <accumulator>2</accumulator>
-          <maxVelocity>25.0</maxVelocity>
-          <minVelocity>0.042</minVelocity>
+        <XTestScroll>
+          <minEffectiveVelocity>2.0</minEffectiveVelocity>
           <ScrollLeftShortcut>
             <key modifier1="Control_L">Left</key>
           </ScrollLeftShortcut>
@@ -70,46 +68,58 @@
           <ScrollDownShortcut>
             <button>5</button>
           </ScrollDownShortcut>
-        </XTestPanScroll>
+        </XTestScroll>
       </Pan>
-      <!-- <Swipe id="3"> -->
-      <!--   <numTouchesRequired>1</numTouchesRequired> -->
-      <!--   <maxDuration>150</maxDuration> -->
-      <!--   <minDisplacement>60.0</minDisplacement> -->
-      <!--   <maxAngle>40.0</maxAngle> -->
-      <!--   <direction>Vertical</direction> -->
-      <!--   <bottomMargin>300.0</bottomMargin> -->
-      <!--   <recognitionThreshold>10.0</recognitionThreshold> -->
-      <!--   <abortList> -->
-      <!--     <allowSimultaneousRecognition>false</allowSimultaneousRecognition> -->
-      <!--   </abortList> -->
-      <!--   <DBusSwipeKeyboard> -->
-      <!--     <showCommand>showFromBottom</showCommand> -->
-      <!--     <hideCommand>hide</hideCommand> -->
-      <!--   </DBusSwipeKeyboard> -->
-      <!-- </Swipe> -->
+      <Swipe id="5">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Up</direction>
+        <bottomMargin>300.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>showFromBottom</command>
+        </DBusVirtualKeyboard>
+      </Swipe>
+      <Swipe id="6">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Down</direction>
+        <bottomMargin>300.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>hide</command>
+        </DBusVirtualKeyboard>
+      </Swipe>
     </GestureRecognizers>
   </GlobalTarget>
   <PublicTarget>
     <name>Firefox</name>
     <GestureRecognizers>
-      <TwoTouchPinch id="4">
+      <TwoTouchPinch id="7">
         <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-          <id>2</id>
+          <id>4</id>
         </abortList>
-        <XTestTwoTouchPinchZoom>
-          <accumulator>1</accumulator>
-          <maxScale>1.60</maxScale>
-          <minScale>1.001</minScale>
+        <XTestZoom>
+          <minEffectiveVelocity>0.5</minEffectiveVelocity>
           <ZoomInShortcut>
             <button modifier1="Control_L">5</button>
           </ZoomInShortcut>
           <ZoomOutShortcut>
             <button modifier1="Control_L">4</button>
           </ZoomOutShortcut>
-        </XTestTwoTouchPinchZoom>
+        </XTestZoom>
       </TwoTouchPinch>
     </GestureRecognizers>
   </PublicTarget>
@@ -119,19 +129,19 @@
   <PrivateTarget>
     <name>Okular</name>
     <GestureRecognizers>
-      <Pan id="1">
+      <Pan id="8">
         <maxNumTouchesRequired>3</maxNumTouchesRequired>
         <minNumTouchesRequired>3</minNumTouchesRequired>
         <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestPanMove>
+        <XTestMove>
           <MoveShortcut>
             <button modifier1="Alt_L">1</button>
           </MoveShortcut>
-        </XTestPanMove>
+        </XTestMove>
       </Pan>
-  </GestureRecognizers>
+    </GestureRecognizers>
   </PrivateTarget>
 </gestemas>

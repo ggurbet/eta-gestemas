@@ -16,58 +16,55 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xtestlongpressmove.h"
-#include "longpressgesturerecognizer.h"
-#include "xtestshortcut.h"
+#include "dbusvirtualkeyboard.h"
+#include "gesturerecognizer.h"
 #include "utilities.h"
 #include <QtCore/QtDebug>
 
-XTestLongPressMove::XTestLongPressMove()
-    :m_shortcut(nullptr)
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
+
+DBusVirtualKeyboard::DBusVirtualKeyboard()
+{
+    QDBusConnection conn = QDBusConnection::sessionBus();
+    m_interface = new QDBusInterface("org.eta.etakeyboard",
+                                     "/EtaKeyboard",
+                                     "org.eta.etakeyboard", conn);
+    m_command = "toggle";
+
+}
+
+DBusVirtualKeyboard::~DBusVirtualKeyboard()
+{
+    m_interface->deleteLater();
+}
+
+void DBusVirtualKeyboard::onBegan()
 {
 }
 
-XTestLongPressMove::~XTestLongPressMove()
+void DBusVirtualKeyboard::onRecognized()
 {
-    delete m_shortcut;
-    m_shortcut = nullptr;
+    m_interface->call(m_command);
 }
 
-void XTestLongPressMove::setMoveShortcut(const XTestShortcut *shortcut)
-{
-    m_shortcut = shortcut;
-}
-
-void XTestLongPressMove::onBegan()
-{
-    m_shortcut->press();
-}
-
-void XTestLongPressMove::onRecognized()
+void DBusVirtualKeyboard::onChanged()
 {
 }
 
-void XTestLongPressMove::onChanged()
-{
-    m_shortcut->movePointer(m_recognizer->centralX(),
-                            m_recognizer->centralY());
-}
-
-void XTestLongPressMove::onCanceled()
-{
-    m_shortcut->release();
-}
-
-void XTestLongPressMove::onEnded()
-{
-        m_shortcut->release();
-}
-
-void XTestLongPressMove::onFailed()
+void DBusVirtualKeyboard::onCanceled()
 {
 }
 
-bool XTestLongPressMove::isEqual(const GestureListener& other) const
+void DBusVirtualKeyboard::onEnded()
+{
+}
+
+void DBusVirtualKeyboard::onFailed()
+{
+}
+
+bool DBusVirtualKeyboard::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;

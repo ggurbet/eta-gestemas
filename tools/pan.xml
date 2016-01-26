@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
+  <samplingPeriod>120</samplingPeriod>
+  <pointerEmulationRate>2</pointerEmulationRate>
+  <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <GlobalTarget>
-    <name>root</name>
     <GestureRecognizers>
-      <Pan id ="2">
-        <maxNumTouchesRequired>3</maxNumTouchesRequired>
-        <minNumTouchesRequired>3</minNumTouchesRequired>
-        <recognitionThreshold>1.0</recognitionThreshold>
-        <abortList>
-          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-        </abortList>
-        <XTestPanMove>
-        </XTestPanMove>
-      </Pan>
-      <Pan id="4">
-        <direction>Vertical</direction>
+      <Pan id="1">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
-        <recognitionThreshold>1.0</recognitionThreshold>
+        <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
-          <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-          <id>2</id>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestPanScroll>
-          <accumulator>8</accumulator>
-          <maxVelocity>20.0</maxVelocity>
-          <minVelocity>0.0001</minVelocity>
-        </XTestPanScroll>
+        <XTestScroll>
+          <minEffectiveVelocity>2.0</minEffectiveVelocity>
+          <ScrollLeftShortcut>
+            <key modifier1="Control_L">Left</key>
+          </ScrollLeftShortcut>
+          <ScrollRightShortcut>
+            <key modifier1="Control_L">Right</key>
+          </ScrollRightShortcut>
+          <ScrollUpShortcut>
+            <button>4</button>
+          </ScrollUpShortcut>
+          <ScrollDownShortcut>
+            <button>5</button>
+          </ScrollDownShortcut>
+        </XTestScroll>
+      </Pan>
+      <Pan id="2">
+        <maxNumTouchesRequired>3</maxNumTouchesRequired>
+        <minNumTouchesRequired>3</minNumTouchesRequired>
+        <recognitionThreshold>20.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestMove>
+          <MoveShortcut>
+            <button modifier1="Alt_L">1</button>
+          </MoveShortcut>
+        </XTestMove>
       </Pan>
     </GestureRecognizers>
   </GlobalTarget>

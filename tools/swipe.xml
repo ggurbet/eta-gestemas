@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
-  <samplingPeriod>85</samplingPeriod>
+  <samplingPeriod>120</samplingPeriod>
   <pointerEmulationRate>2</pointerEmulationRate>
   <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <GlobalTarget>
-    <name>root</name>
     <GestureRecognizers>
       <Swipe id="1">
-        <numTouchesRequired>2</numTouchesRequired>
+        <numTouchesRequired>1</numTouchesRequired>
         <maxDuration>150</maxDuration>
         <minDisplacement>60.0</minDisplacement>
         <maxAngle>40.0</maxAngle>
-        <direction>AnyDirection</direction>
-        <topMargin>300.0</topMargin>
+        <direction>Up</direction>
         <bottomMargin>300.0</bottomMargin>
-        <leftMargin>300.0</leftMargin>
-        <rightMargin>300.0</rightMargin>
-        <recognitionThreshold>40.0</recognitionThreshold>
+        <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
+        <DBusVirtualKeyboard>
+          <command>showFromBottom</command>
+        </DBusVirtualKeyboard>
+      </Swipe>
+      <Swipe id="2">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Down</direction>
+        <bottomMargin>300.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>hide</command>
+        </DBusVirtualKeyboard>
       </Swipe>
     </GestureRecognizers>
   </GlobalTarget>

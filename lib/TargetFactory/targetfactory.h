@@ -8,13 +8,22 @@ class QXmlStreamReader;
 class QFile;
 class QString;
 
+class Target;
+
 class GestureRecognizer;
 class LongPressGestureRecognizer;
 class PanGestureRecognizer;
 class TwoTouchPinchGestureRecognizer;
 class TapGestureRecognizer;
 class SwipeGestureRecognizer;
-class Target;
+
+class XTestAtomicBeganOrRecognized;
+class XTestAtomicEndedOrRecognized;
+class XTestMove;
+class XTestZoom;
+class XTestScroll;
+class DBusVirtualKeyboard;
+
 class XTestShortcut;
 
 class TargetFactory
@@ -44,21 +53,19 @@ private:
     void processPrivateTarget(const QString& targetName);
     void processGestureRecognizers();
     void processGestureRecognizer(GestureRecognizer *gr);
+
     void processLongPress();
     void processPan();
     void processTwoTouchPinch();
     void processTap();
     void processSwipe();
 
-    void processXTestLongPressRightClick(LongPressGestureRecognizer *gr);
-    void processXTestTapRightClick(TapGestureRecognizer *gr);
-    void processXTestPanScroll(PanGestureRecognizer *gr);
-    void processXTestPanMove(PanGestureRecognizer *gr);
-    void processXTestLongPressMove(LongPressGestureRecognizer *gr);
-    void processXTestTwoTouchPinchZoom(TwoTouchPinchGestureRecognizer *gr);
-    void processXTestSwipeSwitch(SwipeGestureRecognizer *gr);
-    void processDBusSwipeKeyboard(SwipeGestureRecognizer *gr);
-    void processDBusTapKeyboard(TapGestureRecognizer *gr);
+    XTestAtomicBeganOrRecognized* parseXTestAtomicBeganOrRecognized();
+    XTestAtomicEndedOrRecognized* parseXTestAtomicEndedOrRecognized();
+    XTestScroll* parseXTestScroll();
+    XTestMove* parseXTestMove();
+    XTestZoom* parseXTestZoom();
+    DBusVirtualKeyboard* parseDBusVirtualKeyboard();
 
     XTestShortcut* parseXTestShortcut();
 

@@ -16,21 +16,11 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PANLISTENER_H
-#define PANLISTENER_H
+#include "simplegesturelistener.h"
+#include "gesturerecognizer.h"
 
-#include "gesturelistener.h"
-
-class PanGestureRecognizer;
-
-class PanListener : public GestureListener
+void SimpleGestureListener::setGestureRecognizer(
+                            const GestureRecognizer *recognizer)
 {
-public:
-    PanListener() = default;
-    virtual ~PanListener() = default;
-    void setGestureRecognizer(PanGestureRecognizer *recognizer);
-protected:
-    const PanGestureRecognizer *m_recognizer;
-};
-
-#endif /* PANLISTENER_H */
+    m_recognizer = recognizer;
+}

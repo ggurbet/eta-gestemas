@@ -19,15 +19,16 @@
 #ifndef SCROLL_H
 #define SCROLL_H
 
-#include "panlistener.h"
+#include "gesturelistener.h"
 
 class XTestShortcut;
+class PanGestureRecognizer;
 
-class XTestPanScroll : public PanListener
+class XTestScroll : public GestureListener
 {
 public:
-    XTestPanScroll();
-    virtual ~XTestPanScroll();
+    XTestScroll();
+    virtual ~XTestScroll();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -36,20 +37,10 @@ public:
     virtual void onEnded();
     virtual void onFailed();
 
-    void setMaxVelocity(float maxVelocity)
-    {m_maxVelocity = maxVelocity;}
-    float maxVelocity() const
-    {return m_maxVelocity;}
+    void setMinEffectiveVelocity(float velocity)
+    {m_minEffectiveVelocity = (velocity > 0.0f) ? velocity : MIN_EFFECTIVE_VELOCITY;}
 
-    void setMinVelocity(float minVelocity)
-    {m_minVelocity = minVelocity;}
-    float minVelocity() const
-    {return m_minVelocity;}
-
-    void setAccumulator(int accumulator)
-    {m_accumulator = accumulator;}
-    int accumulator() const
-    {return m_accumulator;}
+    void setGestureRecognizer(const PanGestureRecognizer *recognizer);
 
     void setScrollUpShortcut(const XTestShortcut *upShortcut);
     void setScrollDownShortcut(const XTestShortcut *downShortcut);
@@ -61,17 +52,14 @@ private:
     void scrollLeft();
     void scrollRight();
 
-    float m_maxVelocity;
-    float m_minVelocity;
-    int m_accumulator;
-    int m_counter;
-    float m_averageVelocityX;
-    float m_averageVelocityY;
-
+    float m_minEffectiveVelocity;
+    const PanGestureRecognizer *m_recognizer;
     const XTestShortcut *m_upShortcut;
     const XTestShortcut *m_downShortcut;
     const XTestShortcut *m_leftShortcut;
     const XTestShortcut *m_rightShortcut;
+
+    static constexpr float MIN_EFFECTIVE_VELOCITY = 2.0f;
 };
 
 #endif /* SCROLL_H */

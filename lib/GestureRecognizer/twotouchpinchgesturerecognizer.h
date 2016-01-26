@@ -19,21 +19,21 @@
 #ifndef TWOTOUCHGESTURERECOGNIZER_H
 #define TWOTOUCHGESTURERECOGNIZER_H
 
-#include "gesturerecognizer.h"
+#include "pinchgesturerecognizer.h"
 
 class Touch;
 
-class TwoTouchPinchGestureRecognizer : public GestureRecognizer
+class TwoTouchPinchGestureRecognizer : public PinchGestureRecognizer
 {
 public:
     TwoTouchPinchGestureRecognizer();
     virtual bool isEqual(const GestureRecognizer& other) const;
     virtual void reset();
 
-    float scale() const
+    virtual float scale() const
     {return m_scale;}
 
-    float velocity() const
+    virtual float velocity() const
     {return m_velocity;}
 
 protected:

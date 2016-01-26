@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
+  <samplingPeriod>120</samplingPeriod>
+  <pointerEmulationRate>2</pointerEmulationRate>
+  <pointerEmulationDistance>10.0</pointerEmulationDistance>
   <GlobalTarget>
     <GestureRecognizers>
       <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <recognitionThreshold>100.0</recognitionThreshold>
+        <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestLongPressRightClick>
-        </XTestLongPressRightClick>
+        <XTestAtomicBeganOrRecognized>
+          <PressReleaseShortcut>
+            <button>3</button>
+          </PressReleaseShortcut>
+        </XTestAtomicBeganOrRecognized>
       </LongPress>
       <LongPress id="2">
-        <numTouchesRequired>1</numTouchesRequired>
+        <numTouchesRequired>2</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
-        <recognitionThreshold>100.0</recognitionThreshold>
+        <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestLongPressMove>
-        </XTestLongPressMove>
+        <XTestMove>
+          <MoveShortcut>
+            <button modifier1="Alt_L">1</button>
+          </MoveShortcut>
+        </XTestMove>
       </LongPress>
     </GestureRecognizers>
   </GlobalTarget>

@@ -16,59 +16,55 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dbusswipekeyboard.h"
-#include "swipegesturerecognizer.h"
+#include "dbusvirtualkeyboard.h"
+#include "gesturerecognizer.h"
 #include "utilities.h"
 #include <QtCore/QtDebug>
 
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
 
-DBusSwipeKeyboard::DBusSwipeKeyboard()
+DBusVirtualKeyboard::DBusVirtualKeyboard()
 {
     QDBusConnection conn = QDBusConnection::sessionBus();
     m_interface = new QDBusInterface("org.eta.etakeyboard",
                                      "/EtaKeyboard",
                                      "org.eta.etakeyboard", conn);
+    m_command = "toggle";
 
 }
 
-DBusSwipeKeyboard::~DBusSwipeKeyboard()
+DBusVirtualKeyboard::~DBusVirtualKeyboard()
 {
     m_interface->deleteLater();
 }
 
-void DBusSwipeKeyboard::onBegan()
+void DBusVirtualKeyboard::onBegan()
 {
 }
 
-void DBusSwipeKeyboard::onRecognized()
+void DBusVirtualKeyboard::onRecognized()
 {
-    qDebug() << "Switch recognized";
-    if (m_recognizer->cumulativeDeltaY() > 0.0f) {
-        m_interface->call(m_hideCommand);
-    } else {
-        m_interface->call(m_showCommand);
-    }
+    m_interface->call(m_command);
 }
 
-void DBusSwipeKeyboard::onChanged()
+void DBusVirtualKeyboard::onChanged()
 {
 }
 
-void DBusSwipeKeyboard::onCanceled()
+void DBusVirtualKeyboard::onCanceled()
 {
 }
 
-void DBusSwipeKeyboard::onEnded()
+void DBusVirtualKeyboard::onEnded()
 {
 }
 
-void DBusSwipeKeyboard::onFailed()
+void DBusVirtualKeyboard::onFailed()
 {
 }
 
-bool DBusSwipeKeyboard::isEqual(const GestureListener& other) const
+bool DBusVirtualKeyboard::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;
