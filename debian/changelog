@@ -1,3 +1,10 @@
+eta-gestemas (0.1.0-2) unstable; urgency=medium
+
+  * local package
+  * [c9583ef] Add qtbase5-dev dependency
+
+ -- Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>  Thu, 28 Jan 2016 23:55:35 +0200
+
 eta-gestemas (0.1.0-1) unstable; urgency=low
 
   * Initial release

@@ -3,6 +3,7 @@ Section: misc
 Priority: optional
 Maintainer: Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 Build-Depends: debhelper (>= 9), cmake,
+               qtbase5-dev (>=5.3),
                libframe-dev (>=2.5),
                libxtst-dev,
                libx11-dev,
