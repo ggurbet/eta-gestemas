@@ -14,6 +14,14 @@ set(GESTEMAS_APPLICATION_NAME "eta-gestemas")
 set(GESTEMAS_APPLICATION_DESCRIPTION
   "System-wide Multitouch Gesture Recognition Application.")
 
+# Default gesture recognizers system path
+set(GESTEMAS_SYSTEM_PATH
+  "/etc/eta/eta-gestemas/recognizers.xml")
+
+# User defined gesture recognizers user path
+set(GESTEMAS_USER_PATH
+  ".config/eta/eta-gestemas/recognizers.xml")
+
 # Project version
 set(GESTEMAS_VERSION_MAJOR 0)
 set(GESTEMAS_VERSION_MINOR 1)

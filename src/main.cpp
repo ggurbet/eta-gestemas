@@ -17,9 +17,18 @@
  */
 
 #include "xlibwindowmanageradapter.h"
+#include "windowmanageradapterlistener.h"
+#include "targetfactory.h"
 #include "config.h"
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCommandLineParser>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QFileInfo>
+#include <QtCore/QFile>
+#include "libframetouchmanager.h"
+
+bool fileExists(QString path);
 
 int main(int argc, char *argv[])
 {
@@ -31,10 +40,41 @@ int main(int argc, char *argv[])
     parser.setApplicationDescription(GESTEMAS_APPLICATION_DESCRIPTION);
     parser.addHelpOption();
     parser.addVersionOption();
+    parser.addPositionalArgument("<recognizersfile>",
+                                 QCoreApplication::translate("main",
+                                "Configuration xml file that defines recognizers"));
     parser.process(app);
 
+    const QStringList args = parser.positionalArguments();
+
+    QString recognizers = GESTEMAS_USER_PATH;
+    if (args.size() > 0 && !args.at(0).isEmpty()) {
+        recognizers = args.at(0);
+    }
+
+    if (!fileExists(recognizers)) {
+        Q_ASSERT(fileExists(GESTEMAS_SYSTEM_PATH));
+        QFile::copy(GESTEMAS_SYSTEM_PATH, recognizers);
+    }
+
     XLibWindowManagerAdapter windowManagerAdapter(&app);
+    Display *display = static_cast<Display *>(windowManagerAdapter.display());
+    LibFrameTouchManager touchManager(display);
+    TargetFactory targetFactory(recognizers);
+    WindowManagerAdapterListener windowManagerAdapterListener(&touchManager, &targetFactory);
+    windowManagerAdapter.setListener(&windowManagerAdapterListener);
     windowManagerAdapter.dispatchEvents();
 
     return app.exec();
+}
+
+bool fileExists(QString path)
+{
+    QFileInfo checkFile(path);
+    // Check if file exists and if yes: Is it really a file and no directory?
+    if (checkFile.exists() && checkFile.isFile()) {
+        return true;
+    } else {
+        return false;
+    }
 }
