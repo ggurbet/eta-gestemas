@@ -1,0 +1,21 @@
+Source: eta-gestemas
+Section: misc
+Priority: optional
+Maintainer: Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+Build-Depends: debhelper (>= 9), cmake,
+               libframe-dev (>=2.5),
+               libxtst-dev,
+               libx11-dev,
+               libxext-dev,
+               libxi-dev
+Standards-Version: 3.9.6
+Homepage: https://git.pardus.org.tr
+#Vcs-Git: git://anonscm.debian.org/collab-maint/eta-gestemas.git
+#Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/eta-gestemas.git;a=summary
+
+Package: eta-gestemas
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Multitouch Gesture Recognition Application
+ Fully configurable multitouch gesture recognition
+ application for GNU/Linux distros.
