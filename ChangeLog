@@ -1,0 +1,591 @@
+2016-01-28  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* CMakeLists.txt, ChangeLog, cmake/BuildTypeConfig.cmake,
+	eta-gestemas.desktop, eta_gestemas, recognizers.xml,
+	src/CMakeLists.txt, src/config.h.in, src/main.cpp,
+	src/recognizers.xml: Prepare for initial release
+
+2016-01-28  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* CMakeLists.txt, src/CMakeLists.txt, src/config.h.in,
+	src/main.cpp, src/recognizers.xml: Create recognizers.xml file
+
+2016-01-26  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/dbusswipekeyboard.cpp,
+	lib/GestureListener/dbusswipekeyboard.h,
+	lib/GestureListener/dbustapkeyboard.cpp,
+	lib/GestureListener/dbustapkeyboard.h,
+	lib/GestureListener/dbusvirtualkeyboard.cpp,
+	lib/GestureListener/dbusvirtualkeyboard.h,
+	lib/GestureListener/dbvirtualkeyboard.cpp,
+	lib/GestureListener/longpresslistener.cpp,
+	lib/GestureListener/longpresslistener.h,
+	lib/GestureListener/panlistener.cpp,
+	lib/GestureListener/panlistener.h,
+	lib/GestureListener/simplegesturelistener.cpp,
+	lib/GestureListener/simplegesturelistener.h,
+	lib/GestureListener/swipelistener.cpp,
+	lib/GestureListener/swipelistener.h,
+	lib/GestureListener/taplistener.cpp,
+	lib/GestureListener/taplistener.h,
+	lib/GestureListener/twotouchpinchlistener.cpp,
+	lib/GestureListener/twotouchpinchlistener.h,
+	lib/GestureListener/xtestatomicbeganorrecognized.cpp,
+	lib/GestureListener/xtestatomicbeganorrecognized.h,
+	lib/GestureListener/xtestatomicendedorrecognized.cpp,
+	lib/GestureListener/xtestatomicendedorrecognized.h,
+	lib/GestureListener/xtestlongpressmove.cpp,
+	lib/GestureListener/xtestlongpressmove.h,
+	lib/GestureListener/xtestlongpressrightclick.cpp,
+	lib/GestureListener/xtestlongpressrightclick.h,
+	lib/GestureListener/xtestmove.cpp, lib/GestureListener/xtestmove.h,
+	lib/GestureListener/xtestpanmove.cpp,
+	lib/GestureListener/xtestpanmove.h,
+	lib/GestureListener/xtestpanscroll.cpp,
+	lib/GestureListener/xtestpanscroll.h,
+	lib/GestureListener/xtestscroll.cpp,
+	lib/GestureListener/xtestscroll.h,
+	lib/GestureListener/xtestswipeswitch.cpp,
+	lib/GestureListener/xtestswipeswitch.h,
+	lib/GestureListener/xtesttaprightclick.cpp,
+	lib/GestureListener/xtesttaprightclick.h,
+	lib/GestureListener/xtesttwotouchpinchzoom.cpp,
+	lib/GestureListener/xtesttwotouchpinchzoom.h,
+	lib/GestureListener/xtestzoom.cpp, lib/GestureListener/xtestzoom.h,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pinchgesturerecognizer.h,
+	lib/GestureRecognizer/rightclickinvoker.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, test/config.xml,
+	test/targetfactorytest.cpp, tools/integration.xml,
+	tools/longpress.xml, tools/pan.xml, tools/swipe.xml, tools/tap.xml,
+	tools/twotouchpinch.xml: Make config file more understandable.  - Listener naming simplified as below XTest<GESTURE><ACTION> -->
+	XTest<ACTION> - Reaction to pinch gestures should be given according to velocity - Velocity values are in change per second unit rather than
+	milisecond - Remove unnecessary accomulator, min/max values from scroll and
+	zoom listeners and use minEffectiveVelocity instead.  - Add XTestAtomicBeganOrRecognized and XTestAtomicEndedOrRecognized  gesture listeners for simple press-release actions
+
+2016-01-25  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/dbustapkeyboard.cpp,
+	lib/GestureListener/dbustapkeyboard.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, tools/integration.xml: Add tap
+	keyboard toggle feature
+
+2016-01-25  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/gesturerecognizer.cpp,
+	tools/integration.xml: Fix edge gesture recognition
+
+2016-01-25  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/dbusswipekeyboard.cpp,
+	lib/GestureListener/dbusswipekeyboard.h,
+	lib/GestureListener/xtestswipeswitch.cpp,
+	lib/GestureListener/xtestswipeswitch.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/swipegesturerecognizer.cpp,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, src/CMakeLists.txt,
+	test/CMakeLists.txt, tools/CMakeLists.txt, tools/integration.xml: 
+	Initial swipe listeners and swipe state machine fix
+
+2016-01-24  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/LongPressListener.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h: Fix xerror caused by three
+	touches on private targets with no recognizer
+
+2016-01-24  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/swipegesturerecognizer.cpp,
+	lib/GestureRecognizer/swipegesturerecognizer.h,
+	lib/TargetFactory/targetfactory.cpp, test/config.xml,
+	test/targetfactorytest.cpp, tools/pan.xml, tools/swipe.xml: Add
+	start direction support to pan recognizer
+
+2016-01-24  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/swipegesturerecognizer.cpp,
+	lib/GestureRecognizer/swipegesturerecognizer.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h: Fix
+	deltaTime computing
+
+2016-01-24  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/touch.cpp, lib/GestureRecognizer/touch.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h, tools/swipe.xml: Introduce
+	edge margin for edge recognitions
+
+2016-01-23  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/xtest.cpp,
+	lib/GestureListener/xtest.h,
+	lib/GestureListener/xtestlongpressmove.cpp,
+	lib/GestureListener/xtestlongpressmove.h,
+	lib/GestureListener/xtestlongpressrightclick.cpp,
+	lib/GestureListener/xtestlongpressrightclick.h,
+	lib/GestureListener/xtestpanmove.cpp,
+	lib/GestureListener/xtestpanmove.h,
+	lib/GestureListener/xtestpanscroll.cpp,
+	lib/GestureListener/xtestpanscroll.h,
+	lib/GestureListener/xtestshortcut.cpp,
+	lib/GestureListener/xtestshortcut.h,
+	lib/GestureListener/xtesttaprightclick.cpp,
+	lib/GestureListener/xtesttaprightclick.h,
+	lib/GestureListener/xtesttwotouchpinchzoom.cpp,
+	lib/GestureListener/xtesttwotouchpinchzoom.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, tools/integration.xml: Add
+	shortcuts to config file
+
+2016-01-22  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/LongPressListener.cpp,
+	lib/GestureListener/drag.cpp, lib/GestureListener/drag.h,
+	lib/GestureListener/gesturelistener.cpp,
+	lib/GestureListener/gesturelistener.h,
+	lib/GestureListener/leftclick.cpp, lib/GestureListener/leftclick.h,
+	lib/GestureListener/longpresslistener.cpp,
+	lib/GestureListener/longpresslistener.h,
+	lib/GestureListener/move.cpp, lib/GestureListener/move.h,
+	lib/GestureListener/panlistener.cpp,
+	lib/GestureListener/panlistener.h,
+	lib/GestureListener/rightclick.cpp,
+	lib/GestureListener/rightclick.h, lib/GestureListener/scroll.cpp,
+	lib/GestureListener/scroll.h,
+	lib/GestureListener/swipelistener.cpp,
+	lib/GestureListener/swipelistener.h,
+	lib/GestureListener/taplistener.cpp,
+	lib/GestureListener/taplistener.h,
+	lib/GestureListener/twotouchpinchlistener.cpp,
+	lib/GestureListener/twotouchpinchlistener.h,
+	lib/GestureListener/xtest.cpp, lib/GestureListener/xtest.h,
+	lib/GestureListener/xtestgesturelistener.cpp,
+	lib/GestureListener/xtestgesturelistener.h,
+	lib/GestureListener/xtestlongpressmove.cpp,
+	lib/GestureListener/xtestlongpressmove.h,
+	lib/GestureListener/xtestlongpressrightclick.cpp,
+	lib/GestureListener/xtestlongpressrightclick.h,
+	lib/GestureListener/xtestpanmove.cpp,
+	lib/GestureListener/xtestpanmove.h,
+	lib/GestureListener/xtestpanscroll.cpp,
+	lib/GestureListener/xtestpanscroll.h,
+	lib/GestureListener/xtesttaprightclick.cpp,
+	lib/GestureListener/xtesttaprightclick.h,
+	lib/GestureListener/xtesttwotouchpinchzoom.cpp,
+	lib/GestureListener/xtesttwotouchpinchzoom.h,
+	lib/GestureListener/zoom.cpp, lib/GestureListener/zoom.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, test/targetfactorytest.cpp,
+	tools/integration.xml, tools/longpress.xml, tools/pan.xml,
+	tools/tap.xml, tools/twotouchpinch.xml: Improve listener naming
+
+2016-01-22  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	test/config.xml, test/targetfactorytest.cpp, tools/integration.xml,
+	tools/longpress.xml, tools/pan.xml, tools/swipe.xml, tools/tap.xml,
+	tools/twotouchpinch.xml, tools/xlibwmatool.cpp: Add Global, Public
+	and Private target configuration Gesture recognizers in public targets are also combined with global
+	targets.  Gesture recognizers in private targets are strictly local.
+	They are not merged with global ones.  Any target that is not
+	explicitly defined public or private is considered to be public,
+	thus contains the whole set of globally defined gesture recognizers.
+
+2016-01-21  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/swipegesturerecognizer.cpp,
+	lib/GestureRecognizer/swipegesturerecognizer.h,
+	tools/integration.xml, tools/swipe.xml: Use accumulated delta values
+	for gesture recognition
+
+2016-01-21  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/swipegesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/touch.cpp, lib/GestureRecognizer/touch.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/TouchManager/libframetouchmanager.cpp, tools/integration.xml: 
+	Adopt pixel based recognition back
+
+2016-01-20  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt,
+	lib/GestureRecognizer/swipegesturerecognizer.cpp,
+	lib/GestureRecognizer/swipegesturerecognizer.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, test/config.xml,
+	test/targetfactorytest.cpp, tools/CMakeLists.txt,
+	tools/integration.xml, tools/swipe.xml, tools/swipetool.cpp: Initial
+	SwipeGestureRecognizer implementation
+
+2016-01-19  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/move.cpp: Do not move pointer on began for
+	Asus touchscreen Still windows go to right bottom corder at the beginning but at
+	least it works now.
+
+2016-01-18  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* README.md, lib/CMakeLists.txt, lib/GestureListener/move.cpp,
+	lib/GestureListener/move.h,
+	lib/GestureListener/xtestgesturelistener.cpp,
+	lib/GestureListener/xtestgesturelistener.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/touch.cpp, lib/GestureRecognizer/touch.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h, tools/integration.xml: 
+	Initial touchpad support - Implement initial touchpad support along with touchscreen devices - Use meter unit rather than pixels for recognition params in config
+	file - Initial window move with three finger pan  (Uses ALT_L + Left Mouse Button Press) - Adjust recognition params for IWBs
+
+2016-01-15  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/rightclick.cpp,
+	lib/GestureListener/xtestgesturelistener.cpp,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/touch.cpp, lib/GestureRecognizer/touch.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	lib/utilities.h, test/config.xml, test/targetfactorytest.cpp,
+	tools/integration.xml, tools/longpress.xml, tools/pan.xml,
+	tools/tap.xml, tools/twotouchpinch.xml: Resolve most of the
+	conflicting gestures.  - Rejects touches of unrecognized gestures.  - Listens to root window for rejecting ended gestures which we can't
+	do for any other window. This resolves button press issues.  - Adapted for Interactive White Boards
+
+2016-01-13  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, test/config.xml,
+	test/targetfactorytest.cpp, tools/integration.xml,
+	tools/longpress.xml, tools/pan.xml, tools/tap.xml,
+	tools/twotouchpinch.xml: Implement new abort list we can now create an abort list such that it allows us to add
+	specific gestures  to another gesture's abort list through unique
+	gesture ids in a target.
+
+2016-01-12  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/drag.cpp, lib/GestureListener/leftclick.cpp,
+	lib/GestureListener/rightclick.cpp, lib/GestureListener/scroll.cpp,
+	lib/GestureListener/zoom.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	tools/integration.xml: Better debug messages
+
+2016-01-12  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/scroll.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	tools/integration.xml: Improve twotouchpinch
+
+2016-01-10  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/scroll.cpp,
+	lib/GestureListener/scroll.h, lib/GestureListener/zoom.cpp,
+	lib/GestureListener/zoom.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/longpressgesturerecognizer.h,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.h,
+	lib/GestureRecognizer/touch.cpp, lib/GestureRecognizer/touch.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/GestureRecognizer/utilities.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, lib/utilities.h,
+	tools/CMakeLists.txt, tools/integration.xml, tools/longpress.xml,
+	tools/pan.xml, tools/tap.xml, tools/twotouchpinch.xml: Move
+	accumulation and range checking logic to listeners - Also Some API changes in GestureRecognizer - Introduces movementThreshold and recognitionThreshold
+
+2016-01-10  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/drag.cpp, lib/GestureListener/drag.h,
+	lib/GestureListener/gesturelistener.cpp,
+	lib/GestureListener/gesturelistener.h,
+	lib/GestureListener/leftclick.cpp, lib/GestureListener/leftclick.h,
+	lib/GestureListener/rightclick.cpp,
+	lib/GestureListener/rightclick.h, lib/GestureListener/scroll.cpp,
+	lib/GestureListener/scroll.h,
+	lib/GestureListener/xtestgesturelistener.cpp,
+	lib/GestureListener/xtestgesturelistener.h,
+	lib/GestureListener/zoom.cpp, lib/GestureListener/zoom.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/TargetFactory/target.cpp, lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, test/config.xml,
+	test/targetfactorytest.cpp: Move max/min and accumulator params to
+	listeners
+
+2016-01-10  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* src/CMakeLists.txt, test/CMakeLists.txt, tools/CMakeLists.txt: 
+	Enable make -jN builds
+
+2016-01-10  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/drag.cpp,
+	lib/GestureListener/drag.h, lib/GestureListener/scroll.cpp,
+	lib/GestureListener/scroll.h,
+	lib/GestureListener/xtestgesturelistener.cpp,
+	lib/GestureListener/xtestgesturelistener.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h, tools/CMakeLists.txt,
+	tools/integration.xml, tools/pan.xml, tools/pantool.cpp: Initial
+	PanGestureRecognizer Implementation Single touch pan gesture along with drag gesture listener also
+	resolves refs #487
+
+2016-01-09  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/leftclick.cpp,
+	lib/GestureListener/leftclick.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/TargetFactory/targetfactory.cpp, test/config.xml,
+	test/targetfactorytest.cpp, tools/CMakeLists.txt,
+	tools/integration.xml, tools/longpress.xml, tools/tap.xml,
+	tools/taptool.cpp, tools/twotouchpinch.xml: Initial
+	TapGestureRecognition Multiple fingers and multiple taps are supported.  When a dialog
+	box's button tapped it works as expected, but still mouse pointer
+	operations (text selection etc...) don't work after a button tapped.
+
+2016-01-07  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/gesturelistener.cpp,
+	lib/GestureListener/gesturelistener.h,
+	lib/GestureListener/rightclick.cpp,
+	lib/GestureListener/rightclick.h, lib/GestureListener/zoom.cpp,
+	lib/GestureListener/zoom.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, test/config.xml,
+	test/targetfactorytest.cpp, tools/CMakeLists.txt,
+	tools/integration.xml, tools/integrationtool.cpp,
+	tools/longpresstool.cpp, tools/twotouchpinch.xml,
+	tools/twotouchpinchtool.cpp: Initial TwoTouchPinchGestureRecognizer Two-touch pinch gesture recognizer implemented and integration tests
+	with previously implemented long press gesture recognizer are
+	carried out. Everything looks pretty promising so far.
+
+2016-01-06  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/gesturelistener.cpp,
+	lib/GestureListener/gesturelistener.h,
+	lib/GestureListener/rightclick.cpp,
+	lib/GestureListener/rightclick.h,
+	lib/GestureListener/xtestgesturelistener.cpp,
+	lib/GestureListener/xtestgesturelistener.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/WindowManagerAdapter/windowmanageradapterlistenerinterface.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	test/CMakeLists.txt, test/config.xml, tools/CMakeLists.txt,
+	tools/longpress.xml: Initial LongPressGestureRecognizer This commit makes use of XSetErrorHandler to avoid unexpected
+	X-related terminations. Modifies GestureRecognizer and
+	GestureRecognizerManager to make them more usable for long press
+	state machine implementation and less vulnerable to X terminations.
+	RightClick GestureListener class is implemented for the common
+	use-case of long press gesture.
+
+2016-01-06  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* tools/longpress.xml: Add allowSimultaneousRecognition field
+
+2016-01-02  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/gesturelistener.cpp,
+	lib/GestureListener/gesturelistener.h,
+	lib/GestureRecognizer/gesturelistener.cpp,
+	lib/GestureRecognizer/gesturelistener.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/longpressgesturerecognizer.h,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/state.cpp, lib/GestureRecognizer/state.h,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.h,
+	lib/GestureRecognizer/touch.cpp, lib/GestureRecognizer/touch.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/GestureRecognizer/utilities.h, lib/TargetFactory/target.cpp,
+	lib/TargetFactory/target.h, lib/TargetFactory/targetfactory.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h,
+	lib/TouchManager/touchmanager.cpp, lib/TouchManager/touchmanager.h,
+	lib/WindowManagerAdapter/windowmanageradapterlistener.cpp,
+	test/CMakeLists.txt, test/config.xml, test/targetfactorytest.cpp,
+	tools/CMakeLists.txt, tools/config.xml, tools/longpress.xml,
+	tools/longpresstool.cpp, tools/touchmanagertool.cpp: Initial
+	GestureRecognizer Manager This commit also builds a state machine for long press gesture
+	recognizer. State changes seem to be OK.
+
+2016-01-02  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* cmake/FindFrame.cmake, lib/CMakeLists.txt,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/touch.h,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h,
+	lib/TouchManager/touch.cpp, lib/TouchManager/touch.h,
+	lib/TouchManager/touchmanager.cpp, lib/TouchManager/touchmanager.h,
+	lib/TouchManager/xlibcompatibletouchmanager.cpp,
+	lib/TouchManager/xlibcompatibletouchmanager.h,
+	lib/WindowManagerAdapter/windowmanageradapterlistener.cpp,
+	lib/WindowManagerAdapter/windowmanageradapterlistener.h,
+	lib/WindowManagerAdapter/windowmanageradapterlistenerinterface.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.h,
+	src/CMakeLists.txt, test/CMakeLists.txt, tools/CMakeLists.txt,
+	tools/config.xml, tools/touchmanagertool.cpp: Initial TouchManager
+	Implementation - Implements a TouchManager based on libframe.  - Gets touch event data from WindowManagerAdapterListener and   process the event.  - Prints the touch data.
+
+2016-01-02  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/TargetFactory/targetfactory.cpp: Critical nullptr bugfix
+
+2016-01-01  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/TargetFactory/targetfactory.cpp: deleteLater() is safer
+
+2015-12-28  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureRecognizer/gesturelistener.cpp,
+	lib/GestureRecognizer/gesturelistener.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/longpressgesturerecognizer.h,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/state.cpp, lib/GestureRecognizer/state.h,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/TargetFactory/target.cpp, lib/TargetFactory/target.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h,
+	lib/TouchManager/touch.cpp, lib/TouchManager/touch.h,
+	lib/TouchManager/touchmanager.cpp, lib/TouchManager/touchmanager.h,
+	lib/TouchManager/xlibcompatibletouchmanager.cpp,
+	lib/TouchManager/xlibcompatibletouchmanager.h,
+	lib/WindowManagerAdapter/windowmanageradapter.cpp,
+	lib/WindowManagerAdapter/windowmanageradapterlistenerinterface.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	test/CMakeLists.txt, test/config.xml, test/statetest.cpp,
+	test/targetfactorytest.cpp, test/xlibwmatest.cpp,
+	tools/xlibwmatool.cpp: Complete initial TargetFactory TargetFactory now - parses an xml config file - instantiates targets - fills the targets' gesture list, instantiating gestures
+	recognizers
+
+2015-12-29  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/WindowManagerAdapter/windowmanageradapter.cpp,
+	lib/WindowManagerAdapter/windowmanageradapter.h,
+	lib/WindowManagerAdapter/windowmanageradapter_tst.h,
+	lib/WindowManagerAdapter/windowmanageradapterlistenerinterface.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	test/xlibwmatest.cpp, tools/xlibwmatool.cpp: Introduce
+	WindowManagerAdapterListener
+
+2015-11-15  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* CMakeLists.txt, README.md, cmake/BuildTypeConfig.cmake,
+	doc/CMakeLists.txt, doc/Doxyfile.in, lib/CMakeLists.txt,
+	lib/WindowManagerAdapter/windowmanageradapter.cpp,
+	lib/WindowManagerAdapter/windowmanageradapter.h,
+	lib/WindowManagerAdapter/windowmanageradapter_tst.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter_p.h,
+	src/CMakeLists.txt, src/config.h.in, src/main.cpp,
+	test/CMakeLists.txt, test/xlibwmatest.cpp, tools/CMakeLists.txt,
+	tools/tool1.cpp, tools/xlibwmatool.cpp: Implement a window manager
+	adapter for X11 using Xlib Following events are now ready for handling: - Window Creation Events - Window Destruction Events - Touch Events on Created Windows
+
+2015-11-15  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* Initial commit
+

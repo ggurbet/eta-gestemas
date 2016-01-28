@@ -27,8 +27,4 @@ target_include_directories(${GESTEMAS_APPLICATION_NAME} PRIVATE
 include(ConfigureHeaderFile)
 ConfigureHeaderFile("config.h")
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/recognizers.xml
-    ${CMAKE_CURRENT_BINARY_DIR}/recognizers.xml COPYONLY)
-
-install(TARGETS ${GESTEMAS_APPLICATION_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-install (FILES recognizers.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/${GESTEMAS_SYSTEM_PATH})
+install(TARGETS ${GESTEMAS_APPLICATION_NAME} DESTINATION /usr/bin)

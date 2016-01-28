@@ -26,6 +26,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QFileInfo>
 #include <QtCore/QFile>
+#include <QtCore/QDir>
 #include "libframetouchmanager.h"
 
 bool fileExists(QString path);
@@ -47,20 +48,28 @@ int main(int argc, char *argv[])
 
     const QStringList args = parser.positionalArguments();
 
-    QString recognizers = GESTEMAS_USER_PATH;
+    QString recognizersFile = QDir::homePath() +
+                              QDir::separator() +
+                              GESTEMAS_CONFIG_USER_PATH;
     if (args.size() > 0 && !args.at(0).isEmpty()) {
-        recognizers = args.at(0);
+        recognizersFile = args.at(0);
     }
 
-    if (!fileExists(recognizers)) {
-        Q_ASSERT(fileExists(GESTEMAS_SYSTEM_PATH));
-        QFile::copy(GESTEMAS_SYSTEM_PATH, recognizers);
+    if (!fileExists(recognizersFile)) {
+        Q_ASSERT(fileExists(GESTEMAS_CONFIG_SYSTEM_PATH));
+        QFileInfo fi(recognizersFile);
+        QString path = fi.path();
+        QDir dir(path);
+        if (!dir.exists()) {
+            dir.mkpath(".");
+        }
+        QFile::copy(GESTEMAS_CONFIG_SYSTEM_PATH, recognizersFile);
     }
 
     XLibWindowManagerAdapter windowManagerAdapter(&app);
     Display *display = static_cast<Display *>(windowManagerAdapter.display());
     LibFrameTouchManager touchManager(display);
-    TargetFactory targetFactory(recognizers);
+    TargetFactory targetFactory(recognizersFile);
     WindowManagerAdapterListener windowManagerAdapterListener(&touchManager, &targetFactory);
     windowManagerAdapter.setListener(&windowManagerAdapterListener);
     windowManagerAdapter.dispatchEvents();

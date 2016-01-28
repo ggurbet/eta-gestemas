@@ -15,11 +15,11 @@ set(GESTEMAS_APPLICATION_DESCRIPTION
   "System-wide Multitouch Gesture Recognition Application.")
 
 # Default gesture recognizers system path
-set(GESTEMAS_SYSTEM_PATH
+set(GESTEMAS_CONFIG_SYSTEM_PATH
   "/etc/eta/eta-gestemas/recognizers.xml")
 
 # User defined gesture recognizers user path
-set(GESTEMAS_USER_PATH
+set(GESTEMAS_CONFIG_USER_PATH
   ".config/eta/eta-gestemas/recognizers.xml")
 
 # Project version
@@ -77,3 +77,21 @@ endif()
 if(BUILD_DOC)
     add_subdirectory(doc)
 endif()
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/recognizers.xml
+    ${CMAKE_CURRENT_BINARY_DIR}/recognizers.xml COPYONLY)
+get_filename_component(GESTEMAS_CONFIG_SYSTEM_DIR
+    ${GESTEMAS_CONFIG_SYSTEM_PATH} DIRECTORY)
+install (FILES recognizers.xml
+    DESTINATION ${GESTEMAS_CONFIG_SYSTEM_DIR})
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/eta_gestemas
+    ${CMAKE_CURRENT_BINARY_DIR}/eta_gestemas COPYONLY)
+install (FILES eta_gestemas
+    DESTINATION /usr/bin
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/eta-gestemas.desktop
+    ${CMAKE_CURRENT_BINARY_DIR}/eta-gestemas.desktop COPYONLY)
+install (FILES eta-gestemas.desktop
+    DESTINATION /etc/xdg/autostart)

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Ugly.
+# But without some sleep, it doesn't work with The Gate Touchscreen Based IWB.
+# Find a better way. Such as systemd --user
+
+sleep 15
+
+# When eta-gestemas crashes this script brings it back.
+while true
+do
+    if [ ! `pgrep eta-gestemas` ] ; then
+        eta-gestemas
+    fi
+sleep 2
+done
