@@ -49,7 +49,6 @@ void XTestZoom::onRecognized()
 void XTestZoom::onChanged()
 {
     float velocity = m_recognizer->velocity();
-    qDebug() << "Scale velocity: " << velocity;
     if (velocity > m_minEffectiveVelocity) {
             zoomOut();
     } else if (velocity < -m_minEffectiveVelocity){

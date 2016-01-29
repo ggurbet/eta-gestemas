@@ -197,6 +197,20 @@
           </PressReleaseShortcut>
         </XTestAtomicEndedOrRecognized>
       </LongPress>
+      <!-- Two-touch long press triggers window move -->
+      <LongPress id="4">
+        <numTouchesRequired>2</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestMove>
+          <MoveShortcut>
+            <button modifier1="Alt_L">1</button>
+          </MoveShortcut>
+        </XTestMove>
+      </LongPress>
     </GestureRecognizers>
   </PrivateTarget>
   <PrivateTarget>
@@ -268,5 +282,8 @@
         </DBusVirtualKeyboard>
       </Tap>
     </GestureRecognizers>
+  </PrivateTarget>
+  <PrivateTarget>
+    <name>Plasma-desktop</name>
   </PrivateTarget>
 </gestemas>

@@ -1,3 +1,8 @@
+2016-01-29  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/xtestzoom.cpp, recognizers.xml: Better default
+	config file - Move Eog with two touch long press - Plasma-desktop is now a private target - Delete qDebug in xtestzoom.xpp
+
 2016-01-28  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 
 	* CMakeLists.txt, ChangeLog, cmake/BuildTypeConfig.cmake,
