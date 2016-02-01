@@ -91,7 +91,7 @@ void LibFrameTouchManager::accept_touch(unsigned long touchId,
     UFWindowId ufWindowId = frame_x11_create_window_id(targetId);
     UFDevice ufDevice = static_cast<UFDevice>(device);
     if (frame_accept_touch(ufDevice, ufWindowId, ufTouchId) != UFStatusSuccess) {
-        qWarning() << "Failed to accept touch";
+        qWarning() << "Failed to accept touch " << touchId << " " << targetId;
     }
 }
 void LibFrameTouchManager::reject_touch(unsigned long touchId,
@@ -102,7 +102,7 @@ void LibFrameTouchManager::reject_touch(unsigned long touchId,
     UFWindowId ufWindowId = frame_x11_create_window_id(targetId);
     UFDevice ufDevice = static_cast<UFDevice>(device);
     if (frame_reject_touch(ufDevice, ufWindowId, ufTouchId) != UFStatusSuccess) {
-        qWarning() << "Failed to reject touch";
+        qWarning() << "Failed to reject touch " << touchId << " " << targetId;
     }
 }
 void LibFrameTouchManager::onFrameEvent()
@@ -286,6 +286,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
 
     switch (frame_touch_get_state(touch)) {
     case UFTouchStateBegin:
+        // qDebug() << "Began " << touchId << window;
         if (window == root) {
             m_rootTouchHash[touchId] = 1;
         } else {
@@ -313,6 +314,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
         }
         break;
     case UFTouchStateUpdate:
+        // qDebug() << "Update " << touchId << " " << window;
         if (window == root) {
             if (m_rootTouchHash[touchId] == 0) {
                 m_grm->onTouchUpdated(touchId, x, y, timestamp);
@@ -322,6 +324,7 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
         }
         break;
     case UFTouchStateEnd:
+        // qDebug() << "Ended " << touchId << " " << window;
         if (window == root) {
             if (m_rootTouchHash[touchId] == 0) {
                 m_grm->onTouchEnded(touchId, x, y, timestamp);

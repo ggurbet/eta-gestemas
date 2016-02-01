@@ -11,11 +11,11 @@ or the test fails -->
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicBeganOrRecognized>
+        <XTestOnBegan>
           <PressReleaseShortcut>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestAtomicBeganOrRecognized>
+        </XTestOnBegan>
       </LongPress>
       <Pan id="2">
         <maxNumTouchesRequired>1</maxNumTouchesRequired>

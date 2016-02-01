@@ -40,11 +40,15 @@ public:
     static void injectButtonRelease(int btn, const QStringList& modifiers);
     static void injectButtonPress(int btn);
     static void injectButtonRelease(int btn);
+    static void injectButtonPressRelease(int btn, const QStringList& modifiers);
+    static void injectButtonPressRelease(int btn);
 
     static void injectKeyPress(const QString& key, const QStringList& modifiers);
     static void injectKeyRelease(const QString& key, const QStringList& modifiers);
     static void injectKeyPress(const QString& key);
     static void injectKeyRelease(const QString& key);
+    static void injectKeyPressRelease(const QString& key, const QStringList& modifiers);
+    static void injectKeyPressRelease(const QString& key);
 
 private:
     static Display* disp;

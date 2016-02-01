@@ -15,11 +15,11 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicBeganOrRecognized>
+        <XTestOnBegan>
           <PressReleaseShortcut>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestAtomicBeganOrRecognized>
+        </XTestOnBegan>
       </LongPress>
       <!-- Two-touch long press triggers window move -->
       <LongPress id="2">
@@ -115,11 +115,11 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicEndedOrRecognized>
+        <XTestOnEnded>
           <PressReleaseShortcut>
             <key modifier1="Alt_L">F4</key>
           </PressReleaseShortcut>
-        </XTestAtomicEndedOrRecognized>
+        </XTestOnEnded>
       </LongPress>
       <!-- Two-touch tap can trigger right click -->
       <!--
@@ -133,11 +133,11 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicBeganOrRecognized>
+        <XTestOnRecognized>
           <PressReleaseShortcut>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestAtomicBeganOrRecognized>
+        </XTestOnRecognized>
       </Tap>
       -->
     </GestureRecognizers>
@@ -161,11 +161,11 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicBeganOrRecognized>
+        <XTestOnBegan>
           <PressReleaseShortcut>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestAtomicBeganOrRecognized>
+        </XTestOnBegan>
       </LongPress>
       <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
       <Tap id="2">
@@ -191,11 +191,11 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicEndedOrRecognized>
+        <XTestOnEnded>
           <PressReleaseShortcut>
             <key modifier1="Alt_L">F4</key>
           </PressReleaseShortcut>
-        </XTestAtomicEndedOrRecognized>
+        </XTestOnEnded>
       </LongPress>
       <!-- Two-touch long press triggers window move -->
       <LongPress id="4">
@@ -224,11 +224,11 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicBeganOrRecognized>
+        <XTestOnBegan>
           <PressReleaseShortcut>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestAtomicBeganOrRecognized>
+        </XTestOnBegan>
       </LongPress>
       <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
       <Tap id="2">
@@ -259,11 +259,11 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicBeganOrRecognized>
+        <XTestOnBegan>
           <PressReleaseShortcut>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestAtomicBeganOrRecognized>
+        </XTestOnBegan>
       </LongPress>
       <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
       <Tap id="2">

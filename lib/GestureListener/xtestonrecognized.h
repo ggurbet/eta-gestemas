@@ -16,35 +16,28 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTSHORTCUT_H
-#define XTESTSHORTCUT_H
+#ifndef XTESTONRECOGNIZED_H
+#define XTESTONRECOGNIZED_H
 
-#include <QtCore/QStringList>
-#include <QtCore/QString>
+#include "simplegesturelistener.h"
 
-class XTestShortcut
+class XTestShortcut;
+
+class XTestOnRecognized : public SimpleGestureListener
 {
 public:
-    enum Type
-    {
-        Undefined,
-        Button,
-        Key
-    };
-
-    XTestShortcut() : m_type(Undefined) {}
-    ~XTestShortcut() = default;
-    void setValue(const QString& value, Type type);
-    void addModifier(const QString& modifier);
-    void press() const;
-    void release() const;
-    void pressAndRelease() const;
-    void movePointer(float x, float y) const;
+    XTestOnRecognized();
+    virtual ~XTestOnRecognized();
+    virtual bool isEqual(const GestureListener& other) const;
+    virtual void onBegan();
+    virtual void onRecognized();
+    virtual void onChanged();
+    virtual void onCanceled();
+    virtual void onEnded();
+    virtual void onFailed();
+    void setOnRecognizedShortcut(const XTestShortcut *shortcut);
 private:
-    QStringList m_modifiers;
-    Type m_type;
-    QString m_keyValue;
-    int m_buttonValue;
+    const XTestShortcut *m_shortcut;
 };
 
-#endif /* XTESTSHORTCUT_H */
+#endif /* XTESTONRECOGNIZED_H */

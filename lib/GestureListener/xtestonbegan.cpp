@@ -16,58 +16,55 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xtestatomicbeganorrecognized.h"
+#include "xtestonbegan.h"
 #include "gesturerecognizer.h"
 #include "xtestshortcut.h"
 #include "utilities.h"
 #include <QtCore/QtDebug>
 
-XTestAtomicBeganOrRecognized::XTestAtomicBeganOrRecognized()
+XTestOnBegan::XTestOnBegan()
     :m_shortcut(nullptr)
 {
 }
-XTestAtomicBeganOrRecognized::~XTestAtomicBeganOrRecognized()
+XTestOnBegan::~XTestOnBegan()
 {
     delete m_shortcut;
     m_shortcut = nullptr;
 }
-void XTestAtomicBeganOrRecognized::setAtomicBeganOrRecognizedShortcut(
-                                        const XTestShortcut *shortcut)
+void XTestOnBegan::setOnBeganShortcut(
+                        const XTestShortcut *shortcut)
 {
     m_shortcut = shortcut;
 }
 
-void XTestAtomicBeganOrRecognized::onBegan()
+void XTestOnBegan::onBegan()
 {
-    // Could be a continues gesture recognizer
     m_shortcut->press();
+}
+
+void XTestOnBegan::onRecognized()
+{
+}
+
+void XTestOnBegan::onChanged()
+{
+}
+
+void XTestOnBegan::onCanceled()
+{
     m_shortcut->release();
 }
 
-void XTestAtomicBeganOrRecognized::onRecognized()
+void XTestOnBegan::onEnded()
 {
-    // Could be a discrete gesture recognizer
-    m_shortcut->press();
     m_shortcut->release();
 }
 
-void XTestAtomicBeganOrRecognized::onChanged()
+void XTestOnBegan::onFailed()
 {
 }
 
-void XTestAtomicBeganOrRecognized::onCanceled()
-{
-}
-
-void XTestAtomicBeganOrRecognized::onEnded()
-{
-}
-
-void XTestAtomicBeganOrRecognized::onFailed()
-{
-}
-
-bool XTestAtomicBeganOrRecognized::isEqual(const GestureListener& other) const
+bool XTestOnBegan::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;

@@ -243,12 +243,14 @@ TouchManager* GestureRecognizerManager::touchManager()
 void GestureRecognizerManager::acceptTouch(Touch *t)
 {
     t->setOwnershipState(Touch::Accepted);
+    qDebug() << "Accepting " << t->touchId() << " " << t->targetId();
     m_touchManager->acceptTouch(t->touchId(), t->targetId(), t->device());
 }
 
 void GestureRecognizerManager::rejectTouch(Touch *t)
 {
     t->setOwnershipState(Touch::Rejected);
+    qDebug() << "Rejecting " << t->touchId() << " " << t->targetId();
     m_touchManager->rejectTouch(t->touchId(), t->targetId(), t->device());
 }
 
@@ -284,23 +286,23 @@ void GestureRecognizerManager::handleTouchOwnership()
 
 void GestureRecognizerManager::handleTouchOwnership(Touch* touch)
 {
+    if (touch->ownershipState() != Touch::Deferred) {
+        return;
+    }
+
     QList<GestureRecognizer*> gestureRecognizers =
     m_gestureRecognizersForTouches.values(touch->touchId());
     if (gestureRecognizers.size() == 0) {
-        if (touch->ownershipState() == Touch::Deferred) {
-            rejectTouch(touch);
-        }
+        rejectTouch(touch);
     } else {
         GestureRecognizer *gestureRecognizer = nullptr;
         State state;
         foreach (gestureRecognizer, gestureRecognizers) {
             state = gestureRecognizer->state();
-            if (!state.isSuccessful()) {
-                return;
+            if (state.isSuccessful()) {
+                acceptTouch(touch);
+                break;
             }
-        }
-        if (touch->ownershipState() == Touch::Deferred) {
-            acceptTouch(touch);
         }
     }
 }

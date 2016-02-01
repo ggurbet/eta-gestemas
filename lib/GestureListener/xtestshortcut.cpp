@@ -73,6 +73,23 @@ void XTestShortcut::release() const
     }
 }
 
+void XTestShortcut::pressAndRelease() const
+{
+    if (m_type == Key) {
+        if (m_modifiers.size() == 0) {
+            XTest::injectKeyPressRelease(m_keyValue);
+        } else {
+            XTest::injectKeyPressRelease(m_keyValue, m_modifiers);
+        }
+    } else if (m_type == Button) {
+        if (m_modifiers.size() == 0) {
+            XTest::injectButtonPressRelease(m_buttonValue);
+        } else {
+            XTest::injectButtonPressRelease(m_buttonValue, m_modifiers);
+        }
+    }
+}
+
 void XTestShortcut::movePointer(float x, float y) const
 {
     XTest::movePointer(x, y);

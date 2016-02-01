@@ -15,8 +15,9 @@
 #include "xtest.h"
 #include "xtestshortcut.h"
 #include "xtestmove.h"
-#include "xtestatomicbeganorrecognized.h"
-#include "xtestatomicendedorrecognized.h"
+#include "xtestonbegan.h"
+#include "xtestonended.h"
+#include "xtestonrecognized.h"
 #include "xtestscroll.h"
 #include "xtestzoom.h"
 #include "dbusvirtualkeyboard.h"
@@ -358,12 +359,12 @@ void TargetFactory::processLongPress()
             if (ok) {
                 gr->setMinPressDuration(minPressDuration);
             }
-        } else if (m_configReader->name() == "XTestAtomicBeganOrRecognized") {
-            XTestAtomicBeganOrRecognized *listener = parseXTestAtomicBeganOrRecognized();
+        } else if (m_configReader->name() == "XTestOnBegan") {
+            XTestOnBegan *listener = parseXTestOnBegan();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
-        } else if (m_configReader->name() == "XTestAtomicEndedOrRecognized") {
-            XTestAtomicEndedOrRecognized *listener = parseXTestAtomicEndedOrRecognized();
+        } else if (m_configReader->name() == "XTestOnEnded") {
+            XTestOnEnded *listener = parseXTestOnEnded();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
         } else if (m_configReader->name() == "XTestMove") {
@@ -426,12 +427,12 @@ void TargetFactory::processPan()
             XTestMove *listener = parseXTestMove();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
-        } else if (m_configReader->name() == "XTestAtomicBeganOrRecognized") {
-            XTestAtomicBeganOrRecognized *listener = parseXTestAtomicBeganOrRecognized();
+        } else if (m_configReader->name() == "XTestOnBegan") {
+            XTestOnBegan *listener = parseXTestOnBegan();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
-        } else if (m_configReader->name() == "XTestAtomicEndedOrRecognized") {
-            XTestAtomicEndedOrRecognized *listener = parseXTestAtomicEndedOrRecognized();
+        } else if (m_configReader->name() == "XTestOnEnded") {
+            XTestOnEnded *listener = parseXTestOnEnded();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
         }
@@ -466,12 +467,12 @@ void TargetFactory::processTwoTouchPinch()
             XTestZoom *listener = parseXTestZoom();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
-        } else if (m_configReader->name() == "XTestAtomicBeganOrRecognized") {
-            XTestAtomicBeganOrRecognized *listener = parseXTestAtomicBeganOrRecognized();
+        } else if (m_configReader->name() == "XTestOnBegan") {
+            XTestOnBegan *listener = parseXTestOnBegan();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
-        } else if (m_configReader->name() == "XTestAtomicEndedOrRecognized") {
-            XTestAtomicEndedOrRecognized *listener = parseXTestAtomicEndedOrRecognized();
+        } else if (m_configReader->name() == "XTestOnEnded") {
+            XTestOnEnded *listener = parseXTestOnEnded();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
         }
@@ -531,12 +532,8 @@ void TargetFactory::processTap()
             if (ok) {
                 gr->setMaxTapDistance(maxTapDistance);
             }
-        } else if (m_configReader->name() == "XTestAtomicBeganOrRecognized") {
-            XTestAtomicBeganOrRecognized *listener = parseXTestAtomicBeganOrRecognized();
-            listener->setGestureRecognizer(gr);
-            gr->setGestureListener(listener);
-        } else if (m_configReader->name() == "XTestAtomicEndedOrRecognized") {
-            XTestAtomicEndedOrRecognized *listener = parseXTestAtomicEndedOrRecognized();
+        } else if (m_configReader->name() == "XTestOnRecognized") {
+            XTestOnRecognized *listener = parseXTestOnRecognized();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
         } else if (m_configReader->name() == "DBusVirtualKeyboard") {
@@ -617,12 +614,8 @@ void TargetFactory::processSwipe()
                 direction = SwipeGestureRecognizer::Orthogonal;
             }
             gr->setDirection(direction);
-        } else if (m_configReader->name() == "XTestAtomicBeganOrRecognized") {
-            XTestAtomicBeganOrRecognized *listener = parseXTestAtomicBeganOrRecognized();
-            listener->setGestureRecognizer(gr);
-            gr->setGestureListener(listener);
-        } else if (m_configReader->name() == "XTestAtomicEndedOrRecognized") {
-            XTestAtomicEndedOrRecognized *listener = parseXTestAtomicEndedOrRecognized();
+        } else if (m_configReader->name() == "XTestOnRecognized") {
+            XTestOnRecognized *listener = parseXTestOnRecognized();
             listener->setGestureRecognizer(gr);
             gr->setGestureListener(listener);
         } else if (m_configReader->name() == "DBusVirtualKeyboard") {
@@ -650,33 +643,49 @@ DBusVirtualKeyboard* TargetFactory::parseDBusVirtualKeyboard()
     return listener;
 }
 
-XTestAtomicBeganOrRecognized* TargetFactory::parseXTestAtomicBeganOrRecognized()
+XTestOnBegan* TargetFactory::parseXTestOnBegan()
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "XTestAtomicBeganOrRecognized") {
+        || m_configReader->name() != "XTestOnBegan") {
         return nullptr;
     }
 
-    XTestAtomicBeganOrRecognized *listener = new XTestAtomicBeganOrRecognized;
+    XTestOnBegan *listener = new XTestOnBegan;
     while(m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "PressReleaseShortcut") {
-            listener->setAtomicBeganOrRecognizedShortcut(parseXTestShortcut());
+            listener->setOnBeganShortcut(parseXTestShortcut());
         }
     }
     return listener;
 }
 
-XTestAtomicEndedOrRecognized* TargetFactory::parseXTestAtomicEndedOrRecognized()
+XTestOnEnded* TargetFactory::parseXTestOnEnded()
 {
     if (!m_configReader->isStartElement()
-        || m_configReader->name() != "XTestAtomicEndedOrRecognized") {
+        || m_configReader->name() != "XTestOnEnded") {
         return nullptr;
     }
 
-    XTestAtomicEndedOrRecognized *listener = new XTestAtomicEndedOrRecognized;
+    XTestOnEnded *listener = new XTestOnEnded;
     while(m_configReader->readNextStartElement()) {
         if (m_configReader->name() == "PressReleaseShortcut") {
-            listener->setAtomicEndedOrRecognizedShortcut(parseXTestShortcut());
+            listener->setOnEndedShortcut(parseXTestShortcut());
+        }
+    }
+    return listener;
+}
+
+XTestOnRecognized* TargetFactory::parseXTestOnRecognized()
+{
+    if (!m_configReader->isStartElement()
+        || m_configReader->name() != "XTestOnRecognized") {
+        return nullptr;
+    }
+
+    XTestOnRecognized *listener = new XTestOnRecognized;
+    while(m_configReader->readNextStartElement()) {
+        if (m_configReader->name() == "PressReleaseShortcut") {
+            listener->setOnRecognizedShortcut(parseXTestShortcut());
         }
     }
     return listener;

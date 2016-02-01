@@ -37,9 +37,9 @@
 	lib/GestureListener/twotouchpinchlistener.cpp,
 	lib/GestureListener/twotouchpinchlistener.h,
 	lib/GestureListener/xtestatomicbeganorrecognized.cpp,
-	lib/GestureListener/xtestatomicbeganorrecognized.h,
+	lib/GestureListener/xtestonbegan.h,
 	lib/GestureListener/xtestatomicendedorrecognized.cpp,
-	lib/GestureListener/xtestatomicendedorrecognized.h,
+	lib/GestureListener/xtestonended.h,
 	lib/GestureListener/xtestlongpressmove.cpp,
 	lib/GestureListener/xtestlongpressmove.h,
 	lib/GestureListener/xtestlongpressrightclick.cpp,
@@ -70,7 +70,7 @@
 	tools/twotouchpinch.xml: Make config file more understandable.  - Listener naming simplified as below XTest<GESTURE><ACTION> -->
 	XTest<ACTION> - Reaction to pinch gestures should be given according to velocity - Velocity values are in change per second unit rather than
 	milisecond - Remove unnecessary accomulator, min/max values from scroll and
-	zoom listeners and use minEffectiveVelocity instead.  - Add XTestAtomicBeganOrRecognized and XTestAtomicEndedOrRecognized  gesture listeners for simple press-release actions
+	zoom listeners and use minEffectiveVelocity instead.  - Add XTestOnBegan and XTestOnEnded  gesture listeners for simple press-release actions
 
 2016-01-25  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 

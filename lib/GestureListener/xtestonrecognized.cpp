@@ -16,58 +16,53 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xtestatomicendedorrecognized.h"
+#include "xtestonrecognized.h"
 #include "gesturerecognizer.h"
 #include "xtestshortcut.h"
 #include "utilities.h"
 #include <QtCore/QtDebug>
 
-XTestAtomicEndedOrRecognized::XTestAtomicEndedOrRecognized()
+XTestOnRecognized::XTestOnRecognized()
     :m_shortcut(nullptr)
 {
 }
-XTestAtomicEndedOrRecognized::~XTestAtomicEndedOrRecognized()
+XTestOnRecognized::~XTestOnRecognized()
 {
     delete m_shortcut;
     m_shortcut = nullptr;
 }
-void XTestAtomicEndedOrRecognized::setAtomicEndedOrRecognizedShortcut(
-                                        const XTestShortcut *shortcut)
+void XTestOnRecognized::setOnRecognizedShortcut(
+                        const XTestShortcut *shortcut)
 {
     m_shortcut = shortcut;
 }
 
-void XTestAtomicEndedOrRecognized::onBegan()
+void XTestOnRecognized::onBegan()
 {
 }
 
-void XTestAtomicEndedOrRecognized::onRecognized()
+void XTestOnRecognized::onRecognized()
 {
-    // Could be a discrete gesture recognizer
-    m_shortcut->press();
-    m_shortcut->release();
+    m_shortcut->pressAndRelease();
 }
 
-void XTestAtomicEndedOrRecognized::onChanged()
+void XTestOnRecognized::onChanged()
 {
 }
 
-void XTestAtomicEndedOrRecognized::onCanceled()
+void XTestOnRecognized::onCanceled()
 {
 }
 
-void XTestAtomicEndedOrRecognized::onEnded()
-{
-    // Could be a continues gesture recognizer
-    m_shortcut->press();
-    m_shortcut->release();
-}
-
-void XTestAtomicEndedOrRecognized::onFailed()
+void XTestOnRecognized::onEnded()
 {
 }
 
-bool XTestAtomicEndedOrRecognized::isEqual(const GestureListener& other) const
+void XTestOnRecognized::onFailed()
+{
+}
+
+bool XTestOnRecognized::isEqual(const GestureListener& other) const
 {
     (void)other;
     return true;

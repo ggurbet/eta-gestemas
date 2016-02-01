@@ -16,35 +16,54 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTSHORTCUT_H
-#define XTESTSHORTCUT_H
+#include "xtestonended.h"
+#include "gesturerecognizer.h"
+#include "xtestshortcut.h"
+#include "utilities.h"
+#include <QtCore/QtDebug>
 
-#include <QtCore/QStringList>
-#include <QtCore/QString>
-
-class XTestShortcut
+XTestOnEnded::XTestOnEnded()
+    :m_shortcut(nullptr)
 {
-public:
-    enum Type
-    {
-        Undefined,
-        Button,
-        Key
-    };
+}
+XTestOnEnded::~XTestOnEnded()
+{
+    delete m_shortcut;
+    m_shortcut = nullptr;
+}
+void XTestOnEnded::setOnEndedShortcut(
+                            const XTestShortcut *shortcut)
+{
+    m_shortcut = shortcut;
+}
 
-    XTestShortcut() : m_type(Undefined) {}
-    ~XTestShortcut() = default;
-    void setValue(const QString& value, Type type);
-    void addModifier(const QString& modifier);
-    void press() const;
-    void release() const;
-    void pressAndRelease() const;
-    void movePointer(float x, float y) const;
-private:
-    QStringList m_modifiers;
-    Type m_type;
-    QString m_keyValue;
-    int m_buttonValue;
-};
+void XTestOnEnded::onBegan()
+{
+}
 
-#endif /* XTESTSHORTCUT_H */
+void XTestOnEnded::onRecognized()
+{
+}
+
+void XTestOnEnded::onChanged()
+{
+}
+
+void XTestOnEnded::onCanceled()
+{
+}
+
+void XTestOnEnded::onEnded()
+{
+    m_shortcut->pressAndRelease();
+}
+
+void XTestOnEnded::onFailed()
+{
+}
+
+bool XTestOnEnded::isEqual(const GestureListener& other) const
+{
+    (void)other;
+    return true;
+}
