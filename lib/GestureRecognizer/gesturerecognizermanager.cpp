@@ -168,10 +168,12 @@ void GestureRecognizerManager::onTouchEnded(uint32_t touchId,
     m_touches.removeAll(touch);
     if (m_touches.size() == 0) {
         target = findTarget(touch->targetId());
-        gestureRecognizers = target->gestureRecognizers();
-        foreach (gestureRecognizer, gestureRecognizers) {
-            if (gestureRecognizer->state().isLeaf())
-                gestureRecognizer->reset();
+        if (target) {
+            gestureRecognizers = target->gestureRecognizers();
+            foreach (gestureRecognizer, gestureRecognizers) {
+                if (gestureRecognizer->state().isLeaf())
+                    gestureRecognizer->reset();
+            }
         }
     }
     m_gestureRecognizersForTouches.remove(touchId);
@@ -226,7 +228,13 @@ void GestureRecognizerManager::removeTarget(uint32_t targetId)
         }
     }
     if (i < m_targets.size()) {
-        delete m_targets.takeAt(i);
+        Target *target = m_targets.takeAt(i);
+        if (target) {
+            foreach (GestureRecognizer* gr, target->gestureRecognizers()) {
+                detachGestureRecognizer(gr);
+            }
+            delete target;
+        }
     }
 }
 
