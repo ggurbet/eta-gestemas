@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gestemas>
+  <!-- Gesture recognizer settings -->
   <samplingPeriod>120</samplingPeriod>
   <pointerEmulationRate>2</pointerEmulationRate>
   <pointerEmulationDistance>10.0</pointerEmulationDistance>
+  <!-- Global gesture recognizers that effect public targets -->
   <GlobalTarget>
     <GestureRecognizers>
+      <!-- Single-touch long press triggers right click -->
       <LongPress id="1">
         <numTouchesRequired>1</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
@@ -12,12 +15,16 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnBegan>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestOnBegan>
+        </XTestSimple>
       </LongPress>
+      <!-- Two-touch long press triggers window move -->
       <LongPress id="2">
         <numTouchesRequired>2</numTouchesRequired>
         <minPressDuration>950</minPressDuration>
@@ -31,28 +38,28 @@
           </MoveShortcut>
         </XTestMove>
       </LongPress>
-      <Tap id="3">
-        <numTouchesRequired>2</numTouchesRequired>
-        <numTapsRequired>1</numTapsRequired>
-        <maxTapDelay>1500</maxTapDelay>
-        <maxTapDuration>1500</maxTapDuration>
-        <maxTapDistance>1500.0</maxTapDistance>
-        <bottomMargin>300.0</bottomMargin>
-        <recognitionThreshold>10.0</recognitionThreshold>
+      <!-- Three-touch pan also triggers window move -->
+      <Pan id="3">
+        <maxNumTouchesRequired>3</maxNumTouchesRequired>
+        <minNumTouchesRequired>3</minNumTouchesRequired>
+        <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <DBusVirtualKeyboard>
-          <command>toggle</command>
-        </DBusVirtualKeyboard>
-      </Tap>
+        <XTestMove>
+          <MoveShortcut>
+            <button modifier1="Alt_L">1</button>
+          </MoveShortcut>
+        </XTestMove>
+      </Pan>
+      <!-- Two-touch pan twiggers scroll -->
       <Pan id="4">
         <maxNumTouchesRequired>2</maxNumTouchesRequired>
         <minNumTouchesRequired>2</minNumTouchesRequired>
         <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
-          <id>7</id>
+          <id>5</id>
         </abortList>
         <XTestScroll>
           <minEffectiveVelocity>2.0</minEffectiveVelocity>
@@ -70,42 +77,8 @@
           </ScrollDownShortcut>
         </XTestScroll>
       </Pan>
-      <Swipe id="5">
-        <numTouchesRequired>1</numTouchesRequired>
-        <maxDuration>150</maxDuration>
-        <minDisplacement>60.0</minDisplacement>
-        <maxAngle>40.0</maxAngle>
-        <direction>Up</direction>
-        <bottomMargin>300.0</bottomMargin>
-        <recognitionThreshold>10.0</recognitionThreshold>
-        <abortList>
-          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        </abortList>
-        <DBusVirtualKeyboard>
-          <command>showFromBottom</command>
-        </DBusVirtualKeyboard>
-      </Swipe>
-      <Swipe id="6">
-        <numTouchesRequired>1</numTouchesRequired>
-        <maxDuration>150</maxDuration>
-        <minDisplacement>60.0</minDisplacement>
-        <maxAngle>40.0</maxAngle>
-        <direction>Down</direction>
-        <bottomMargin>300.0</bottomMargin>
-        <recognitionThreshold>10.0</recognitionThreshold>
-        <abortList>
-          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
-        </abortList>
-        <DBusVirtualKeyboard>
-          <command>hide</command>
-        </DBusVirtualKeyboard>
-      </Swipe>
-    </GestureRecognizers>
-  </GlobalTarget>
-  <PublicTarget>
-    <name>Firefox</name>
-    <GestureRecognizers>
-      <TwoTouchPinch id="7">
+      <!-- Two-touch pinch triggers zoom in/out on a window -->
+      <TwoTouchPinch id="5">
         <recognitionThreshold>20.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>true</allowSimultaneousRecognition>
@@ -121,18 +94,123 @@
           </ZoomOutShortcut>
         </XTestZoom>
       </TwoTouchPinch>
+      <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
+      <Tap id="6">
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>1500</maxTapDelay>
+        <maxTapDuration>1500</maxTapDuration>
+        <maxTapDistance>1500.0</maxTapDistance>
+        <bottomMargin>150.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>toggle</command>
+        </DBusVirtualKeyboard>
+      </Tap>
+      <!-- Three-touch long press closes the window -->
+      <LongPress id="7">
+        <numTouchesRequired>3</numTouchesRequired>
+        <minPressDuration>1500</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onBegan>press-release</onBegan>
+            <key modifier1="Alt_L">F4</key>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </LongPress>
+      <!-- Two-touch tap can trigger right click -->
+      <!--
+      <Tap id="8">
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>1000</maxTapDelay>
+        <maxTapDuration>1000</maxTapDuration>
+        <maxTapDistance>1000.0</maxTapDistance>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onRecognized>press-release</onRecognized>
+            <button>3</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </Tap>
+      -->
     </GestureRecognizers>
+  </GlobalTarget>
+  <!-- Public gesture recognizers get merged with global ones -->
+  <PublicTarget>
   </PublicTarget>
+
+  <!-- Private targets are subject to their local gesture recognizers only -->
   <PrivateTarget>
-    <name>Konsole</name>
+    <name>etak</name> <!-- Our virtual keyboard -->
   </PrivateTarget>
   <PrivateTarget>
-    <name>Okular</name>
+    <name>Eog</name>
     <GestureRecognizers>
-      <Pan id="8">
-        <maxNumTouchesRequired>3</maxNumTouchesRequired>
-        <minNumTouchesRequired>3</minNumTouchesRequired>
-        <recognitionThreshold>20.0</recognitionThreshold>
+      <!-- Single-touch long press triggers right click -->
+      <LongPress id="1">
+        <numTouchesRequired>1</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
+            <button>3</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </LongPress>
+      <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
+      <Tap id="2">
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>1500</maxTapDelay>
+        <maxTapDuration>1500</maxTapDuration>
+        <maxTapDistance>1500.0</maxTapDistance>
+        <bottomMargin>150.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>toggle</command>
+        </DBusVirtualKeyboard>
+      </Tap>
+      <!-- Three-touch long press closes the window -->
+      <LongPress id="3">
+        <numTouchesRequired>3</numTouchesRequired>
+        <minPressDuration>1500</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onBegan>press-release</onBegan>
+            <key modifier1="Alt_L">F4</key>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </LongPress>
+      <!-- Two-touch long press triggers window move -->
+      <LongPress id="4">
+        <numTouchesRequired>2</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
@@ -141,7 +219,86 @@
             <button modifier1="Alt_L">1</button>
           </MoveShortcut>
         </XTestMove>
-      </Pan>
+      </LongPress>
     </GestureRecognizers>
+  </PrivateTarget>
+  <PrivateTarget>
+    <name>Antropi Teach Fatih</name>
+    <GestureRecognizers>
+      <!-- Single-touch long press triggers right click -->
+      <LongPress id="1">
+        <numTouchesRequired>1</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
+            <button>3</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </LongPress>
+      <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
+      <Tap id="2">
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>1500</maxTapDelay>
+        <maxTapDuration>1500</maxTapDuration>
+        <maxTapDistance>1500.0</maxTapDistance>
+        <bottomMargin>150.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>toggle</command>
+        </DBusVirtualKeyboard>
+      </Tap>
+    </GestureRecognizers>
+  </PrivateTarget>
+  <PrivateTarget>
+    <name>Plasma</name>
+    <GestureRecognizers>
+      <!-- Single-touch long press triggers right click -->
+      <LongPress id="1">
+        <numTouchesRequired>1</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
+            <button>3</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </LongPress>
+      <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
+      <Tap id="2">
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>1500</maxTapDelay>
+        <maxTapDuration>1500</maxTapDuration>
+        <maxTapDistance>1500.0</maxTapDistance>
+        <bottomMargin>150.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>toggle</command>
+        </DBusVirtualKeyboard>
+      </Tap>
+    </GestureRecognizers>
+  </PrivateTarget>
+  <PrivateTarget>
+    <name>Plasma-desktop</name>
   </PrivateTarget>
 </gestemas>

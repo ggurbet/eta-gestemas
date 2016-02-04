@@ -17,9 +17,7 @@ class TwoTouchPinchGestureRecognizer;
 class TapGestureRecognizer;
 class SwipeGestureRecognizer;
 
-class XTestOnBegan;
-class XTestOnEnded;
-class XTestOnRecognized;
+class XTestSimple;
 class XTestMove;
 class XTestZoom;
 class XTestScroll;
@@ -61,9 +59,7 @@ private:
     void processTap();
     void processSwipe();
 
-    XTestOnBegan* parseXTestOnBegan();
-    XTestOnEnded* parseXTestOnEnded();
-    XTestOnRecognized* parseXTestOnRecognized();
+    XTestSimple* parseXTestSimple();
     XTestScroll* parseXTestScroll();
     XTestMove* parseXTestMove();
     XTestZoom* parseXTestZoom();

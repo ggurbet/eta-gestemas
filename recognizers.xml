@@ -15,11 +15,14 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnBegan>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestOnBegan>
+        </XTestSimple>
       </LongPress>
       <!-- Two-touch long press triggers window move -->
       <LongPress id="2">
@@ -115,11 +118,12 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnEnded>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press-release</onBegan>
             <key modifier1="Alt_L">F4</key>
           </PressReleaseShortcut>
-        </XTestOnEnded>
+        </XTestSimple>
       </LongPress>
       <!-- Two-touch tap can trigger right click -->
       <!--
@@ -133,11 +137,12 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnRecognized>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onRecognized>press-release</onRecognized>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestOnRecognized>
+        </XTestSimple>
       </Tap>
       -->
     </GestureRecognizers>
@@ -161,11 +166,14 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnBegan>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestOnBegan>
+        </XTestSimple>
       </LongPress>
       <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
       <Tap id="2">
@@ -191,11 +199,12 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnEnded>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press-release</onBegan>
             <key modifier1="Alt_L">F4</key>
           </PressReleaseShortcut>
-        </XTestOnEnded>
+        </XTestSimple>
       </LongPress>
       <!-- Two-touch long press triggers window move -->
       <LongPress id="4">
@@ -224,11 +233,14 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnBegan>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestOnBegan>
+        </XTestSimple>
       </LongPress>
       <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
       <Tap id="2">
@@ -259,11 +271,14 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestOnBegan>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestOnBegan>
+        </XTestSimple>
       </LongPress>
       <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
       <Tap id="2">

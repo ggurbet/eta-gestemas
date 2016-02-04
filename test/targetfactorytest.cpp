@@ -9,7 +9,7 @@
 #include "tapgesturerecognizer.h"
 #include "swipegesturerecognizer.h"
 
-#include "xtestonbegan.h"
+#include "xtestsimple.h"
 #include "xtestscroll.h"
 #include "xtestzoom.h"
 #include "xtestmove.h"
@@ -46,7 +46,7 @@ void TargetFactoryTester::initTestCase()
     gr1->setMinPressDuration(950);
     gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
-    XTestOnBegan *l1 = new XTestOnBegan;
+    XTestSimple *l1 = new XTestSimple;
     l1->setGestureRecognizer(gr1);
     gr1->setGestureListener(l1);
     expectedTargetChromium.addGestureRecognizer(gr1);
@@ -103,7 +103,7 @@ void TargetFactoryTester::initTestCase()
     gr1->setMinPressDuration(950);
     gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
-    l1 = new XTestOnBegan;
+    l1 = new XTestSimple;
     l1->setGestureRecognizer(gr1);
     gr1->setGestureListener(l1);
     expectedTargetFirefox.addGestureRecognizer(gr1);
@@ -160,7 +160,7 @@ void TargetFactoryTester::initTestCase()
     gr1->setMinPressDuration(950);
     gr1->setRecognitionThreshold(1.0f);
     gr1->setAllowSimultaneousRecognition(false);
-    l1 = new XTestOnBegan;
+    l1 = new XTestSimple;
     l1->setGestureRecognizer(gr1);
     gr1->setGestureListener(l1);
     expectedTargetOther.addGestureRecognizer(gr1);
