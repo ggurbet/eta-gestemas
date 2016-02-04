@@ -24,6 +24,16 @@
 #include <oif/frame_x11.h>
 #include <cstdint>
 
+int LibFrameTouchManager::xErrorHandler(Display* display,
+                                                   XErrorEvent* error)
+{
+    (void)display;
+    (void)error;
+    // qFatal("LibFrameTouchManager::xErrorHandler called");
+    qWarning("LibFrameTouchManager::xErrorHandler called");
+    return 1;
+}
+
 LibFrameTouchManager::LibFrameTouchManager(Display* display,
                                            QObject *parent)
     :QObject(parent), m_display(nullptr),
@@ -94,6 +104,7 @@ void LibFrameTouchManager::accept_touch(unsigned long touchId,
         qWarning() << "Failed to accept touch " << touchId << " " << targetId;
     }
 }
+
 void LibFrameTouchManager::reject_touch(unsigned long touchId,
                                         unsigned long targetId,
                                         void* device)
@@ -105,10 +116,11 @@ void LibFrameTouchManager::reject_touch(unsigned long touchId,
         qWarning() << "Failed to reject touch " << touchId << " " << targetId;
     }
 }
+
 void LibFrameTouchManager::onFrameEvent()
 {
     UFEvent event;
-
+    XSetErrorHandler(xErrorHandler);
     while (frame_get_event(m_frameHandle, &event) == UFStatusSuccess) {
         switch (frame_event_get_type(event)) {
         case UFEventTypeDeviceAdded:
@@ -203,6 +215,7 @@ void LibFrameTouchManager::onDeviceAdded(UFEvent event)
     }
     qDebug();
 }
+
 void LibFrameTouchManager::onDeviceRemoved(UFEvent event)
 {
     UFDevice device;
@@ -224,6 +237,7 @@ void LibFrameTouchManager::onDeviceRemoved(UFEvent event)
     else
         qDebug() << "Name: " << string;
 }
+
 void LibFrameTouchManager::onNewFrame(UFEvent event)
 {
     UFFrame frame;
@@ -288,27 +302,14 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
     case UFTouchStateBegin:
         // qDebug() << "Began " << touchId << window;
         if (window == root) {
-            m_rootTouchHash[touchId] = 1;
+            DispatchInfo di(x, y, 1);
+            m_dispatchHash[touchId] = di;
         } else {
-            m_rootTouchHash[touchId] = 0;
+            DispatchInfo &di = m_dispatchHash[touchId];
+            di.rootCounter = 0;
+            x = di.rootStartX;
+            y = di.rootStartY;
             reject_touch(touchId, window, device);
-            if (device_direct) {
-                // (x,y) is non-root window coordinates.
-                // We have to translate them into
-                // root coordinates for the first time.
-                int windowX = static_cast<int>(x + 0.5f);
-                int windowY = static_cast<int>(y + 0.5f);
-                int positionX = 0;
-                int positionY = 0;
-                Window returnedWindow;
-                bool coordinatesTranslated =
-                    XTranslateCoordinates(m_display,
-                                          window, root, windowX, windowY,
-                                          &positionX, &positionY, &returnedWindow);
-                Q_ASSERT(coordinatesTranslated);
-                x = positionX;
-                y = positionY;
-            }
             m_grm->onTouchBegan(touchId, x, y, minX, minY,
                                 maxX, maxY, window, device, timestamp);
         }
@@ -316,9 +317,9 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
     case UFTouchStateUpdate:
         // qDebug() << "Update " << touchId << " " << window;
         if (window == root) {
-            if (m_rootTouchHash[touchId] == 0) {
+            if (m_dispatchHash[touchId].rootCounter == 0) {
                 m_grm->onTouchUpdated(touchId, x, y, timestamp);
-            } else if (++m_rootTouchHash[touchId] == TARGET_BOUND) {
+            } else if (++m_dispatchHash[touchId].rootCounter == TARGET_BOUND) {
                 reject_touch(touchId, window, device);
             }
         }
@@ -326,12 +327,12 @@ void LibFrameTouchManager::dispatchTouches(UFTouch touch,
     case UFTouchStateEnd:
         // qDebug() << "Ended " << touchId << " " << window;
         if (window == root) {
-            if (m_rootTouchHash[touchId] == 0) {
+            if (m_dispatchHash[touchId].rootCounter == 0) {
                 m_grm->onTouchEnded(touchId, x, y, timestamp);
-            } else if (m_rootTouchHash[touchId] < TARGET_BOUND) {
+            } else if (m_dispatchHash[touchId].rootCounter < TARGET_BOUND) {
                 reject_touch(touchId, window, device);
             }
-            m_rootTouchHash.remove(touchId);
+            m_dispatchHash.remove(touchId);
         }
         break;
     }

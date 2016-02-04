@@ -48,6 +48,17 @@ public:
 private slots:
     void onFrameEvent();
 private:
+    struct DispatchInfo
+    {
+        DispatchInfo()
+            :DispatchInfo(0.0f, 0.0f, 0){}
+        DispatchInfo(float x, float y, int c)
+            :rootStartX(x), rootStartY(y), rootCounter(c){}
+        float rootStartX;
+        float rootStartY;
+        int rootCounter;
+    };
+
     void getAxisInfo(UFAxis axis, UFAxisType *type,
                     const char **name, float *min,
                        float *max, float *res);
@@ -68,8 +79,10 @@ private:
     Display* m_display;
     QSocketNotifier* m_socketNotifier;
     bool m_shouldCloseDisplay;
-    QHash <uint32_t, int> m_rootTouchHash;
+    QHash <uint32_t, DispatchInfo> m_dispatchHash;
     static const int TARGET_BOUND = 4;
+
+    static int xErrorHandler(Display* display, XErrorEvent* error);
 };
 
 #endif /* LIBFRAMETOUCHMANAGER_H */

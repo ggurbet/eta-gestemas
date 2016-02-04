@@ -243,14 +243,12 @@ TouchManager* GestureRecognizerManager::touchManager()
 void GestureRecognizerManager::acceptTouch(Touch *t)
 {
     t->setOwnershipState(Touch::Accepted);
-    qDebug() << "Accepting " << t->touchId() << " " << t->targetId();
     m_touchManager->acceptTouch(t->touchId(), t->targetId(), t->device());
 }
 
 void GestureRecognizerManager::rejectTouch(Touch *t)
 {
     t->setOwnershipState(Touch::Rejected);
-    qDebug() << "Rejecting " << t->touchId() << " " << t->targetId();
     m_touchManager->rejectTouch(t->touchId(), t->targetId(), t->device());
 }
 
