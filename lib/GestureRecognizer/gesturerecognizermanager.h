@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -59,7 +59,6 @@ public:
 
     GestureRecognizerManager(const GestureRecognizerManager&) = delete;
     GestureRecognizerManager& operator=(const GestureRecognizerManager&) = delete;
-
 private:
     void acceptTouch(Touch *t);
     void rejectTouch(Touch *t);

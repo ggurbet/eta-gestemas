@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -24,6 +24,35 @@
 #include <oif/frame_x11.h>
 #include <cstdint>
 
+/**
+ * @class LibFrameTouchManager
+ * @brief   libframe based  TouchManager derived class.
+ *
+ * This class makes use of libframe for touch management for its simplicity.
+ * Source code for libframe can be found at https://launchpad.net/frame.
+ * Following snippet installs libframe for debian distros.
+ * <pre>
+ * sudo apt-get install libframe6 # required shared library
+ * sudo apt-get install libframe-dev # development package to build eta-gestemas
+ * </pre>
+ *
+ * @note This is a Xlib specific touch manager.
+ */
+
+/**
+ * @fn void LibFrameTouchManager::setDisplay(Display* display)
+ * @brief   Sets Xlib display of this class.
+ *
+ * @param[in] p1        Xlib display
+ */
+
+/**
+ * @fn Display* LibFrameTouchManager::display()
+ * @brief   Returns Xlib display of this class.
+ *
+ * @return              Xlib display that this class uses.
+ */
+
 int LibFrameTouchManager::xErrorHandler(Display* display,
                                                    XErrorEvent* error)
 {
@@ -34,6 +63,17 @@ int LibFrameTouchManager::xErrorHandler(Display* display,
     return 1;
 }
 
+/**
+ * @brief   Constructor for LibFrameTouchManager
+ *
+ * Internally creates a libframe handle and starts listening for its events.
+ * Events are device added, device removed and frame events. Frame events are
+ * touch begin, touch update and touch end.
+ *
+ * @param[in] display        Xlib display
+ * @param[in] parent         QObject parent also deletes this instance when
+ *                           it is destroyed.
+ */
 LibFrameTouchManager::LibFrameTouchManager(Display* display,
                                            QObject *parent)
     :QObject(parent), m_display(nullptr),
@@ -60,6 +100,11 @@ LibFrameTouchManager::LibFrameTouchManager(Display* display,
             this, SLOT(onFrameEvent()));
 }
 
+/**
+ * @brief   Destructor for LibFrameTouchManager.
+ *
+ * Deletes internally created libframe handle.
+ */
 LibFrameTouchManager::~LibFrameTouchManager()
 {
     if (m_shouldCloseDisplay) {
@@ -67,6 +112,35 @@ LibFrameTouchManager::~LibFrameTouchManager()
     }
     frame_x11_delete(m_frameHandle);
 }
+
+/**
+ * @brief   Processes XGenericEventCookie structure pointed by @p data.
+ *
+ * @p data comes from XLibWindowManagerAdapter. It holds all the info about the
+ * current touch event. This method processes it using libframe. After this
+ * point, libframe sends its own events. libframe events handled by this method
+ * are
+ *
+ * - device events
+ *     - device added
+ *     - device removed
+ *  - touch events
+ *      - touch begin
+ *      - touch update
+ *      - touch end
+ *
+ * If there is a target window for the touch, we have the touch grabbed for both
+ * root window and the target window. In this case we immediately reject the
+ * touch for the target window when it begins, acquiring the target window id. If
+ * a gesture this touch involved is recognized, this touch is accepted for root
+ * window. If we cannot find out there is a target window for this touch, the
+ * touch is rejected for root window as soon as possible. Note that root window
+ * is never a target window.
+ *
+ * @param[in] data        pointer to XGenericEventCookie structure
+ *
+ * @see XLibWindowManagerAdapter
+ */
 void LibFrameTouchManager::processTouchEvent(void *data)
 {
     XGenericEventCookie *xcookie = (XGenericEventCookie*)data;
@@ -77,6 +151,20 @@ void LibFrameTouchManager::processTouchEvent(void *data)
     }
 }
 
+/**
+ * @brief   Accepts touch ownership for default root window.
+ *
+ * LibFrameTouchManager accepts touch ownership for default root window,
+ * so it effectively ignore @p targetId.
+ *
+ * @param[in] touchId        touch id to be accepted
+ * @param[in] targetId       ignored, default root window used instead
+ * @param[in] device         pointer to device object which generated the events
+ *                           with @p touchId
+ *
+ * @see TouchManager::acceptTouch(), LibFrameTouchManager::rejectTouch()
+ *
+ */
 void LibFrameTouchManager::acceptTouch(unsigned long touchId,
                                        unsigned long targetId,
                                        void* device)
@@ -85,6 +173,19 @@ void LibFrameTouchManager::acceptTouch(unsigned long touchId,
     accept_touch(touchId, XDefaultRootWindow(m_display), device);
 }
 
+/**
+ * @brief   Rejects touch ownership for default root window.
+ *
+ * LibFrameTouchManager rejects touch ownership for default root window,
+ * so it effectively ignore @p targetId.
+ *
+ * @param[in] touchId        touch id to be rejected
+ * @param[in] targetId       ignored, default root window used instead
+ * @param[in] device         pointer to device object which generated the events
+ *                           with @p touchId
+ *
+ * @see TouchManager::rejectTouch(), LibFrameTouchManager::acceptTouch()
+ */
 void LibFrameTouchManager::rejectTouch(unsigned long touchId,
                                        unsigned long targetId,
                                        void* device)

@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -91,10 +91,11 @@ public:
     int id() const
     {return m_id;}
 
+    uint32_t targetId() const
+    {return m_targetId;}
+
     void setGestureListener(GestureListener *listener);
     const GestureListener* listener() const;
-
-    uint32_t targetId() const;
 
     GestureRecognizer(const GestureRecognizer&) = delete;
     GestureRecognizer& operator=(const GestureRecognizer&) = delete;

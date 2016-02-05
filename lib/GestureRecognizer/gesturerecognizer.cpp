@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -26,10 +26,123 @@
 #include <QtCore/QtDebug>
 #include <cfloat>
 
+/**
+ * @class GestureRecognizer
+ * @brief   Base class for all gesture recognizers.
+ *
+ * All gesture recognizers extend this abstract class. They should implement
+ * GestureRecognizer::onTouchBegan(), GestureRecognizer::onTouchMoved(),
+ * GestureRecognizer::onTouchEnded(), GestureRecognizer::reset() and
+ * GestureRecognizer::isEqual() methods.
+ */
+
+/**
+ * @brief Touch event sampling period, default is 80 ms.
+ *
+ * @see GestureRecognizerManager::onTouchUpdated()
+ */
 uint64_t GestureRecognizer::samplingPeriod = 80;
+
+/**
+ * @brief Pointer emulation rate.
+ *
+ * GestureRecognizerManager checks for pointer emulation samplingPeriod x
+ * pointerEmulationRate miliseconds after touch begins. If there is a single
+ * active touch and the touch has moved at least pointerEmulationDistance px,
+ * the touch is rejected, so that we don't block pointer emulation. Default is 10.
+ *
+ * @see GestureRecognizerManager::onTouchUpdated()
+ */
 uint32_t GestureRecognizer::pointerEmulationRate = 10;
+
+/**
+ * @brief Single touch mimimum movement for pointer emulation.
+ *
+ * Minimum movement for a single touch to be considered a pointer emulation.
+ * Default is 10 px.
+ *
+ * @see GestureRecognizerManager::onTouchUpdated()
+ */
 float GestureRecognizer::pointerEmulationDistance = 10.0f;
 
+/**
+ *  @fn void GestureRecognizer::onTouchBegan(const Touch *touch)
+ *  @brief Main gesture recognition logic on touch began event.
+ *
+ *  Concrete recognizers should impelement this method.
+ *
+ *  @fn void GestureRecognizer::onTouchMoved(const Touch *touch)
+ *  @brief Main gesture recognition logic on touch moved event.
+ *
+ *  Concrete recognizers should impelement this method.
+ *
+ *  @fn void GestureRecognizer::onTouchEnded(const Touch *touch)
+ *  @brief Main gesture recognition logic on touch ended event.
+ *
+ *  Concrete recognizers should impelement this method.
+ *
+ * @fn const State& GestureRecognizer::state() const
+ * @brief Returns state.
+ *
+ * @fn void GestureRecognizer::setRecognitionThreshold(float threshold)
+ * @brief Sets recognitionThreshold.
+ *
+ * @fn float GestureRecognizer::recognitionThreshold() const
+ * @brief Returns recognitionThreshold.
+ *
+ * @fn void GestureRecognizer::setAllowSimultaneousRecognition(bool b)
+ * @brief Sets if recognizers supports simultaneous recognition.
+ *
+ * @fn bool GestureRecognizer::allowsSimultaneousRecognition() const
+ * @brief Returns if recognizers supports simultaneous recognition.
+ *
+ * @fn void GestureRecognizer::setGestureRecognizersToAbort(const QList<GestureRecognizer*>& list)
+ * @brief Sets abort list to be aborted when this recognizer recognizes its gesture.
+ *
+ * @fn const GestureRecognizer::QList<GestureRecognizer*>& gestureRecognizersToAbort() const
+ * @brief Returns abort list to be aborted when this recognizer recognizes its gesture.
+ *
+ * @fn int GestureRecognizer::numTouches() const
+ * @brief Returns number of touches this recognizer keeps track of.
+ *
+ * @fn void GestureRecognizer::setTopMargin(float margin)
+ * @brief Sets top margin for this recognizer.
+ *
+ * @fn void GestureRecognizer::setBottomMargin(float margin)
+ * @brief Sets bottom margin for this recognizer.
+ *
+ * @fn void GestureRecognizer::setLeftMargin(float margin)
+ * @brief Sets left margin for this recognizer.
+ *
+ * @fn void GestureRecognizer::setRightMargin(float margin)
+ * @brief Sets right margin for this recognizer.
+ *
+ * @fn void GestureRecognizer::setCentralX(float x)
+ * @brief Sets central x coordinate.
+ *
+ * @fn float GestureRecognizer::centralX() const
+ * @brief Returns central x coordinate.
+ *
+ * @fn void GestureRecognizer::setCentralY(float y)
+ * @brief Sets central y coordinate.
+ *
+ * @fn float GestureRecognizer::centralY() const
+ * @brief Returns central y coordinate.
+ *
+ * @fn void GestureRecognizer::setId(int id)
+ * @brief Sets recognizer id.
+ *
+ * @fn int GestureRecognizer::id() const
+ * @brief Returns recognizer id.
+ *
+ * @fn uint32_t GestureRecognizer::targetId() const
+ * @brief   Returns the targetId this recognizer operates on.
+ */
+
+/**
+ * @brief   Constructor sets initial values of attributes.
+ * @param[in] parent        QObject parent this recognizer
+ */
 GestureRecognizer::GestureRecognizer(QObject *parent)
     :QObject(parent), m_manager(nullptr),
      m_topMargin(FLT_MAX), m_bottomMargin(FLT_MAX),
@@ -40,12 +153,25 @@ GestureRecognizer::GestureRecognizer(QObject *parent)
 {
 }
 
+/**
+ * @brief   Destructor deletes gesture listener instance.
+ */
 GestureRecognizer::~GestureRecognizer()
 {
     delete m_listener;
     m_listener = nullptr;
 }
 
+/**
+ * @brief   Compares this recognizer with @p other.
+ *
+ * This method member-wise compares this and @p other recognizer. Concrete
+ * recognizers first call base method, then implement their own comparison
+ * logic.
+ *
+ * @param[in] other        recognizer to compare
+ * @return                 true if equal, else false.
+ */
 bool GestureRecognizer::isEqual(const GestureRecognizer& other) const
 {
     if (m_recognitionThreshold != other.m_recognitionThreshold) {
@@ -64,6 +190,16 @@ bool GestureRecognizer::isEqual(const GestureRecognizer& other) const
     return true;
 }
 
+/**
+ * @brief   Resets this recognizer for next recognition cycle.
+ *
+ * This method resets the internals of recognizer to initial values for next
+ * recognition. When all active touches are ended, GestureRecognizerManager
+ * resets all recognizers using this method. Concrete recognizers should first
+ * call base reset method, then implement their specific reset logic.
+ *
+ * @see GestureRecognizerManager::onTouchEnded()
+ */
 void GestureRecognizer::reset()
 {
     setCentralX(0.0f);
@@ -77,6 +213,14 @@ void GestureRecognizer::reset()
     m_states.clear();
 }
 
+/**
+ * @brief Accepts touch object from GestureRecognizerManager::onTouchBegan()
+ *
+ * This method performs some edge checking for current touch object and forwards
+ * it to GestureRecognizer::onTouchBegan().
+ *
+ * @param[in] touch        touch object
+ */
 void GestureRecognizer::touchBeganHandler(const Touch *touch)
 {
     const Touch *t = nullptr;
@@ -106,6 +250,13 @@ void GestureRecognizer::touchBeganHandler(const Touch *touch)
     }
 }
 
+/**
+ * @brief Accepts touch object from GestureRecognizerManager::onTouchUpdated()
+ *
+ * This method forwards @p touch to GestureRecognizer::onTouchMoved()
+ *
+ * @param[in] touch        touch object
+ */
 void GestureRecognizer::touchMovedHandler(const Touch *touch)
 {
     const Touch *t = nullptr;
@@ -114,6 +265,13 @@ void GestureRecognizer::touchMovedHandler(const Touch *touch)
     onTouchMoved(touch);
 }
 
+/**
+ * @brief Accepts touch object from GestureRecognizerManager::onTouchEnded()
+ *
+ * This method forwards @p touch to GestureRecognizer::onTouchEnded()
+ *
+ * @param[in] touch        touch object
+ */
 void GestureRecognizer::touchEndedHandler(const Touch *touch)
 {
     const Touch *t = nullptr;
@@ -123,6 +281,9 @@ void GestureRecognizer::touchEndedHandler(const Touch *touch)
     onTouchEnded(touch);
 }
 
+/**
+ * @brief   Calls listener methods according to recognizer state.
+ */
 void GestureRecognizer::callListener()
 {
     if (!m_listener) {
@@ -148,11 +309,17 @@ void GestureRecognizer::callListener()
     }
 }
 
+/**
+ * @brief   Calls GestureRecognizerManager::handleTouchOwnership().
+ */
 void GestureRecognizer::handleTouchOwnership() const
 {
     m_manager->handleTouchOwnership();
 }
 
+/**
+ * @brief   Trivial gesture recognizer manager setter.
+ */
 void GestureRecognizer::setManager(GestureRecognizerManager* manager)
 {
     m_manager = manager;
@@ -226,17 +393,18 @@ const Touch* GestureRecognizer::findTouch(uint32_t touchId)
     return nullptr;
 }
 
+/**
+ * @brief   Trivial gesture listener setter.
+ */
 void GestureRecognizer::setGestureListener(GestureListener *listener)
 {
     m_listener = listener;
 }
 
+/**
+ * @brief   Trivial gesture listener getter.
+ */
 const GestureListener* GestureRecognizer::listener() const
 {
     return m_listener;
-}
-
-uint32_t GestureRecognizer::targetId() const
-{
-    return m_targetId;
 }

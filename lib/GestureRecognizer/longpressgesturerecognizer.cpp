@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -36,7 +36,6 @@ LongPressGestureRecognizer::LongPressGestureRecognizer()
     m_timer->setSingleShot(true);
     connect(m_timer, &QTimer::timeout, this,
             &LongPressGestureRecognizer::onTimeout);
-
 }
 
 bool LongPressGestureRecognizer::isEqual(const GestureRecognizer& other) const
