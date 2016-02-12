@@ -1,7 +1,80 @@
+2016-02-12  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* CMakeLists.txt: Bump version number to 0.1.2
+
+2016-02-12  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/dbusvirtualkeyboard.cpp: Change dbus path of
+	virtual keyboard listener"
+
+2016-02-04  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/CMakeLists.txt, lib/GestureListener/xtestshortcut.h,
+	lib/GestureListener/xtestsimple.cpp,
+	lib/GestureListener/xtestsimple.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h, recognizers.xml,
+	test/config.xml, test/targetfactorytest.cpp, tools/integration.xml,
+	tools/longpress.xml: Introduce XTestSimple gesture listener
+
+2016-02-04  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/gesturerecognizermanager.cpp: Fix possible
+	nullptr seg-fault
+
+2016-02-04  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureListener/xtestonbegan.cpp,
+	lib/GestureListener/xtestonbegan.h,
+	lib/GestureListener/xtestonended.cpp,
+	lib/GestureListener/xtestonended.h,
+	lib/GestureListener/xtestonrecognized.cpp,
+	lib/GestureListener/xtestonrecognized.h: Delete xteston* listeners
+
+2016-02-04  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter_p.h: Fix AMD IWB
+	long press right click problems
+
+2016-02-03  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/rightclickinvoker.h: Remove unused file
+
+2016-02-01  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* ChangeLog, lib/CMakeLists.txt, lib/GestureListener/xtest.cpp,
+	lib/GestureListener/xtest.h,
+	lib/GestureListener/xtestatomicbeganorrecognized.cpp,
+	lib/GestureListener/xtestatomicbeganorrecognized.h,
+	lib/GestureListener/xtestatomicendedorrecognized.cpp,
+	lib/GestureListener/xtestatomicendedorrecognized.h,
+	lib/GestureListener/xtestmove.cpp,
+	lib/GestureListener/xtestonbegan.cpp,
+	lib/GestureListener/xtestonbegan.h,
+	lib/GestureListener/xtestonended.cpp,
+	lib/GestureListener/xtestonended.h,
+	lib/GestureListener/xtestonrecognized.cpp,
+	lib/GestureListener/xtestonrecognized.h,
+	lib/GestureListener/xtestshortcut.cpp,
+	lib/GestureListener/xtestshortcut.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TargetFactory/targetfactory.h,
+	lib/TouchManager/libframetouchmanager.cpp, recognizers.xml,
+	test/config.xml, test/targetfactorytest.cpp, tools/integration.xml,
+	tools/longpress.xml: Solve blocked selection problem It seems single touch long press right click does not block mouse
+	emulated selection any more and we can mimimize and close the
+	windows from their title bar.  Before this commit, probably an
+	unreleased mouse button events was blocking all these operations.
+
 2016-01-29  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 
-	* lib/GestureListener/xtestzoom.cpp, recognizers.xml: Better default
-	config file - Move Eog with two touch long press - Plasma-desktop is now a private target - Delete qDebug in xtestzoom.xpp
+	* ChangeLog, lib/GestureListener/xtestzoom.cpp, recognizers.xml: 
+	Better default config file - Move Eog with two touch long press - Plasma-desktop is now a private target - Delete qDebug in xtestzoom.xpp
 
 2016-01-28  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 
@@ -37,9 +110,9 @@
 	lib/GestureListener/twotouchpinchlistener.cpp,
 	lib/GestureListener/twotouchpinchlistener.h,
 	lib/GestureListener/xtestatomicbeganorrecognized.cpp,
-	lib/GestureListener/xtestonbegan.h,
+	lib/GestureListener/xtestatomicbeganorrecognized.h,
 	lib/GestureListener/xtestatomicendedorrecognized.cpp,
-	lib/GestureListener/xtestonended.h,
+	lib/GestureListener/xtestatomicendedorrecognized.h,
 	lib/GestureListener/xtestlongpressmove.cpp,
 	lib/GestureListener/xtestlongpressmove.h,
 	lib/GestureListener/xtestlongpressrightclick.cpp,
@@ -70,7 +143,7 @@
 	tools/twotouchpinch.xml: Make config file more understandable.  - Listener naming simplified as below XTest<GESTURE><ACTION> -->
 	XTest<ACTION> - Reaction to pinch gestures should be given according to velocity - Velocity values are in change per second unit rather than
 	milisecond - Remove unnecessary accomulator, min/max values from scroll and
-	zoom listeners and use minEffectiveVelocity instead.  - Add XTestOnBegan and XTestOnEnded  gesture listeners for simple press-release actions
+	zoom listeners and use minEffectiveVelocity instead.  - Add XTestAtomicBeganOrRecognized and XTestAtomicEndedOrRecognized  gesture listeners for simple press-release actions
 
 2016-01-25  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 
