@@ -1,3 +1,10 @@
+eta-gestemas (0.1.2-1) unstable; urgency=medium
+
+  * local package
+  * New upstream release
+
+ -- Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>  Fri, 12 Feb 2016 13:37:26 +0200
+
 eta-gestemas (0.1.1-1) unstable; urgency=medium
 
   * local package
