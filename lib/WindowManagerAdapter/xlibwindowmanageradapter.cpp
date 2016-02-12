@@ -28,21 +28,13 @@
 // or gives strange Status definition errors.
 #include "xlibwindowmanageradapter_p.h"
 
-static int x_error_handler(Display* display, XErrorEvent* error)
+int XLibWindowManagerAdapterPrivate::xErrorHandler(Display* display,
+                                                   XErrorEvent* error)
 {
     (void)display;
     (void)error;
-    // Q_ASSERT_X(false, "x_error_handler", "Xlib generated an error");
-    qWarning("x_error_handler called");
-    return 1;
-}
-
-
-static int x_io_error_handler(Display* display)
-{
-    (void)display;
-    // Q_ASSERT_X(false, "x_io_error_handler", "Xlib generated an io error");
-    qWarning("x_io_error_handler called");
+    // qFatal("XLibWindowManagerAdapterPrivate::xErrorHandler called");
+    qWarning("XLibWindowManagerAdapterPrivate::xErrorHandler called");
     return 1;
 }
 
@@ -87,9 +79,6 @@ XLibWindowManagerAdapterPrivate::XLibWindowManagerAdapterPrivate(
 
     XIGrabTouchBegin(m_display, XIAllMasterDevices, root, 0,
                      &m_mask, 1, &m_mods);
-
-    XSetErrorHandler(x_error_handler);
-    XSetIOErrorHandler(x_io_error_handler);
 }
 
 XLibWindowManagerAdapterPrivate::~XLibWindowManagerAdapterPrivate()
@@ -101,6 +90,7 @@ XLibWindowManagerAdapterPrivate::~XLibWindowManagerAdapterPrivate()
 
 void XLibWindowManagerAdapterPrivate::onNewEvent()
 {
+    XSetErrorHandler(xErrorHandler);
     XSync(m_display, False);
     XEvent event;
     while (XPending(m_display)) {
@@ -148,6 +138,8 @@ void XLibWindowManagerAdapterPrivate::onNewEvent()
             }
             if (q_ptr->m_listener) {
                 q_ptr->m_listener->onTouchEvent(xcookie);
+                // In case TouchManager changes error handler
+                XSetErrorHandler(xErrorHandler);
             }
             XFreeEventData(m_display, xcookie);
         }

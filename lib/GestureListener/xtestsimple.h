@@ -16,18 +16,18 @@
  * along with eta-gestemas.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XTESTATOMICENDEDORRECOGNIZED_H
-#define XTESTATOMICENDEDORRECOGNIZED_H
+#ifndef XTESTSIMPLE_H
+#define XTESTSIMPLE_H
 
 #include "simplegesturelistener.h"
 
 class XTestShortcut;
 
-class XTestAtomicEndedOrRecognized : public SimpleGestureListener
+class XTestSimple : public SimpleGestureListener
 {
 public:
-    XTestAtomicEndedOrRecognized();
-    virtual ~XTestAtomicEndedOrRecognized();
+    XTestSimple();
+    virtual ~XTestSimple();
     virtual bool isEqual(const GestureListener& other) const;
     virtual void onBegan();
     virtual void onRecognized();
@@ -35,9 +35,9 @@ public:
     virtual void onCanceled();
     virtual void onEnded();
     virtual void onFailed();
-    void setAtomicEndedOrRecognizedShortcut(const XTestShortcut *shortcut);
+    void setShortcut(const XTestShortcut *shortcut);
 private:
     const XTestShortcut *m_shortcut;
 };
 
-#endif /* XTESTATOMICENDEDORRECOGNIZED_H */
+#endif /* XTESTSIMPLE_H */

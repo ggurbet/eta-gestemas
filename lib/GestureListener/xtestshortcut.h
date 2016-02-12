@@ -32,18 +32,70 @@ public:
         Key
     };
 
-    XTestShortcut() : m_type(Undefined) {}
+    enum Action
+    {
+        NoAction,
+        Press,
+        Release,
+        PressRelease
+    };
+
+    XTestShortcut()
+        : m_type(Undefined),
+          m_onBeganAction(NoAction),
+          m_onRecognizedAction(NoAction),
+          m_onChangedAction(NoAction),
+          m_onCanceledAction(NoAction),
+          m_onEndedAction(NoAction),
+          m_onFailedAction(NoAction) {}
     ~XTestShortcut() = default;
     void setValue(const QString& value, Type type);
     void addModifier(const QString& modifier);
     void press() const;
     void release() const;
+    void pressAndRelease() const;
     void movePointer(float x, float y) const;
+
+    void setOnBeganAction(Action a)
+    {m_onBeganAction = a;}
+    Action onBeganAction() const
+    {return m_onBeganAction;}
+
+    void setOnRecognizedAction(Action a)
+    {m_onRecognizedAction = a;}
+    Action onRecognizedAction() const
+    {return m_onRecognizedAction;}
+
+    void setOnChangedAction(Action a)
+    {m_onChangedAction = a;}
+    Action onChangedAction() const
+    {return m_onChangedAction;}
+
+    void setOnCanceledAction(Action a)
+    {m_onCanceledAction = a;}
+    Action onCanceledAction() const
+    {return m_onCanceledAction;}
+
+    void setOnEndedAction(Action a)
+    {m_onEndedAction = a;}
+    Action onEndedAction() const
+    {return m_onEndedAction;}
+
+    void setOnFailedAction(Action a)
+    {m_onFailedAction = a;}
+    Action onFailedAction() const
+    {return m_onFailedAction;}
 private:
     QStringList m_modifiers;
     Type m_type;
     QString m_keyValue;
     int m_buttonValue;
+    Action m_onBeganAction;
+    Action m_onRecognizedAction;
+    Action m_onChangedAction;
+    Action m_onCanceledAction;
+    Action m_onEndedAction;
+    Action m_onFailedAction;
 };
 
 #endif /* XTESTSHORTCUT_H */

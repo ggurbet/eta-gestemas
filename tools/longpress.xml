@@ -12,11 +12,14 @@
         <abortList>
           <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
         </abortList>
-        <XTestAtomicBeganOrRecognized>
+        <XTestSimple>
           <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
             <button>3</button>
           </PressReleaseShortcut>
-        </XTestAtomicBeganOrRecognized>
+        </XTestSimple>
       </LongPress>
       <LongPress id="2">
         <numTouchesRequired>2</numTouchesRequired>

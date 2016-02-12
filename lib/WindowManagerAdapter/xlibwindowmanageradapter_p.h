@@ -46,6 +46,7 @@ public:
     XIGrabModifiers m_mods;
 
     XLibWindowManagerAdapter *q_ptr;
+    static int xErrorHandler(Display* display, XErrorEvent* error);
 };
 
 #endif

@@ -25,8 +25,7 @@ set(libgestemas_SOURCES
   GestureListener/simplegesturelistener.cpp
   GestureListener/xtest.cpp
   GestureListener/xtestshortcut.cpp
-  GestureListener/xtestatomicbeganorrecognized.cpp
-  GestureListener/xtestatomicendedorrecognized.cpp
+  GestureListener/xtestsimple.cpp
   GestureListener/xtestmove.cpp
   GestureListener/xtestzoom.cpp
   GestureListener/xtestscroll.cpp
@@ -58,8 +57,7 @@ set(libgestemas_HEADERS
   GestureListener/simplegesturelistener.h
   GestureListener/xtest.h
   GestureListener/xtestshortcut.h
-  GestureListener/xtestatomicbeganorrecognized.h
-  GestureListener/xtestatomicendedorrecognized.h
+  GestureListener/xtestsimple.h
   GestureListener/xtestmove.h
   GestureListener/xtestzoom.h
   GestureListener/xtestscroll.h

@@ -60,7 +60,7 @@ void XTestMove::onCanceled()
 
 void XTestMove::onEnded()
 {
-        m_shortcut->release();
+    m_shortcut->release();
 }
 
 void XTestMove::onFailed()
