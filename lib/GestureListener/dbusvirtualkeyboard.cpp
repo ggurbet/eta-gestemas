@@ -27,9 +27,9 @@
 DBusVirtualKeyboard::DBusVirtualKeyboard()
 {
     QDBusConnection conn = QDBusConnection::sessionBus();
-    m_interface = new QDBusInterface("org.eta.etakeyboard",
-                                     "/EtaKeyboard",
-                                     "org.eta.etakeyboard", conn);
+    m_interface = new QDBusInterface("org.eta.virtualkeyboard",
+                                     "/VirtualKeyboard",
+                                     "org.eta.virtualkeyboard", conn);
     m_command = "toggle";
 
 }
