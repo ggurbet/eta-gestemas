@@ -46,10 +46,10 @@ uint64_t GestureRecognizer::samplingPeriod = 80;
 /**
  * @brief Pointer emulation rate.
  *
- * GestureRecognizerManager checks for pointer emulation samplingPeriod x
- * pointerEmulationRate miliseconds after touch begins. If there is a single
- * active touch and the touch has moved at least pointerEmulationDistance px,
- * the touch is rejected, so that we don't block pointer emulation. Default is 10.
+ * GestureRecognizerManager checks for pointer emulation in (samplingPeriod x
+ * pointerEmulationRate) miliseconds after a touch begins. If there is a single
+ * active touch and the touch has moved at least pointerEmulationDistance px, the
+ * touch is rejected, so that we don't block pointer emulation. Default is 10.
  *
  * @see GestureRecognizerManager::onTouchUpdated()
  */

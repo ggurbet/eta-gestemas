@@ -36,7 +36,7 @@
  * sudo apt-get install libframe-dev # development package to build eta-gestemas
  * </pre>
  *
- * @note This is a Xlib specific touch manager.
+ * @note This is an Xlib specific touch manager.
  */
 
 /**
