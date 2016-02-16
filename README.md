@@ -3,11 +3,11 @@
 ## Introduction
 
 This project is yet another attempt to bring global multitouch gesture reconizers
-to GNU/Linux distributions. In GNU/Linux, there are few applications that has
-native touch event support, but many applications are written for keyboard and
-mouse interactions only. For touch enabled devices, they make use of single touch
-for pointer emulation. There is no support for multitouch gestures such as pinch
-and rotate on these applications.
+to GNU/Linux desktop environments. In those desktop environments, there are few
+applications that has native touch event support, but a large number of
+applications written for keyboard and mouse interactions only. For touch enabled
+devices, there is currently no support for multitouch gestures, such as pinch and
+rotate, on those legacy applications.
 
 One approach to control legacy applications with multitouch gestures is that we
 first recognize those gestures and send keyboard-mouse event combinations to
@@ -174,6 +174,11 @@ following to use eta-gestemas with your touchpad, if you are using synaptics.
   synclient HorizTwoFingerScroll=0
   synclient VertTwoFingerScroll=0
 ```
+
+## Notes
+
+- Works with KDE and LXDE.
+- Failed to work with GNOME, Unity, XFCE for now.
 
 [Touchegg]: https://github.com/JoseExposito/touchegg
 [ginn]: https://wiki.ubuntu.com/Multitouch/Ginn
