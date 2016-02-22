@@ -299,6 +299,89 @@
     </GestureRecognizers>
   </PrivateTarget>
   <PrivateTarget>
+    <name>Infoline-Smartboard</name>
+    <GestureRecognizers>
+      <!-- Two-touch tap at bottom shows/hides our virtual keyboard if installed -->
+      <Tap id="1">
+        <numTouchesRequired>2</numTouchesRequired>
+        <numTapsRequired>1</numTapsRequired>
+        <maxTapDelay>1500</maxTapDelay>
+        <maxTapDuration>1500</maxTapDuration>
+        <maxTapDistance>1500.0</maxTapDistance>
+        <bottomMargin>150.0</bottomMargin>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <DBusVirtualKeyboard>
+          <command>toggle</command>
+        </DBusVirtualKeyboard>
+      </Tap>
+    </GestureRecognizers>
+  </PrivateTarget>
+  <!-- Impress full screen -->
+  <PrivateTarget>
+    <name>LibreOffice 4.3</name>
+    <GestureRecognizers>
+      <!-- Single-touch long press triggers right click -->
+      <LongPress id="1">
+        <numTouchesRequired>1</numTouchesRequired>
+        <minPressDuration>950</minPressDuration>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onBegan>press</onBegan>
+            <onEnded>release</onEnded>
+            <onCanceled>release</onCanceled>
+            <button>3</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </LongPress>
+      <!-- Go next slide on swipe down -->
+      <Swipe id="2">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Down</direction>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onRecognized>press-release</onRecognized>
+            <button>4</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </Swipe>
+      <!-- Go prev slide on swipe up -->
+      <Swipe id="3">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Up</direction>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onRecognized>press-release</onRecognized>
+            <button>5</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </Swipe>
+    </GestureRecognizers>
+  </PrivateTarget>
+  <PrivateTarget>
     <name>Plasma-desktop</name>
+  </PrivateTarget>
+  <PrivateTarget>
+    <name>Wine</name>
   </PrivateTarget>
 </gestemas>
