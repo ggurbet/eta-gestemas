@@ -1,11 +1,82 @@
+2016-02-26  Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/swipegesturerecognizer.cpp, recognizers.xml: 
+	Fix swipe up & down direction
+
+2016-02-22  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* recognizers.xml: Add new targets
+
+2016-02-16  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* README.md: Update README
+
+2016-02-15  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/TouchManager/libframetouchmanager.cpp: Fix a typo
+
+2016-02-05  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+
+	* README.md, cmake/FindFrame.cmake,
+	lib/GestureListener/dbusvirtualkeyboard.cpp,
+	lib/GestureListener/dbusvirtualkeyboard.h,
+	lib/GestureListener/dbvirtualkeyboard.cpp,
+	lib/GestureListener/gesturelistener.h,
+	lib/GestureListener/simplegesturelistener.cpp,
+	lib/GestureListener/simplegesturelistener.h,
+	lib/GestureListener/xtest.cpp, lib/GestureListener/xtest.h,
+	lib/GestureListener/xtestmove.cpp, lib/GestureListener/xtestmove.h,
+	lib/GestureListener/xtestscroll.cpp,
+	lib/GestureListener/xtestscroll.h,
+	lib/GestureListener/xtestshortcut.cpp,
+	lib/GestureListener/xtestshortcut.h,
+	lib/GestureListener/xtestsimple.cpp,
+	lib/GestureListener/xtestsimple.h, lib/GestureListener/xtestzoom.h,
+	lib/GestureRecognizer/gesturerecognizer.cpp,
+	lib/GestureRecognizer/gesturerecognizer.h,
+	lib/GestureRecognizer/gesturerecognizermanager.cpp,
+	lib/GestureRecognizer/gesturerecognizermanager.h,
+	lib/GestureRecognizer/longpressgesturerecognizer.cpp,
+	lib/GestureRecognizer/longpressgesturerecognizer.h,
+	lib/GestureRecognizer/pangesturerecognizer.cpp,
+	lib/GestureRecognizer/pangesturerecognizer.h,
+	lib/GestureRecognizer/pinchgesturerecognizer.h,
+	lib/GestureRecognizer/state.cpp, lib/GestureRecognizer/state.h,
+	lib/GestureRecognizer/swipegesturerecognizer.cpp,
+	lib/GestureRecognizer/swipegesturerecognizer.h,
+	lib/GestureRecognizer/tapgesturerecognizer.cpp,
+	lib/GestureRecognizer/tapgesturerecognizer.h,
+	lib/GestureRecognizer/touch.cpp, lib/GestureRecognizer/touch.h,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.cpp,
+	lib/GestureRecognizer/twotouchpinchgesturerecognizer.h,
+	lib/TargetFactory/target.cpp, lib/TargetFactory/target.h,
+	lib/TargetFactory/targetfactory.cpp,
+	lib/TouchManager/libframetouchmanager.cpp,
+	lib/TouchManager/libframetouchmanager.h,
+	lib/TouchManager/touchmanager.cpp, lib/TouchManager/touchmanager.h,
+	lib/WindowManagerAdapter/windowmanageradapter.cpp,
+	lib/WindowManagerAdapter/windowmanageradapter.h,
+	lib/WindowManagerAdapter/windowmanageradapterlistener.cpp,
+	lib/WindowManagerAdapter/windowmanageradapterlistener.h,
+	lib/WindowManagerAdapter/windowmanageradapterlistenerinterface.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.cpp,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter.h,
+	lib/WindowManagerAdapter/xlibwindowmanageradapter_p.h,
+	lib/utilities.h, src/config.h.in, src/main.cpp,
+	tools/integrationtool.cpp, tools/longpresstool.cpp,
+	tools/pantool.cpp, tools/swipetool.cpp, tools/taptool.cpp,
+	tools/twotouchpinchtool.cpp, tools/xlibwmatool.cpp: Add initial
+	documentation Also update copyright date.
+
 2016-02-12  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 
-	* CMakeLists.txt: Bump version number to 0.1.2
+	* CMakeLists.txt, ChangeLog: Bump version number to 0.1.2
 
 2016-02-12  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 
 	* lib/GestureListener/dbusvirtualkeyboard.cpp: Change dbus path of
-	virtual keyboard listener"
+	virtual keyboard listener
 
 2016-02-04  Gokhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 
