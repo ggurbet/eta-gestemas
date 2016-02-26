@@ -354,7 +354,7 @@
         <XTestSimple>
           <PressReleaseShortcut>
             <onRecognized>press-release</onRecognized>
-            <button>4</button>
+            <button>5</button>
           </PressReleaseShortcut>
         </XTestSimple>
       </Swipe>
@@ -372,7 +372,43 @@
         <XTestSimple>
           <PressReleaseShortcut>
             <onRecognized>press-release</onRecognized>
+            <button>4</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </Swipe>
+      <!-- Go next slide on swipe right -->
+      <Swipe id="4">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Right</direction>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onRecognized>press-release</onRecognized>
             <button>5</button>
+          </PressReleaseShortcut>
+        </XTestSimple>
+      </Swipe>
+      <!-- Go prev slide on swipe left -->
+      <Swipe id="5">
+        <numTouchesRequired>1</numTouchesRequired>
+        <maxDuration>150</maxDuration>
+        <minDisplacement>60.0</minDisplacement>
+        <maxAngle>40.0</maxAngle>
+        <direction>Left</direction>
+        <recognitionThreshold>10.0</recognitionThreshold>
+        <abortList>
+          <allowSimultaneousRecognition>false</allowSimultaneousRecognition>
+        </abortList>
+        <XTestSimple>
+          <PressReleaseShortcut>
+            <onRecognized>press-release</onRecognized>
+            <button>4</button>
           </PressReleaseShortcut>
         </XTestSimple>
       </Swipe>
