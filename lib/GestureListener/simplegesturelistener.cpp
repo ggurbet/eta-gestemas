@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -19,6 +19,33 @@
 #include "simplegesturelistener.h"
 #include "gesturerecognizer.h"
 
+/**
+ * @class GestureListener
+ * @brief   Base class for all gesture listeners.
+ *
+ * Each concrete gesture listener should implement this interface.
+ *
+ * @fn bool GestureListener::isEqual(const GestureListener& other) const
+ * @brief Compares this listener with @p other.
+ *
+ * @fn void GestureListener::onBegan()
+ * @brief Called when state changed to Began.
+ *
+ * @fn void GestureListener::onRecognized()
+ * @brief Called when state changed to Recognized.
+ *
+ * @fn void GestureListener::onChanged()
+ * @brief Called when state changed to Changed.
+ *
+ * @fn void GestureListener::onCanceled()
+ * @brief Called when state changed to Canceled.
+ *
+ * @fn void GestureListener::onEnded()
+ * @brief Called when state changed to Ended.
+ *
+ * @fn void GestureListener::onFailed()
+ * @brief Called when state changed to Failed.
+ */
 void SimpleGestureListener::setGestureRecognizer(
                             const GestureRecognizer *recognizer)
 {

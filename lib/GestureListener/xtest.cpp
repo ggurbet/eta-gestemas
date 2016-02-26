@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  * Copyright (C) 2010 Canonical, Ltd.
  *
  * This file is part of eta-gestemas.

@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -219,8 +219,14 @@ void XLibWindowManagerAdapterPrivate::dispatchOpenWindowEvents()
 /**
  * @brief   Constructor inits private members.
  *
+ * Touches are grabbed on root window. Root window is never a target window.
+ * If a newly created window is not a target, touches on the new window won't
+ * be grabbed and touches will be rejected for root window as soon as possible
+ * by the corresponding touch manager.
+ *
  * @param[in] parent    deletes this instance automatically
- * @return              An instance of this class.
+ *
+ * @see LibFrameTouchManager
  */
 XLibWindowManagerAdapter::XLibWindowManagerAdapter(QObject *parent)
     :WindowManagerAdapter(parent),
@@ -237,11 +243,30 @@ XLibWindowManagerAdapter::~XLibWindowManagerAdapter()
     d_ptr = nullptr;
 }
 
+/**
+ * @brief   Dispatches events obtained through the Xlib API.
+ *
+ * Window creation/destruction and touch events are sent to
+ * WindowManagerAdapterListenerInterface type.
+ *
+ * If created window is a target window, this method grabs its touches.
+ *
+ * @see WindowManagerAdapter::onNewEvent()
+ */
 void XLibWindowManagerAdapter::onNewEvent()
 {
     d_ptr->onNewEvent();
 }
 
+/**
+ * @brief   Starts event dispatching.
+ *
+ * Dispatches window creation event for each open window and listens for
+ * Xlib display connection number for further window creation/destruction and
+ * touch events.
+ *
+ * @see WindowManagerAdapter::dispatchEvents()
+ */
 void XLibWindowManagerAdapter::dispatchEvents()
 {
     d_ptr->dispatchOpenWindowEvents();
@@ -255,6 +280,12 @@ void XLibWindowManagerAdapter::dispatchEvents()
             this, SLOT(onNewEvent()));
 }
 
+/**
+ * @brief   This method is used for obtaining a pointer to Display of Xlib.
+ *
+ * @return              Pointer to internally opened Display of Xlib.
+ *                      a function returns void.
+ */
 void* XLibWindowManagerAdapter::display()
 {
     return d_ptr->m_display;

@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -24,18 +24,23 @@
  * Window manager adapters may use different libraries to manage
  * the same window manager, or even more they may have to deal with
  * different window managers. This class defines the required pure
- * virtual methods with a simple testing feature.
+ * virtual methods.
  */
 
 /**
  * @fn void WindowManagerAdapter::onNewEvent()
- * @brief   Dispatches new events to corresponding classes.
+ * @brief   Dispatches new events to WindowManagerAdapterListenerInterface.
  *
- * After a call to dispatchEvents(), this method dispatches new events
- * to TargetFactory, TouchManager and GestureRecognizerManager instances.
+ * After a call to dispatchEvents(), this method sends new events
+ * to a listener of type WindowManagerAdapterListenerInterface.
+ * WindowManagerAdapterListener dispatches the following events
+ * to the following class instances for gesture recognition.
  * - Window created events are directed to TargetFactory.
  * - Window destroyed events are directed to GestureRecognizerManager.
  * - Touch events are directed to TouchManager.
+ * WindowManagerAdapterListenerInterface can also be used for test purposes.
+ *
+ * @see WindowManagerAdapterListener
  */
 
  /**
@@ -44,8 +49,9 @@
  *
  * First dispatches window created events for already open windows, then
  * listens for window creation, window destruction and touch events
- * by the help of onNewEvent(). Events are directed to corresponding
- * class instances in onNewEvent() method.
+ * by the help of WindowManagerAdapter::onNewEvent().
+ *
+ * @see WindowManagerAdapter::setListener()
  */
 
 WindowManagerAdapter::WindowManagerAdapter(QObject *parent)
@@ -54,12 +60,18 @@ WindowManagerAdapter::WindowManagerAdapter(QObject *parent)
 /**
  * @brief   Set @p listener member.
  *
- * Listener's virtual methods are got called on every event that a window manager
- * adapter should be interested in. These events are namely window creation,
- * window destruction and touch events on a specific window.
- * @param[in] listener        used for listening to the class events. If not set, it is null
+ * Listener's corresponding virtual methods are called on every event that a
+ * window manager adapter should be interested in. These events are namely window
+ * creation, window destruction and touch events on a specific window.
+ * @p listener can be used for testing WindowManagerAdapter or it should dispatch
+ * events to corresponding classes for gesture recognition.
+ *
+ * @param[in] listener        events are passed to @p listener, default nullptr
+ *
+ * @see WindowManagerAdapter::onNewEvent()
  */
-void WindowManagerAdapter::setListener(WindowManagerAdapterListenerInterface * listener)
+void WindowManagerAdapter::setListener(
+                    WindowManagerAdapterListenerInterface * listener)
 {
     m_listener = listener;
 }

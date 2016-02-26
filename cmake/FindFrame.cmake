@@ -7,7 +7,7 @@
 #   FRAME_INCLUDE_DIR - Include directory for frame
 #   FRAME_DEFINITIONS - Compiler flags for using frame
 #
-# Copyright (c) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+# Copyright (c) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
 #
 # Redistribution and use is allowed according to the terms of the GPLv3 license.
 

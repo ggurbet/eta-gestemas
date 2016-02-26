@@ -20,6 +20,20 @@
 #include "xtestzoom.h"
 #include "dbusvirtualkeyboard.h"
 
+/**
+ * @class TargetFactory
+ * @brief   Configuration parser and target creator.
+ *
+ * This class parses the configuration file and creates a target object
+ * accordingly.
+ */
+
+/**
+ * @brief   Constructor inits private members.
+ *
+ * Configuration file name should be set explicitly using
+ * TargetFactory::setConfigurationFileName().
+ */
 TargetFactory::TargetFactory()
     : m_configReader(nullptr),
       m_configFile(nullptr),
@@ -31,12 +45,24 @@ TargetFactory::TargetFactory()
     XTest::open();
 }
 
+/**
+ * @brief   Constructor inits private members.
+ *
+ * Confguration file name is set to @p configFileName.
+ *
+ * @param[in] configFileName        configuration file name
+ */
 TargetFactory::TargetFactory(const QString& configFileName)
     : TargetFactory()
 {
     setConfigurationFileName(configFileName);
 }
 
+/**
+ * @brief   Destructor closes configuration file if it is open.
+ *
+ * And deletes objects created on the heap.
+ */
 TargetFactory::~TargetFactory()
 {
     if (m_configFile && m_configFile->isOpen()) {
@@ -48,12 +74,23 @@ TargetFactory::~TargetFactory()
     XTest::close();
 }
 
+/**
+ * @brief   Creates a file object with provided file name.
+ *
+ * @param[in] configFileName        configuration file name.
+ */
 void TargetFactory::setConfigurationFileName(const QString& configFileName)
 {
     m_configFile = new QFile(configFileName);
     Q_CHECK_PTR(m_configFile);
 }
 
+/**
+ * @brief   Returns configuration file name.
+ *
+ * @return              If configuration file object is previously created
+                        returns its name, else returns an empty string.
+ */
 QString TargetFactory::configFileName() const
 {
     if (!m_configFile) {
@@ -63,6 +100,22 @@ QString TargetFactory::configFileName() const
     return m_configFile->fileName();
 }
 
+/**
+ * @brief   Creates a target parsing the config file for @targetName
+ *
+ * This is the most important method of this class. Whenever a new window is
+ * opened, it looks for a target with the name @p targetName in the configuration
+ * file. If it finds one, it instantiates a target object and fills it according
+ * to the configuration file. It parses all the gesture recognizers that affects
+ * this target and attaches them to the target. If @p targetName does not exist
+ * in the config file, null target is returned. This indicates the touches for
+ * newly created window should not be grabbed.
+ *
+ * @param[in] targetId        newly created window's id
+ * @param[in] targetName      newly created window's application class
+ * @return                    non-null if newly created target found in config
+ *                            file, else null.
+ */
 Target* TargetFactory::create(unsigned long targetId, const QString& targetName)
 {
     Q_CHECK_PTR(m_configFile);

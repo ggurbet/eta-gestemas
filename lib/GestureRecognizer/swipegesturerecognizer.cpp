@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -159,8 +159,8 @@ void SwipeGestureRecognizer::onTouchMoved(const Touch *touch)
         } else if (absVelocityY > absVelocityX) {
             float absCumulativeDeltaY  = fabsf(m_cumulativeDeltaY);
             if (absCumulativeDeltaY > recognitionThreshold()) {
-                if ((deltaY < 0.0f && (m_direction & Down) == 0)
-                    || ((deltaY > 0.0f) && (m_direction & Up) == 0)
+                if ((deltaY < 0.0f && (m_direction & Up) == 0)
+                    || ((deltaY > 0.0f) && (m_direction & Down) == 0)
                     || fabsf(atanf(m_cumulativeDeltaX / m_cumulativeDeltaY)) >= m_maxAngle) {
                     setState(State::Failed);
                 } else if (absVelocityY >= m_minVelocity

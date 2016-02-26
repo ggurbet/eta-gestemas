@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
+/* Copyright (C) 2015-2016 Gökhan Karabulut <gokhan.karabulut@tubitak.gov.tr>
  *
  * This file is part of eta-gestemas.
  *
@@ -42,8 +42,8 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("<recognizersfile>",
-                                 QCoreApplication::translate("main",
-                                "Configuration xml file that defines recognizers"));
+                            QCoreApplication::translate("main",
+                            "Configuration xml file that defines recognizers"));
     parser.process(app);
 
     const QStringList args = parser.positionalArguments();
@@ -70,7 +70,8 @@ int main(int argc, char *argv[])
     Display *display = static_cast<Display *>(windowManagerAdapter.display());
     LibFrameTouchManager touchManager(display);
     TargetFactory targetFactory(recognizersFile);
-    WindowManagerAdapterListener windowManagerAdapterListener(&touchManager, &targetFactory);
+    WindowManagerAdapterListener windowManagerAdapterListener(&touchManager,
+                                                              &targetFactory);
     windowManagerAdapter.setListener(&windowManagerAdapterListener);
     windowManagerAdapter.dispatchEvents();
 
