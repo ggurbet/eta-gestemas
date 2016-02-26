@@ -58,7 +58,7 @@ Target::Target(unsigned long targetId, const QString& targetName)
  */
 Target::~Target()
 {
-    // When a target distroyed, its gestures also get destroyed.
+    // When a target destroyed, its gestures also get destroyed.
     GestureRecognizer *p = nullptr;
     while (!m_gestureRecognizers.isEmpty()) {
         p = m_gestureRecognizers.takeFirst();
